@@ -129,6 +129,8 @@ cd /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_tag_r31-24/
 cat source/CxAODBootstrap_VHbb/bootstrap/release.txt
 setupATLAS && lsetup "root 6.14.04-x86_64-slc6-gcc62-opt" && asetup 21.2.49,AnalysisBase
 cd build
+rm -rf *
+cmake ../source
 make -j6
 source x86_64-slc6-gcc62-opt/setup.sh
 lsetup 'lcgenv -p LCG_91 x86_64-slc6-gcc62-opt numpy'
@@ -348,6 +350,8 @@ setupATLAS && lsetup git && lsetup "root 6.14.04-x86_64-slc6-gcc62-opt"
 release=`cat source/CxAODBootstrap_VHbb/bootstrap/release.txt` && echo "release=$release"
 asetup $release,AnalysisBase
 cd build
+rm -rf *
+cmake ../source
 make -j6
 source x86_64-slc6-gcc62-opt/setup.sh
 lsetup 'lcgenv -p LCG_91 x86_64-slc6-gcc62-opt numpy'
@@ -418,6 +422,8 @@ setupATLAS && lsetup git && lsetup "root 6.14.04-x86_64-slc6-gcc62-opt"
 release=`cat source/CxAODBootstrap_VHbb/bootstrap/release.txt` && echo "release=$release"
 asetup $release,AnalysisBase
 cd build
+rm -rf *
+cmake ../source
 make -j6
 source x86_64-slc6-gcc62-opt/setup.sh
 lsetup 'lcgenv -p LCG_91 x86_64-slc6-gcc62-opt numpy'
@@ -482,6 +488,8 @@ setupATLAS && lsetup git && lsetup "root 6.14.04-x86_64-slc6-gcc62-opt"
 release=`cat source/CxAODBootstrap_VHbb/bootstrap/release.txt` && echo "release=$release"
 asetup $release,AnalysisBase
 cd build
+rm -rf *
+cmake ../source
 make -j6
 source x86_64-slc6-gcc62-opt/setup.sh
 lsetup 'lcgenv -p LCG_91 x86_64-slc6-gcc62-opt numpy'
@@ -604,6 +612,8 @@ setupATLAS && lsetup git && lsetup "root 6.14.04-x86_64-slc6-gcc62-opt"
 release=`cat source/CxAODBootstrap_VHbb/bootstrap/release.txt` && echo "release=$release"
 asetup $release,AnalysisBase
 cd build
+rm -rf *
+cmake ../source
 make -j6
 source x86_64-slc6-gcc62-opt/setup.sh
 lsetup 'lcgenv -p LCG_91 x86_64-slc6-gcc62-opt numpy'
@@ -939,7 +949,9 @@ cd /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master/
 setupATLAS && lsetup git && lsetup "root 6.14.04-x86_64-slc6-gcc62-opt" 
 release=`cat source/CxAODBootstrap_VHbb/bootstrap/release.txt` && echo "release=$release"
 asetup $release,AnalysisBase
-cd build 
+cd build
+rm -rf *
+cmake ../source
 make -j6
 source x86_64-centos7-gcc62-opt/setup.sh
 lsetup 'lcgenv -p LCG_91 x86_64-centos7-gcc62-opt numpy'
