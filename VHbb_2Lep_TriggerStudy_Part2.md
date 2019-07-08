@@ -157,6 +157,18 @@ vim CxAODOperation_VHbb/CxAODReader_VHbb/Root/AnalysisReader_VHQQ2Lep.cxx
 > >   #include "CxAODTools_VHbb/TriggerTool_VHbb.h" (~L10)
 > CHANGE Function Call
 > >    bool triggerDec = ((TriggerTool_VHbb[X]Lep *)m_triggerTool) -> bool triggerDec = ((TriggerTool_VHbb *)m_triggerTool)
+> For 2L change variable names 
+> >   if (m_METTriggerin2L || m_METMuonTriggerin2L) -> (m_METTriggerin2L || m_METMuonTriggerin2L)
+
+
+## 9) Change names of  in AnalysisReader_VHQQ.cxx and AnalysisReader_VHQQ.h
+~~~
+vim CxAODOperation_VHbb/CxAODReader_VHbb/Root/AnalysisReader_VHQQ.cxx
+vim CxAODOperation_VHbb/CxAODReader_VHbb/Root/AnalysisReader_VHQQ.h
+~~~
+> CHANGE New dependencies (L49/50 || ~L522/523)
+> >  m_applyMETTriggerto2L -> m_METTriggerin2L(false),
+> >  m_METMuonTriggerCombin2L -> m_doMETMuonTrigger(false),
 
 When you think you have finished then you can refresh your local changes and re-build. Make sure that you go into each directory in /source/ and do git pull to make sure that each sub-repository is up to date. 
 ~~~
