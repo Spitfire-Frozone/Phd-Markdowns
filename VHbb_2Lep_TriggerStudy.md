@@ -1,7 +1,7 @@
 # This is aimed at the main analysis of my PhD: Associated Production of Higgs with a Vector boson (most likely Z) where the Higgs decays to a pair of bottom quarks. This document is about the testing new trigger regimes for the 2 Lepton Analysis for VHbb. #
 
 ## VHbb 2 Lepton Trigger Study ##
-===============================================================================
+
 Last Edited: 08-07-2019
 -------------------------------------------------------------------------------
 
