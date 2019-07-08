@@ -171,6 +171,7 @@ vim CxAODOperation_VHbb/CxAODReader_VHbb/Root/AnalysisReader_VHQQ.h
 > >  m_applyMETTriggerto2L -> m_METTriggerin2L(false),
 > >  m_METMuonTriggerCombin2L -> m_doMETMuonTrigger(false),
 
+# Testing
 When you think you have finished then you can refresh your local changes and re-build. Make sure that you go into each directory in /source/ and do git pull to make sure that each sub-repository is up to date. 
 ~~~
 cd /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master/
@@ -204,7 +205,7 @@ lsetup 'lcgenv -p LCG_91 x86_64-centos7-gcc62-opt numpy'
 cd ../run
 
 ../source/CxAODOperations_VHbb/scripts/submitReader.sh /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/VH/CxAOD_r32-15 SignalBoosted_oldTrigger_TEST 2L a VHbb CUT D1 32-15 2lsignal none 1
-~~~
+
 vim CxAODOperation_VHbb/scripts/submitReader.sh
 ~~~
 > CHANGE 
