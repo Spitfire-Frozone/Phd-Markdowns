@@ -15,7 +15,7 @@ source getMaster.sh origin/master CxAODFramework_master 1 1
 ~~~
 
 # Editing MET Trigger code to also work with 1L
-There are 8 steps
+There are 9 steps
 1) Update Variables in submitReader
 2) Proliferate new Variables to config files
 3) Move TriggerTool_VHbb2Lep.cxx code to TriggerTool_VHbb.cxx
@@ -24,6 +24,7 @@ There are 8 steps
 6) Declare MET Trigger code and config variables in TriggerTool.h
 7) Remove MET Trigger code, variables and declalarations from TriggerTool_VHbb1lep.cxx, TriggerTool_VHbb1lep.h, TriggerTool_VHbb2lep.cxx and TriggerTool_VHbb2lep.h,   
 8) Change function calls and add includes in AnalysisReader_VHQQ2Lep.cxx and 1L equivalent
+9) Change names of variables in AnalysisReader_VHQQ.cxx and AnalysisReader_VHQQ.h
 ~~~
 cd /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master/source
 ~~~
@@ -161,7 +162,7 @@ vim CxAODOperation_VHbb/CxAODReader_VHbb/Root/AnalysisReader_VHQQ2Lep.cxx
 > >   if (m_METTriggerin2L || m_METMuonTriggerin2L) -> (m_METTriggerin2L || m_METMuonTriggerin2L)
 
 
-## 9) Change names of  in AnalysisReader_VHQQ.cxx and AnalysisReader_VHQQ.h
+## 9) Change names of variables in AnalysisReader_VHQQ.cxx and AnalysisReader_VHQQ.h
 ~~~
 vim CxAODOperation_VHbb/CxAODReader_VHbb/Root/AnalysisReader_VHQQ.cxx
 vim CxAODOperation_VHbb/CxAODReader_VHbb/Root/AnalysisReader_VHQQ.h
@@ -181,4 +182,36 @@ cmake ../source
 make -j10
 source x86_64-centos7-gcc62-opt/setup.sh
 lsetup 'lcgenv -p LCG_91 x86_64-centos7-gcc62-opt numpy'
+cd ..
+~~~
+Now we need to run the same plots as before to test the code can reproduce the old plots. For the Boosted Analysis: Ensuring first that 
+~~~
+vim CxAODOperation_VHbb/scripts/submitReader.sh
+~~~
+> CHANGE 
+> >   ANASTRATEGY="Merged" (L235) 
+> >   DO2LMETTRIGGER="false" (L266)
+> >   DO2LMETANDMUONTRIGGER="false" (L267)
+~~~
+cd /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master/
+setupATLAS && lsetup git && lsetup "root 6.14.04-x86_64-slc6-gcc62-opt" 
+release=`cat source/CxAODBootstrap_VHbb/bootstrap/release.txt` && echo "release=$release"
+asetup $release,AnalysisBase
+cd build
+make -j10
+source x86_64-centos7-gcc62-opt/setup.sh
+lsetup 'lcgenv -p LCG_91 x86_64-centos7-gcc62-opt numpy'
+cd ../run
+
+../source/CxAODOperations_VHbb/scripts/submitReader.sh /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/VH/CxAOD_r32-15 SignalBoosted_oldTrigger_TEST 2L a VHbb CUT D1 32-15 2lsignal none 1
+~~~
+vim CxAODOperation_VHbb/scripts/submitReader.sh
+~~~
+> CHANGE 
+> >   DO2LMETTRIGGER="true" (L266)
+~~~
+cd run/
+../source/CxAODOperations_VHbb/scripts/submitReader.sh /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/VH/CxAOD_r32-15 SignalBoosted_newTrigger_TEST 2L a VHbb CUT D1 32-15 2lsignal none 1
+
+root -b -l -q '../TriggerStudyPlots.cxx("/afs/cern.ch/work/d/dspiteri/VHbb/", "CxAODFramework_master/","SignalBoosted","old","newest","SIGNAL.root","2L","32-15","ade","CUT", "D1","SR")'
 ~~~
