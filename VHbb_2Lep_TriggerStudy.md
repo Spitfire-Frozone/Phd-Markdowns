@@ -2,7 +2,7 @@
 
 ## VHbb 2 Lepton Trigger Study ##
 ===============================================================================
-Last Edited: 02-07-2019
+Last Edited: 08-07-2019
 -------------------------------------------------------------------------------
 
 # Setup Script
@@ -859,7 +859,7 @@ cd ../run
 
 ~~~
 For the Boosted Analysis:
-Ensuring first that Ensuring first that ANASTRATEGY="Merged"
+Ensuring first that ANASTRATEGY="Merged"
 METIN2L="false" in submitReader.sh
 DO2LMETTRIGGER="false" || DO2LMETANDMUONTRIGGER="false" 
 ~~~
