@@ -77,7 +77,26 @@ vim CxAODOperation_VHbb/CxAODTools_VHbb/Root/TriggerTool_VHbb.cxx
 vim CxAODOperation_VHbb/CxAODTools_VHbb/Root/TriggerTool_VHbb1Lep.cxx
 vim CxAODOperation_VHbb/CxAODTools_VHbb/Root/TriggerTool_VHbb2Lep.cxx
 ~~~
-> CUT all of lines of config declarations relating to m_doMETMuonTrigger, m_METTriggerin2L, m_do_1L_MuonTrigger and m_pT(W/Z)cutVal from TriggerTool_VHbb1lep::TriggerTool_VHbb1lep and TriggerTool_VHbb2lep::TriggerTool_VHbb2lep to TriggerTool_VHbb::TriggerTool_VHbb
+> CUT all of lines of config declarations relating to m_doMETMuonTrigger, m_METTriggerin2L, m_do_1L_MuonTrigger and m_pT(W/Z)cutVal from TriggerTool_VHbb1lep::TriggerTool_VHbb1lep and TriggerTool_VHbb2lep::TriggerTool_VHbb2lep to TriggerTool_VHbb::TriggerTool_VHbb (L6)
+>   >  
+>   >    TriggerTool_VHbb::TriggerTool_VHbb(ConfigStore& config) 
+>   >      :TriggerTool(config),
+>   >    
+>   >        m_do_1L_MuonTrigger(false),
+>   >        m_METTriggerin2L(false),
+>   >        m_doMETMuonTrigger(false),
+>   >        m_analysisType("2lep"),
+>   >        m_pTWcutVal(150e3),
+>   >        m_pTZcutVal(150e3)
+>   >    {	
+>   >      m_config.getif<bool>("doMETMuonTrigger", m_doMETMuonTrigger); 
+>   >      m_config.getif<bool>("do_1L_MuonTrigger", m_do_1L_MuonTrigger);
+>   >      m_config.getif<bool>("METTriggerin2L", m_METTriggerin2L);
+>   >      m_config.getif<std::string>("analysisType", m_analysisType);
+>   >      m_config.getif<double>("Trig::pTWcutVal", m_pTWcutVal);
+>   >      m_config.getif<double>("Trig::pTZcutVal", m_pTZcutVal);
+>   >    
+>   >    }
 
 ## 5) Change 2L MET trigger code to work with 1L instances of the function as well.
 Here analysis-dependent decisions need to be made as ptV is made up of different objects depending on the analysis. Declare all objects but only fill them depending on analysis type.
@@ -224,13 +243,18 @@ cd ../run
 
 ../source/CxAODOperations_VHbb/scripts/submitReader.sh /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/VH/CxAOD_r32-15 SignalBoosted_oldTrigger_TEST 2L a VHbb CUT D1 32-15 2lsignal none 1
 
-vim CxAODOperation_VHbb/scripts/submitReader.sh
+vim ../source/CxAODOperations_VHbb/scripts/submitReader.sh
 ~~~
 > CHANGE 
 >  >    DO2LMETTRIGGER="true" (L266)
 ~~~
 cd run/
-../source/CxAODOperations_VHbb/scripts/submitReader.sh /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/VH/CxAOD_r32-15 SignalBoosted_newTrigger_TEST 2L a VHbb CUT D1 32-15 2lsignal none 1
+../source/CxAODOperations_VHbb/scripts/submitReader.sh /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/VH/CxAOD_r32-15 SignalBoosted_newestTrigger_TEST 2L a VHbb CUT D1 32-15 2lsignal none 1
 
 root -b -l -q '../TriggerStudyPlots.cxx("/afs/cern.ch/work/d/dspiteri/VHbb/", "CxAODFramework_master/","SignalBoosted","old","newest","SIGNAL.root","2L","32-15","ade","CUT", "D1","SR")'
+~~~
+Next one should check that all the inputs were fine.
+~~~
+cd run/SignalBoosted_oldTrigger_TEST
+python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master/source/CxAODOperations_VHbb/scripts/checkReaderFails.py Reader_2L_32-15_a_CUT_D1
 ~~~
