@@ -34,19 +34,20 @@ I won't go into as much detail as I have before for the sake of brevity, but I w
 vim CxAODOperation_VHbb/scripts/submitReader.sh
 ~~~
 > CHANGE variable names (~L266, L407, L1076)
-> >   
-> >   METANDMUONTRIGGERCOMBin2L -> DOMETANDMUONTRIGGER
+>   >   
+>   >   METANDMUONTRIGGERCOMBin2L -> DOMETANDMUONTRIGGER
 
 ## 2) Proliferate new Variables to config files
 ~~~
 vim CxAODOperation_VHbb/CxAODReader_VHbb/data/framework-read-automatic.cfg
 ~~~
 > MOVE MET and muon trigger flag to general part of code (~L60 from ~L104)
-> >   
-> >   bool doMETMuonTrigger               = DOMETANDMUONTRIGGER # if true, it merges allows running of the MET and Muon triggers simultaneously in a logical 'or'
+>   >   
+>   >   bool doMETMuonTrigger               = DOMETANDMUONTRIGGER # if true, it merges allows running of the MET and Muon triggers simultaneously in a logical 'or'
+
 > CHANGE name of 2L MET trigger application flag in # 2 LEPTON SPECIFIC SWITCHES part of the code (~L103)
-> >   
-> >   applyMETTriggerto2L -> METTriggerin2L
+>   >   
+>   >   applyMETTriggerto2L -> METTriggerin2L
 
 Repeat the same steps with the next configuration file, but instead initialising  all the variables from the submitReader. Initialise them to 'false'
 ~~~
@@ -62,12 +63,12 @@ vim CxAODOperation_VHbb/CxAODTools_VHbb/Root/TriggerTool_VHbb.cxx
 vim CxAODOperation_VHbb/CxAODTools_VHbb/Root/TriggerTool_VHbb2Lep.cxx
 ~~~
 > CHANGE all instances of config member variables to new names (~L6,L7,L9,L10,L27...)
-> >   
-> >    m_applyMETTriggerto2L -> m_METTriggerin2L
-> >    m_METandMuonTriggerCombin2L -> m_doMETMuonTrigger
+>   >   
+>   >    m_applyMETTriggerto2L -> m_METTriggerin2L
+>   >    m_METandMuonTriggerCombin2L -> m_doMETMuonTrigger
 > CHANGE conditional initialisation of the trigger
-> >   
-> >    if (m_METTriggerin2L) -> if (m_METTriggerin2L || m_doMETMuonTrigger)
+>   >   
+>   >    if (m_METTriggerin2L) -> if (m_METTriggerin2L || m_doMETMuonTrigger)
 > CUT all of ""bool TriggerTool_VHbb::getDecisionAndSFwithMET(double& triggerSF)"" from TriggerTool_VHbb2Lep.cxx to TriggerTool_VHbb.cxx
 
 ## 4) Add necessary config variables from TriggerTool_VHbb1Lep.cxx and TriggerTool_VHbb2Lep.cxx to TriggerTool_VHbb.cxx
@@ -84,49 +85,53 @@ Here analysis-dependent decisions need to be made as ptV is made up of different
 vim CxAODOperation_VHbb/CxAODTools_VHbb/CxAODTools_VHbb/TriggerTool_VHbb.cxx
 ~~~
 > ADD initialasion of m_analysisType
-> >   
-> >   m_analysisType("2lep") (~L13) 
+>   >   
+>   >   m_analysisType("2lep") (~L13) 
+
 > ADD boolean to store the decision to not use the MET trigger
-> >   
-> >   bool notUsingMETTrigger; (~L45)
+>   >   
+>   >   bool notUsingMETTrigger; (~L45)
+
 > CHANGE declaration of variables and calculation of ptV to something like (~L47) 
-> >   
->	>	    const xAOD::Muon* muon1 = m_muons.at(0);
->	>	    const xAOD::Muon* muon2; //Declaration of muon here just in case 2L analysis calls this. Will just exist for the 1L one and not do anything. 
->	>	    TLorentzVector pTVVec, muVec1;
->	>	    muVec1.SetPtEtaPhiM(muon1->pt(), 0, muon1->phi(), 0);
->	>	    
->	>	    if (m_analysisType == "1lep"){ //Constructs PtV from met and the muon
->	>	        TLorentzVector metVec;
->	>	    	  metVec.SetPtEtaPhiM(m_met->met(), 0, m_met->phi(), 0); //There will be actual met in the event
->	>	    	  pTVVec = muVec1 + metVec; // WVecT
->	>	    	  if (pTVVec.Pt() < m_pTWcutVal || m_do_1L_MuonTrigger) {notUsingMETTrigger = true}
->	>	  
->	>	    } else if (m_analysisType == "2lep"){ //Constructs PtV from the two muons
->	>	    	  TLorentzVector muVec2;
->	>	    	  muon2 = m_muons.at(1);
->	>	    	  muVec2.SetPtEtaPhiM(muon2->pt(), 0, muon2->phi(), 0);
->	>	    	  pTVVec = muVec1 + muVec2; //ZVecT
->	>	    	  if (pTVVec.Pt() < m_pTZcutVal) {notUsingMETTrigger = true}
->	>	  
->	>	    } else { //Add instance to catch accidental calls from 0L analysis
->	>	    	Error("TriggerTool_VHbb::getDecisionAndSFwithMET()",
->	>	              "Currenlty this method cannot work with the 0L analysis");
->	>	      exit(1);
->	>	    } 
+>  >   
+>	 >	    const xAOD::Muon* muon1 = m_muons.at(0);
+>  >	    const xAOD::Muon* muon2; //Declaration of muon here just in case 2L analysis calls this. Will just exist for the 1L one and not do anything. 
+>	 >	    TLorentzVector pTVVec, muVec1;
+>	 >	    muVec1.SetPtEtaPhiM(muon1->pt(), 0, muon1->phi(), 0);
+>	 >	    
+>	 >	    if (m_analysisType == "1lep"){ //Constructs PtV from met and the muon
+>	 >	        TLorentzVector metVec;
+>	 >	    	  metVec.SetPtEtaPhiM(m_met->met(), 0, m_met->phi(), 0); //There will be actual met in the event
+>	 >	    	  pTVVec = muVec1 + metVec; // WVecT
+>	 >	    	  if (pTVVec.Pt() < m_pTWcutVal || m_do_1L_MuonTrigger) {notUsingMETTrigger = true}
+>	 >	  
+>  >	    } else if (m_analysisType == "2lep"){ //Constructs PtV from the two muons
+>	 >	    	  TLorentzVector muVec2;
+>	 >	    	  muon2 = m_muons.at(1);
+>  >	    	  muVec2.SetPtEtaPhiM(muon2->pt(), 0, muon2->phi(), 0);
+>	 >	    	  pTVVec = muVec1 + muVec2; //ZVecT
+>	 >	    	  if (pTVVec.Pt() < m_pTZcutVal) {notUsingMETTrigger = true}
+>	 >	  
+>  >	    } else { //Add instance to catch accidental calls from 0L analysis
+>	 >	    	Error("TriggerTool_VHbb::getDecisionAndSFwithMET()",
+>	 >	              "Currenlty this method cannot work with the 0L analysis");
+>	 >	      exit(1);
+>	 >	    } 
+
 > ADD analysis-chanel dependence of MET proxy filling (~L92)
-> >   
-> >   double METx , METy;
->	>	  if (m_analysisType == "1lep"){
->	>	  	  METx = pTVVec.Px();
->	>	  	  METy = pTVVec.Py();
->	>   } else if (m_analysisType == "2lep"){
->	>       METx = pTVVec.Px() + met->mpx();
->	>	   	  METy = pTVVec.Py() + met->mpy();
->	>	  }
+>   >   
+>   >   double METx , METy;
+>	  >	  if (m_analysisType == "1lep"){
+>	  >	  	  METx = pTVVec.Px();
+>	  >	  	  METy = pTVVec.Py();
+>	  >   } else if (m_analysisType == "2lep"){
+>	  >       METx = pTVVec.Px() + met->mpx();
+>	  >	   	  METy = pTVVec.Py() + met->mpy();
+>	  >	  }
+
 > CHANGE selective setting of event variables(~L104-L112)
-> >   if(useMETAndMuonAtHighPtV)   setMuons({muon1, muon2}); ->   if(useMETAndMuonAtHighPtV && m_analysisType == "1lep")   setMuons({muon1});
-> >   else if(useMETAndMuonAtHighPtV && m_analysisType == "2lep")   setMuons({muon1, muon2});
+>   >   if(useMETAndMuonAtHighPtV)   setMuons({muon1, muon2}); ->   if(useMETAndMuonAtHighPtV && m_analysisType == "1lep")   setMuons({muon1});
+>   >   else if(useMETAndMuonAtHighPtV && m_analysisType == "2lep")   setMuons({muon1, muon2});
 
 ## 6) Declare MET Trigger code and config variables in TriggerTool.h
 ~~~
@@ -166,6 +171,7 @@ vim CxAODOperation_VHbb/CxAODReader_VHbb/Root/AnalysisReader_VHQQ2Lep.cxx
 > ADD New dependencies
 > >   
 > >   #include "CxAODTools_VHbb/TriggerTool_VHbb.h" (~L10)
+
 > CHANGE Function Call
 > >    bool triggerDec = ((TriggerTool_VHbb[X]Lep *)m_triggerTool) -> bool triggerDec = ((TriggerTool_VHbb *)m_triggerTool)
 > For 2L change variable names 
@@ -177,10 +183,10 @@ vim CxAODOperation_VHbb/CxAODReader_VHbb/Root/AnalysisReader_VHQQ2Lep.cxx
 vim CxAODOperation_VHbb/CxAODReader_VHbb/Root/AnalysisReader_VHQQ.cxx
 vim CxAODOperation_VHbb/CxAODReader_VHbb/Root/AnalysisReader_VHQQ.h
 ~~~
-> CHANGE New dependencies (L49/50 || ~L522/523)
-> >   
-> >  m_applyMETTriggerto2L -> m_METTriggerin2L(false),
-> >  m_METMuonTriggerCombin2L -> m_doMETMuonTrigger(false),
+> CHANGE new dependencies (L49/50 || ~L522/523)
+>  >   
+>  >     m_applyMETTriggerto2L -> m_METTriggerin2L(false),
+>  >     m_METMuonTriggerCombin2L -> m_doMETMuonTrigger(false),
 
 # Testing
 When you think you have finished then you can refresh your local changes and re-build. Make sure that you go into each directory in /source/ and do git pull to make sure that each sub-repository is up to date. 
@@ -201,10 +207,10 @@ Now we need to run the same plots as before to test the code can reproduce the o
 vim CxAODOperation_VHbb/scripts/submitReader.sh
 ~~~
 > CHANGE config variables
-> >   
-> >   ANASTRATEGY="Merged" (L235) 
-> >   DO2LMETTRIGGER="false" (L266)
-> >   DO2LMETANDMUONTRIGGER="false" (L267)
+>  >   
+>  >     ANASTRATEGY="Merged" (L235) 
+>  >     DO2LMETTRIGGER="false" (L266)
+>  >     DO2LMETANDMUONTRIGGER="false" (L267)
 ~~~
 cd /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master/
 setupATLAS && lsetup git && lsetup "root 6.14.04-x86_64-slc6-gcc62-opt" 
@@ -221,7 +227,7 @@ cd ../run
 vim CxAODOperation_VHbb/scripts/submitReader.sh
 ~~~
 > CHANGE 
-> >   DO2LMETTRIGGER="true" (L266)
+>  >    DO2LMETTRIGGER="true" (L266)
 ~~~
 cd run/
 ../source/CxAODOperations_VHbb/scripts/submitReader.sh /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/VH/CxAOD_r32-15 SignalBoosted_newTrigger_TEST 2L a VHbb CUT D1 32-15 2lsignal none 1
