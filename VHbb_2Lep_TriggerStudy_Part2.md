@@ -2,15 +2,15 @@
 
 ## VHbb 2 Lepton Trigger Study Part 2 ##
 
-Last Edited: 09-07-2019
+Last Edited: 10-07-2019
 -------------------------------------------------------------------------------
 
 # Setup Script
-Search https://gitlab.cern.ch/CxAODFramework/FrameworkSub to see what the latest released version is.
 ~~~
 cd /afs/cern.ch/work/d/dspiteri/VHbb
 setupATLAS && lsetup git
-source getMaster.sh origin/master CxAODFramework_master 1 1
+cp /afs/cern.ch/user/v/vhbbframework/public/CxAODBootstrap_VHbb/scripts/getMaster.sh .
+source getMaster.sh origin/master CxAODFramework_master_july2019 1 1
 > source getMaster.sh r31-10 CxAODFramework_tag_r31-10 1 1 [for a tag]
 ~~~
 
@@ -208,7 +208,7 @@ vim CxAODOperation_VHbb/CxAODReader_VHbb/Root/AnalysisReader_VHQQ.h
 >  >     m_METMuonTriggerCombin2L -> m_doMETMuonTrigger(false),
 
 # Testing
-When you think you have finished then you can refresh your local changes and re-build. Make sure that you go into each directory in /source/ and do git pull to make sure that each sub-repository is up to date. 
+When you think you have finished then you can refresh your local changes and re-build. Make sure that you go into each directory in /source/ and do git pull to make sure that each sub-repository is up to date.
 ~~~
 cd /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master/
 setupATLAS && lsetup git && lsetup "root 6.14.04-x86_64-slc6-gcc62-opt" 
