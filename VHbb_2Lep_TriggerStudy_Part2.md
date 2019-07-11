@@ -210,7 +210,7 @@ vim CxAODOperation_VHbb/CxAODReader_VHbb/Root/AnalysisReader_VHQQ.h
 # Testing
 When you think you have finished then you can refresh your local changes and re-build. Make sure that you go into each directory in /source/ and do git pull to make sure that each sub-repository is up to date.
 ~~~
-cd /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master/
+cd /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_july2019/
 setupATLAS && lsetup git && lsetup "root 6.14.04-x86_64-slc6-gcc62-opt" 
 release=`cat source/CxAODBootstrap_VHbb/bootstrap/release.txt` && echo "release=$release"
 asetup $release,AnalysisBase
@@ -231,7 +231,7 @@ vim CxAODOperation_VHbb/scripts/submitReader.sh
 >  >     DO2LMETTRIGGER="false" (L266)
 >  >     DO2LMETANDMUONTRIGGER="false" (L267)
 ~~~
-cd /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master/
+cd /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_july2019/
 setupATLAS && lsetup git && lsetup "root 6.14.04-x86_64-slc6-gcc62-opt" 
 release=`cat source/CxAODBootstrap_VHbb/bootstrap/release.txt` && echo "release=$release"
 asetup $release,AnalysisBase
