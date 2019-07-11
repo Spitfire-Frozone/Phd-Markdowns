@@ -105,9 +105,14 @@ To find out what parent branch to choose go pack to the main project page (https
 >   git branch : with no arguments lists the branches available and the one you are on with an asterisk.
 >   git branch -d branch_name : removes a local branch. Bear in mind you can't delete a branch you are currently on
 
-You can also target an already existing branch to store your changes
+You can also target an already existing branch to store your changes. This option creates a new branch. 
 ~~~
 git checkout -b [local_name] [origin-OR-upstream/originorupstreamnameofbranch]
+~~~
+Though sometimes you will want to add changes and NOT create a new branch, but commit to the same branch. Fot this you will want to track the branch upstream. 
+~~~
+git fetch origin
+git checkout --track origin/<remote_branch_name>
 ~~~
 
 Explicitly set up the Development release for release 21 (21.0 branch).
