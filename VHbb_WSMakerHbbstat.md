@@ -2,7 +2,7 @@
 
 ## "VHbb WSMaker and Hbb Stat" ##
 ===============================================================================
-## Last Edited: 15-06-2019
+## Last Edited: 15-07-2019
 
 Once a basic familiarity with WSMaker has been established, (see VHbb_2Lep_Reader_Inputs.md ) a task, which gets more and more priority is to test reducing the number of bins in the inputs.
 
@@ -256,8 +256,8 @@ vim scripts/launch_default_jobs.py
 > CHANGE Variables to run the baseline FullRun2 (~L13)
 >  >     version = "v01"
 
->   >     channels = ["0"]
->   >     MCTypes = ["mc16ad"]
+>  >     channels = ["0"]
+>  >     MCTypes = ["mc16ad"]
 ~~~
 
 vim src/systematiclistsbuilder_vhbbrun2.cpp
@@ -404,6 +404,73 @@ imgcat *ttbar_SysTTbarMBB*
 ~~~
 Making sure to repeat the above steps for the following variable strings Zhf_SysZMbb, ttbar_SysTTbarPTV, Zhf_SysZPtV
 
+## Testing input sample completeness
+If there are inconsistencies with you rimputs when you compare them in different regions, the first thing to test is that all the samples are present and fully correct. Since the inputs are generated centrally, if there is a problem with them they will nee dot be regenerated. Luckily LUca Ambroz has some code that will check just that.  
+~~~
+cd /afs/cern.ch/work/d/dspiteri/VHbb/
+setupATLAS && lsetup git && lsetup "root 6.14.04-x86_64-slc6-gcc62-opt"
+git clone ssh://git@gitlab.cern.ch:7999/luambroz/analysis_plotting_macro.git
+vim analysis_plotting_macro/check_signal_0L_a_d_e.py
+~~~
+> CHANGE the names of the target files (L119)
+>   >     ROOT.TFile("../hist_a.root") -> ROOT.TFile("/eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/FullRunII2019/statArea/inputs/ZeroLep/v5/InputVar/LimitHistograms.VHbb.0Lep.13TeV.mc16a.Oxford.r32-15varInputs.root")
+>   >     ROOT.TFile("../hist_d.root") -> ROOT.TFile("/eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/FullRunII2019/statArea/inputs/ZeroLep/v5/InputVar/LimitHistograms.VHbb.0Lep.13TeV.mc16d.Oxford.r32-15varInputs.root")  
+>   >     ROOT.TFile("../hist_e.root") -> ROOT.TFile("/eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/FullRunII2019/statArea/inputs/ZeroLep/v5/InputVar/LimitHistograms.VHbb.0Lep.13TeV.mc16e.Oxford.r32-15varInputs.root")
+
+> COMMENT OUT the names of the target ICHEP files
+>   >       fileICHEP_a = ROOT.TFile("/home/ambroz/VHbb/CxAODICHEP_Tag/CxAODFramework_tag_r31-16_1/run/hist_a.root") (L122)
+>   >       fileICHEP_d = ROOT.TFile("/home/ambroz/VHbb/CxAODICHEP_Tag/CxAODFramework_tag_r31-16_1/run/hist_d.root") (L123)
+>   >       hICHEP_a = fileICHEP_a.Get(full_name) (L132)
+>   >       hICHEP_d = fileICHEP_d.Get(full_name) (L133)
+>   >       integralICHEP_a = hICHEP_a.Integral(0,-1) (L139)
+>   >       integralICHEP_d = hICHEP_d.Integral(0,-1) (L140)
+>   >       hICHEP_a.Scale(1./hICHEP_a.Integral(0,-1)) (L158)
+>   >       hICHEP_a.Scale(1./hICHEP_a.Integral(0,-1)) (L159)
+>   >       hICHEP_a = remapBDTHisto(hICHEP_a, BDT_bins[jet]) (L170)
+>   >       hICHEP_a = remapBDTHisto(hICHEP_a, BDT_bins[jet]) (L171)
+>   >       
+>   >       resultsICHEP_a = rebinHisto(hICHEP_a, bins_a, x_min, x_max, True) (L210 - L215)
+>   >       hICHEP_a = resultsICHEP_a[0]
+>   >       binsICHEP_a = resultsICHEP_a[1]
+>   >       resultsICHEP_d = rebinHisto(hICHEP_d, bins_a, x_min, x_max, True)
+>   >       hICHEP_d = resultsICHEP_d[0]
+>   >       binsICHEP_d = resultsICHEP_d[1]
+>   >       
+>   >       hICHEP_a.SetLineWidth(2) (L221)
+>   >       hICHEP_d.SetLineWidth(2) (L221)
+>   >       hICHEP_a.SetLineColor(kOrange-3) (L227)
+>   >       hICHEP_d.SetLineColor(kAzure+9) (L228)
+>   >       if integralICHEP_a/integral_a  - 1 > 0: (L250 - L257)
+>   >          leg.AddEntry(hICHEP_a, "mc16a ICHEP (+" + str(round(integralICHEP_a/integral_a - 1,3)*100) + "% mc16a)", "lp")
+>   >       else:
+>   >          leg.AddEntry(hICHEP_a, "mc16a ICHEP (" + str(round(integralICHEP_a/integral_a - 1,3)*100) + "% mc16a)", "lp")
+>   >       if integralICHEP_d/integral_a  - 1 > 0:
+>   >          leg.AddEntry(hICHEP_d, "mc16d ICHEP (+" + str(round(integralICHEP_d/integral_a - 1,3)*100) + "% mc16a)", "lp")
+>   >       else:
+>   >          leg.AddEntry(hICHEP_d, "mc16d ICHEP (" + str(round(integralICHEP_d/integral_a - 1,3)*100) + "% mc16a)", "lp")
+
+>   >       hICHEP_a.Draw("SAME") (L284)
+>   >       hICHEP_d.Draw("SAME") (L285)
+
+>   >       ratioICHEP_a = hICHEP_a.Clone("ratio") (L305 - L311)
+>   >       ratioICHEP_a.Divide(h_a)
+>   >       ratioICHEP_a.Draw("HIST SAME")
+>   >       ratioICHEP_d = hICHEP_d.Clone("ratio")
+>   >       ratioICHEP_d.Divide(h_a)
+>   >       ratioICHEP_d.Draw("HIST SAME")
+
+>   >       del hICHEP_a (L332)
+>   >       del hICHEP_d (L333)
+>   >       del ratioICHEP_a (L336)
+>   >       del ratioICHEP_d (L337)
+>   >       fileICHEP_a.Close() (L342)
+>   >       fileICHEP_d.Close() (L343)
+      
+> CHANGE variables so it runs on a single CPU (L364)
+>   >     p = Pool(8) -> p = Pool(1)
+~~~
+python analysis_plotting_macro/check_signal_0L_a_d_e.py 
+~~~
 
 ## Looking at input variables
 It would also be good to look at the distribution of input variables that go into the BDT, but as a default only the BDT plots are output. Firstly one needs to add the kinematic variables you want to the related inputConfig file and Split the histograms.
