@@ -468,6 +468,20 @@ vim analysis_plotting_macro/check_signal_0L_a_d_e.py
       
 > CHANGE variables so it runs on a single CPU (L364)
 >   >     p = Pool(8) -> p = Pool(1)
+
+> COMMENT OUT variables core running variables (L365)
+>   >     p.map(plotSample, sample_names)
+
+> COMMENT OUT variables core running variables (L365)
+>   >     p.map(plotSample, sample_names)
+
+> ADD looping of sample in main function (L367)
+>   >     for background_or_signal in sample_names :
+>   >        if background_or_signal == " ": #You can insert things you don't want to run over in here.
+>   >          continue
+>   >        else :
+>   >          plotSample(background_or_signal)
+
 ~~~
 python analysis_plotting_macro/check_signal_0L_a_d_e.py 
 ~~~
@@ -492,7 +506,7 @@ vim SMVHVZ_2019_MVA_mc16ade_v01.txt
 ~~~
 > CHANGE all instances of mva,mvadiboson with the relevant set of kinematic variables
 > CHANGE Absolute path files
->   >     ZeroLep/v5/InputVar/LimitHistograms.VHbb.0Lep.13TeV.mc16ade.Oxford.r32-15varInputs.root
+>   >      ZeroLep/v5/InputVar/LimitHistograms.VHbb.0Lep.13TeV.mc16ade.Oxford.r32-15varInputs.root
 >   >      TwoLep/r32-15_allMVAVariables/LimitHistograms.VHbb.2Lep.13TeV.mc16ade.IOWAUSTC.r32-15_AllMVAVariables.root
 > Call it SMVHVZ_2019_MVA_mc16ade_v01_Vars.txt
 ~~~
