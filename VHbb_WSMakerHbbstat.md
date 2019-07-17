@@ -308,7 +308,7 @@ lsetup git
 vim scripts/launch_default_jobs.py
 ~~~
 > CHANGE Variables to run the baseline FullRun2 (~L13)
->  >     version = "v01"
+>   >     version = "v01"
 
 >   >     channels = ["0"]
 >   >     MCTypes = ["mc16ade"]
@@ -412,67 +412,71 @@ setupATLAS && lsetup git && lsetup "root 6.14.04-x86_64-slc6-gcc62-opt"
 git clone ssh://git@gitlab.cern.ch:7999/luambroz/analysis_plotting_macro.git
 vim analysis_plotting_macro/check_signal_0L_a_d_e.py
 ~~~
-> CHANGE the names of the target files (L119)
->   >     ROOT.TFile("../hist_a.root") -> ROOT.TFile("/eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/FullRunII2019/statArea/inputs/ZeroLep/v5/InputVar/LimitHistograms.VHbb.0Lep.13TeV.mc16a.Oxford.r32-15varInputs.root")
->   >     ROOT.TFile("../hist_d.root") -> ROOT.TFile("/eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/FullRunII2019/statArea/inputs/ZeroLep/v5/InputVar/LimitHistograms.VHbb.0Lep.13TeV.mc16d.Oxford.r32-15varInputs.root")  
->   >     ROOT.TFile("../hist_e.root") -> ROOT.TFile("/eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/FullRunII2019/statArea/inputs/ZeroLep/v5/InputVar/LimitHistograms.VHbb.0Lep.13TeV.mc16e.Oxford.r32-15varInputs.root")
+> CHANGE the names of the variables names in the list and the target files (L118 - L121) but COMMENT OUT
+>   >     var_names = ["njets", "NFwdJets", "nCentralJetsNoBtag", "mva", "MET", "mBB", "dRBB", "pTB1", "pTB2", "ActualMu"] ->   var_names = ["Njets", "NFwdJets", "mva", "METSig", "mBBJ", "dRBB", "pTB1", "pTB2", "ActualMu"]
+>   >     file_a = ROOT.TFile("../hist_a.root") -> file_a = ROOT.TFile("/eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/FullRunII2019/statArea/inputs/ZeroLep/v5/InputVar/LimitHistograms.VHbb.0Lep.13TeV.mc16a.Oxford.r32-15varInputs.root")
+>   >     file_d = ROOT.TFile("../hist_d.root") -> file_d = ROOT.TFile("/eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/FullRunII2019/statArea/inputs/ZeroLep/v5/InputVar/LimitHistograms.VHbb.0Lep.13TeV.mc16d.Oxford.r32-15varInputs.root")  
+>   >     file_e = ROOT.TFile("../hist_e.root") -> file_e = ROOT.TFile("/eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/FullRunII2019/statArea/inputs/ZeroLep/v5/InputVar/LimitHistograms.VHbb.0Lep.13TeV.mc16e.Oxford.r32-15varInputs.root")
+
+> ADD the names of the variables names in the list and the target files for non-STXS samples (L123 - L126)
+>   >     var_names = ["mva", "mvadiboson", "mbbMVA"]
+>   >     file_a = ROOT.TFile("/eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/FullRunII2019/statArea/inputs/ZeroLep/v5/Non-STXS/LimitHistograms.VHbb.0Lep.13TeV.mc16a.Oxford.r32-15v5.root")
+>   >     file_d = ROOT.TFile("/eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/FullRunII2019/statArea/inputs/ZeroLep/v5/Non-STXS/LimitHistograms.VHbb.0Lep.13TeV.mc16d.Oxford.r32-15v5.root"
+>   >     file_e = ROOT.TFile("/eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/FullRunII2019/statArea/inputs/ZeroLep/v5/Non-STXS/LimitHistograms.VHbb.0Lep.13TeV.mc16e.Oxford.r32-15v5.root"
 
 > COMMENT OUT the names of the target ICHEP files
->   >       fileICHEP_a = ROOT.TFile("/home/ambroz/VHbb/CxAODICHEP_Tag/CxAODFramework_tag_r31-16_1/run/hist_a.root") (L122)
->   >       fileICHEP_d = ROOT.TFile("/home/ambroz/VHbb/CxAODICHEP_Tag/CxAODFramework_tag_r31-16_1/run/hist_d.root") (L123)
->   >       hICHEP_a = fileICHEP_a.Get(full_name) (L132)
->   >       hICHEP_d = fileICHEP_d.Get(full_name) (L133)
->   >       integralICHEP_a = hICHEP_a.Integral(0,-1) (L139)
->   >       integralICHEP_d = hICHEP_d.Integral(0,-1) (L140)
->   >       hICHEP_a.Scale(1./hICHEP_a.Integral(0,-1)) (L158)
->   >       hICHEP_a.Scale(1./hICHEP_a.Integral(0,-1)) (L159)
->   >       hICHEP_a = remapBDTHisto(hICHEP_a, BDT_bins[jet]) (L170)
->   >       hICHEP_a = remapBDTHisto(hICHEP_a, BDT_bins[jet]) (L171)
+>   >     fileICHEP_a = ROOT.TFile("/home/ambroz/VHbb/CxAODICHEP_Tag/CxAODFramework_tag_r31-16_1/run/hist_a.root") (~L128)
+>   >     fileICHEP_d = ROOT.TFile("/home/ambroz/VHbb/CxAODICHEP_Tag/CxAODFramework_tag_r31-16_1/run/hist_d.root") (~L129)
+>   >     hICHEP_a = fileICHEP_a.Get(full_name) (~L139)
+>   >     hICHEP_d = fileICHEP_d.Get(full_name) (~L140)
+>   >     integralICHEP_a = hICHEP_a.Integral(0,-1) (~L150)
+>   >     integralICHEP_d = hICHEP_d.Integral(0,-1) (~L151)
+>   >     hICHEP_a.Scale(1./hICHEP_a.Integral(0,-1)) (~L170)
+>   >     hICHEP_a.Scale(1./hICHEP_a.Integral(0,-1)) (~L171)
+>   >     hICHEP_a = remapBDTHisto(hICHEP_a, BDT_bins[jet]) (~L182)
+>   >     hICHEP_a = remapBDTHisto(hICHEP_a, BDT_bins[jet]) (~L183)
 >   >       
->   >       resultsICHEP_a = rebinHisto(hICHEP_a, bins_a, x_min, x_max, True) (L210 - L215)
->   >       hICHEP_a = resultsICHEP_a[0]
->   >       binsICHEP_a = resultsICHEP_a[1]
->   >       resultsICHEP_d = rebinHisto(hICHEP_d, bins_a, x_min, x_max, True)
->   >       hICHEP_d = resultsICHEP_d[0]
->   >       binsICHEP_d = resultsICHEP_d[1]
+>   >     resultsICHEP_a = rebinHisto(hICHEP_a, bins_a, x_min, x_max, True) (~L222 - L227)
+>   >     hICHEP_a = resultsICHEP_a[0]
+>   >     binsICHEP_a = resultsICHEP_a[1]
+>   >     resultsICHEP_d = rebinHisto(hICHEP_d, bins_a, x_min, x_max, True)
+>   >     hICHEP_d = resultsICHEP_d[0]
+>   >     binsICHEP_d = resultsICHEP_d[1]
 >   >       
->   >       hICHEP_a.SetLineWidth(2) (L221)
->   >       hICHEP_d.SetLineWidth(2) (L221)
->   >       hICHEP_a.SetLineColor(kOrange-3) (L227)
->   >       hICHEP_d.SetLineColor(kAzure+9) (L228)
->   >       if integralICHEP_a/integral_a  - 1 > 0: (L250 - L257)
->   >          leg.AddEntry(hICHEP_a, "mc16a ICHEP (+" + str(round(integralICHEP_a/integral_a - 1,3)*100) + "% mc16a)", "lp")
->   >       else:
->   >          leg.AddEntry(hICHEP_a, "mc16a ICHEP (" + str(round(integralICHEP_a/integral_a - 1,3)*100) + "% mc16a)", "lp")
->   >       if integralICHEP_d/integral_a  - 1 > 0:
->   >          leg.AddEntry(hICHEP_d, "mc16d ICHEP (+" + str(round(integralICHEP_d/integral_a - 1,3)*100) + "% mc16a)", "lp")
->   >       else:
->   >          leg.AddEntry(hICHEP_d, "mc16d ICHEP (" + str(round(integralICHEP_d/integral_a - 1,3)*100) + "% mc16a)", "lp")
+>   >     hICHEP_a.SetLineWidth(2) (~L233)
+>   >     hICHEP_d.SetLineWidth(2) (~L234)
+>   >     hICHEP_a.SetLineColor(kOrange-3) (~L239)
+>   >     hICHEP_d.SetLineColor(kAzure+9) (~L240)
+>   >     if integralICHEP_a/integral_a  - 1 > 0: (~L262 - L269)
+>   >        leg.AddEntry(hICHEP_a, "mc16a ICHEP (+" + str(round(integralICHEP_a/integral_a - 1,3)*100) + "% mc16a)", "lp")
+>   >     else:
+>   >        leg.AddEntry(hICHEP_a, "mc16a ICHEP (" + str(round(integralICHEP_a/integral_a - 1,3)*100) + "% mc16a)", "lp")
+>   >     if integralICHEP_d/integral_a  - 1 > 0:
+>   >        leg.AddEntry(hICHEP_d, "mc16d ICHEP (+" + str(round(integralICHEP_d/integral_a - 1,3)*100) + "% mc16a)", "lp")
+>   >     else:
+>   >        leg.AddEntry(hICHEP_d, "mc16d ICHEP (" + str(round(integralICHEP_d/integral_a - 1,3)*100) + "% mc16a)", "lp")
 
->   >       hICHEP_a.Draw("SAME") (L284)
->   >       hICHEP_d.Draw("SAME") (L285)
+>   >     hICHEP_a.Draw("SAME") (~L296)
+>   >     hICHEP_d.Draw("SAME") (~L297)
 
->   >       ratioICHEP_a = hICHEP_a.Clone("ratio") (L305 - L311)
->   >       ratioICHEP_a.Divide(h_a)
->   >       ratioICHEP_a.Draw("HIST SAME")
->   >       ratioICHEP_d = hICHEP_d.Clone("ratio")
->   >       ratioICHEP_d.Divide(h_a)
->   >       ratioICHEP_d.Draw("HIST SAME")
+>   >     ratioICHEP_a = hICHEP_a.Clone("ratio") (~L317 - L323)
+>   >     ratioICHEP_a.Divide(h_a)
+>   >     ratioICHEP_a.Draw("HIST SAME")
+>   >     ratioICHEP_d = hICHEP_d.Clone("ratio")
+>   >     ratioICHEP_d.Divide(h_a)
+>   >     ratioICHEP_d.Draw("HIST SAME")
 
->   >       del hICHEP_a (L332)
->   >       del hICHEP_d (L333)
->   >       del ratioICHEP_a (L336)
->   >       del ratioICHEP_d (L337)
->   >       fileICHEP_a.Close() (L342)
->   >       fileICHEP_d.Close() (L343)
+>   >     del hICHEP_a (~L344)
+>   >     del hICHEP_d (~L345)
+>   >     del ratioICHEP_a (~L348)
+>   >     del ratioICHEP_d (~L349)
+>   >     fileICHEP_a.Close() (~L354)
+>   >     fileICHEP_d.Close() (~L355)
       
-> CHANGE variables so it runs on a single CPU (L364)
+> CHANGE variables so it runs on a single CPU (~L376)
 >   >     p = Pool(8) -> p = Pool(1)
 
-> COMMENT OUT variables core running variables (L365)
->   >     p.map(plotSample, sample_names)
-
-> COMMENT OUT variables core running variables (L365)
+> COMMENT OUT variables core running variables (~L377)
 >   >     p.map(plotSample, sample_names)
 
 > ADD looping of sample in main function (L367)
@@ -482,6 +486,7 @@ vim analysis_plotting_macro/check_signal_0L_a_d_e.py
 >   >        else :
 >   >          plotSample(background_or_signal)
 
+Now you can save and run the macro by typing this
 ~~~
 python analysis_plotting_macro/check_signal_0L_a_d_e.py 
 ~~~
@@ -524,13 +529,13 @@ vim scripts/launch_default_jobs.py
 ~~~
 > CHANGE Variables to run the baseline FullRun2 (~L13)
 >  >     version = "v01_Vars"        (L13)
->   >     doPostFit = True           (L15)
+>  >     doPostFit = True           (L15)
 
->   >     channels = ["0"]           (L46)
->   >     MCTypes = ["mc16ade"]      (L48)
+>  >     channels = ["0"]           (L46)
+>  >     MCTypes = ["mc16ade"]      (L48)
 
->   >     runPulls = False           (L62)
->   >     runP0 = False              (L66)
+>  >     runPulls = False           (L62)
+>  >     runP0 = False              (L66)
 ~~~
 python scripts/launch_default_jobs.py 140ifb-0L-ade-Inputs
 ~~~
