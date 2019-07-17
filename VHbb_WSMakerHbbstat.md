@@ -419,7 +419,7 @@ vim analysis_plotting_macro/check_signal_0L_a_d_e.py
 >   >     file_e = ROOT.TFile("../hist_e.root") -> file_e = ROOT.TFile("/eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/FullRunII2019/statArea/inputs/ZeroLep/v5/InputVar/LimitHistograms.VHbb.0Lep.13TeV.mc16e.Oxford.r32-15varInputs.root")
 
 > ADD the names of the variables names in the list and the target files for non-STXS samples (L123 - L126)
->   >     var_names = ["mva", "mvadiboson", "mbbMVA"]
+>   >     var_names = ["mva", "mvadiboson", "mBBMVA"]
 >   >     file_a = ROOT.TFile("/eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/FullRunII2019/statArea/inputs/ZeroLep/v5/Non-STXS/LimitHistograms.VHbb.0Lep.13TeV.mc16a.Oxford.r32-15v5.root")
 >   >     file_d = ROOT.TFile("/eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/FullRunII2019/statArea/inputs/ZeroLep/v5/Non-STXS/LimitHistograms.VHbb.0Lep.13TeV.mc16d.Oxford.r32-15v5.root"
 >   >     file_e = ROOT.TFile("/eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/FullRunII2019/statArea/inputs/ZeroLep/v5/Non-STXS/LimitHistograms.VHbb.0Lep.13TeV.mc16e.Oxford.r32-15v5.root"
@@ -472,9 +472,15 @@ vim analysis_plotting_macro/check_signal_0L_a_d_e.py
 >   >     del ratioICHEP_d (~L349)
 >   >     fileICHEP_a.Close() (~L354)
 >   >     fileICHEP_d.Close() (~L355)
-      
-> CHANGE variables so it runs on a single CPU (~L376)
+
+> CHANGE output path so it runs on a single CPU (~L376)
 >   >     p = Pool(8) -> p = Pool(1)
+
+> CHANGE output directory for plot folders 
+>   >     if not os.path.exists(sample): -> if not os.path.exists("140ifbade/" + sample): (L336)
+>   >     os.makedirs(sample) -> os.makedirs("140ifbade/" + sample) (L337)
+>   >     c.SaveAs(sample + "/" + name + ".png") -> c.SaveAs("140ifbade/" + sample + "/" + name + ".png") (L338)
+>   >     c.SaveAs(sample + "/" + name + ".pdf") -> c.SaveAs("140ifbade/" + sample + "/" + name + ".pdf") (L339)
 
 > COMMENT OUT variables core running variables (~L377)
 >   >     p.map(plotSample, sample_names)
@@ -486,9 +492,16 @@ vim analysis_plotting_macro/check_signal_0L_a_d_e.py
 >   >        else :
 >   >          plotSample(background_or_signal)
 
-Now you can save and run the macro by typing this
+> ADD ptv split details
+>   >     ptvregs = ["250ptv","150_250ptv"] (L117)
+
+> ADD another nested layer in the loop for different ptv regions. Ensure everything afterwards is indented correctly.      
+>   >     for ptv in ptvregs: (L134)
+
+Now you can save (as a different file to not annoy Luca and such that he could use it) and run the macro
 ~~~
-python analysis_plotting_macro/check_signal_0L_a_d_e.py 
+mv analysis_plotting_macro/check_signal_0L_a_d_e.py mv analysis_plotting_macro/check_samples_140ifb_0L_a_d_e.py 
+python analysis_plotting_macro/check_samples_140ifb_0L_a_d_e.py 
 ~~~
 
 ## Looking at input variables
