@@ -2,7 +2,7 @@
 
 ## "VHbb WSMaker and Hbb Stat" ##
 ===============================================================================
-## Last Edited: 15-07-2019
+## Last Edited: 18-07-2019
 
 Once a basic familiarity with WSMaker has been established, (see VHbb_2Lep_Reader_Inputs.md ) a task, which gets more and more priority is to test reducing the number of bins in the inputs.
 
@@ -412,42 +412,63 @@ setupATLAS && lsetup git && lsetup "root 6.14.04-x86_64-slc6-gcc62-opt"
 git clone ssh://git@gitlab.cern.ch:7999/luambroz/analysis_plotting_macro.git
 vim analysis_plotting_macro/check_signal_0L_a_d_e.py
 ~~~
-> CHANGE the names of the variables names in the list and the target files (L118 - L121) but COMMENT OUT
+> CHANGE the binnings of the high ptv region (~L17)
+>   >      BDT_bins["2"] = [0, 27, 106, 214, 361, 475, 548, 600, 641, 679, 712, 742, 771, 802, 839, 1002]  -> BDT_bins["2"] = [0, 23, 95, 182, 300, 406, 472, 516, 555, 593, 628, 659, 689, 719, 754, 1002]
+>   >      BDT_bins["3"] = [0, 99, 184, 277, 370, 450, 524, 584, 635, 679, 718, 753, 787, 821, 861, 1002] -> BDT_bins["3"] = [0, 81, 157, 248, 338, 412, 481, 539, 586, 627, 665, 699, 732, 767, 808, 1002]
+
+> ADD binnings of the extreme ptv region (~L20)
+>   >      BDT_bins["4"] = [1, 97, 268 524, 646, 715, 759, 729, 1002]
+>   >      BDT_bins["6"] = [0, 192, 326, 545, 697, 774, 823, 867, 1002]
+ 
+> CHANGE the names of the variables names in the list and the target files (~L122 - L125) but COMMENT OUT
 >   >     var_names = ["njets", "NFwdJets", "nCentralJetsNoBtag", "mva", "MET", "mBB", "dRBB", "pTB1", "pTB2", "ActualMu"] ->   var_names = ["Njets", "NFwdJets", "mva", "METSig", "mBBJ", "dRBB", "pTB1", "pTB2", "ActualMu"]
 >   >     file_a = ROOT.TFile("../hist_a.root") -> file_a = ROOT.TFile("/eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/FullRunII2019/statArea/inputs/ZeroLep/v5/InputVar/LimitHistograms.VHbb.0Lep.13TeV.mc16a.Oxford.r32-15varInputs.root")
 >   >     file_d = ROOT.TFile("../hist_d.root") -> file_d = ROOT.TFile("/eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/FullRunII2019/statArea/inputs/ZeroLep/v5/InputVar/LimitHistograms.VHbb.0Lep.13TeV.mc16d.Oxford.r32-15varInputs.root")  
 >   >     file_e = ROOT.TFile("../hist_e.root") -> file_e = ROOT.TFile("/eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/FullRunII2019/statArea/inputs/ZeroLep/v5/InputVar/LimitHistograms.VHbb.0Lep.13TeV.mc16e.Oxford.r32-15varInputs.root")
 
-> ADD the names of the variables names in the list and the target files for non-STXS samples (L123 - L126)
+ADD region variable to accesss more binning regimes (~L184)
+>   >     if "150_" in full_name:
+>   >       region = jet
+>   >     else:
+>   >       region = jet * 2   
+
+CHANGE instances of 'jet' in BDT remapping functino to 'region' (~L190)
+>   >     remapBDTHisto(h_a, BDT_bins[jet]) -> h_a = remapBDTHisto(h_a, BDT_bins[region])
+>   >     remapBDTHisto(h_d, BDT_bins[jet]) -> h_d = remapBDTHisto(h_d, BDT_bins[region])
+>   >     remapBDTHisto(h_e, BDT_bins[jet]) -> h_e = remapBDTHisto(h_e, BDT_bins[region])
+>   >     remapBDTHisto(hICHEP_a, BDT_bins[jet]) -> hICHEP_a = remapBDTHisto(hICHEP_a, BDT_bins[region])
+>   >     remapBDTHisto(hICHEP_d, BDT_bins[jet])-> hICHEP_d = remapBDTHisto(hICHEP_d, BDT_bins[region])
+
+> ADD the names of the variables names in the list and the target files for non-STXS samples (L127 - L130)
 >   >     var_names = ["mva", "mvadiboson", "mBBMVA"]
 >   >     file_a = ROOT.TFile("/eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/FullRunII2019/statArea/inputs/ZeroLep/v5/Non-STXS/LimitHistograms.VHbb.0Lep.13TeV.mc16a.Oxford.r32-15v5.root")
 >   >     file_d = ROOT.TFile("/eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/FullRunII2019/statArea/inputs/ZeroLep/v5/Non-STXS/LimitHistograms.VHbb.0Lep.13TeV.mc16d.Oxford.r32-15v5.root"
 >   >     file_e = ROOT.TFile("/eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/FullRunII2019/statArea/inputs/ZeroLep/v5/Non-STXS/LimitHistograms.VHbb.0Lep.13TeV.mc16e.Oxford.r32-15v5.root"
 
 > COMMENT OUT the names of the target ICHEP files
->   >     fileICHEP_a = ROOT.TFile("/home/ambroz/VHbb/CxAODICHEP_Tag/CxAODFramework_tag_r31-16_1/run/hist_a.root") (~L128)
->   >     fileICHEP_d = ROOT.TFile("/home/ambroz/VHbb/CxAODICHEP_Tag/CxAODFramework_tag_r31-16_1/run/hist_d.root") (~L129)
->   >     hICHEP_a = fileICHEP_a.Get(full_name) (~L139)
->   >     hICHEP_d = fileICHEP_d.Get(full_name) (~L140)
->   >     integralICHEP_a = hICHEP_a.Integral(0,-1) (~L150)
->   >     integralICHEP_d = hICHEP_d.Integral(0,-1) (~L151)
->   >     hICHEP_a.Scale(1./hICHEP_a.Integral(0,-1)) (~L170)
->   >     hICHEP_a.Scale(1./hICHEP_a.Integral(0,-1)) (~L171)
->   >     hICHEP_a = remapBDTHisto(hICHEP_a, BDT_bins[jet]) (~L182)
->   >     hICHEP_a = remapBDTHisto(hICHEP_a, BDT_bins[jet]) (~L183)
+>   >     fileICHEP_a = ROOT.TFile("/home/ambroz/VHbb/CxAODICHEP_Tag/CxAODFramework_tag_r31-16_1/run/hist_a.root") (~L132)
+>   >     fileICHEP_d = ROOT.TFile("/home/ambroz/VHbb/CxAODICHEP_Tag/CxAODFramework_tag_r31-16_1/run/hist_d.root") (~L133)
+>   >     hICHEP_a = fileICHEP_a.Get(full_name) (~L143)
+>   >     hICHEP_d = fileICHEP_d.Get(full_name) (~L144)
+>   >     integralICHEP_a = hICHEP_a.Integral(0,-1) (~L154)
+>   >     integralICHEP_d = hICHEP_d.Integral(0,-1) (~L155)
+>   >     hICHEP_a.Scale(1./hICHEP_a.Integral(0,-1)) (~L174)
+>   >     hICHEP_a.Scale(1./hICHEP_a.Integral(0,-1)) (~L175)
+>   >     hICHEP_a = remapBDTHisto(hICHEP_a, BDT_bins[region]) (~L193)
+>   >     hICHEP_a = remapBDTHisto(hICHEP_a, BDT_bins[region]) (~L194)
 >   >       
->   >     resultsICHEP_a = rebinHisto(hICHEP_a, bins_a, x_min, x_max, True) (~L222 - L227)
+>   >     resultsICHEP_a = rebinHisto(hICHEP_a, bins_a, x_min, x_max, True) (~L233 - L238)
 >   >     hICHEP_a = resultsICHEP_a[0]
 >   >     binsICHEP_a = resultsICHEP_a[1]
 >   >     resultsICHEP_d = rebinHisto(hICHEP_d, bins_a, x_min, x_max, True)
 >   >     hICHEP_d = resultsICHEP_d[0]
 >   >     binsICHEP_d = resultsICHEP_d[1]
 >   >       
->   >     hICHEP_a.SetLineWidth(2) (~L233)
->   >     hICHEP_d.SetLineWidth(2) (~L234)
->   >     hICHEP_a.SetLineColor(kOrange-3) (~L239)
->   >     hICHEP_d.SetLineColor(kAzure+9) (~L240)
->   >     if integralICHEP_a/integral_a  - 1 > 0: (~L262 - L269)
+>   >     hICHEP_a.SetLineWidth(2) (~L244)
+>   >     hICHEP_d.SetLineWidth(2) (~L245)
+>   >     hICHEP_a.SetLineColor(kOrange-3) (~L250)
+>   >     hICHEP_d.SetLineColor(kAzure+9) (~L251)
+>   >     if integralICHEP_a/integral_a  - 1 > 0: (~L273 - L280)
 >   >        leg.AddEntry(hICHEP_a, "mc16a ICHEP (+" + str(round(integralICHEP_a/integral_a - 1,3)*100) + "% mc16a)", "lp")
 >   >     else:
 >   >        leg.AddEntry(hICHEP_a, "mc16a ICHEP (" + str(round(integralICHEP_a/integral_a - 1,3)*100) + "% mc16a)", "lp")
@@ -456,36 +477,36 @@ vim analysis_plotting_macro/check_signal_0L_a_d_e.py
 >   >     else:
 >   >        leg.AddEntry(hICHEP_d, "mc16d ICHEP (" + str(round(integralICHEP_d/integral_a - 1,3)*100) + "% mc16a)", "lp")
 
->   >     hICHEP_a.Draw("SAME") (~L296)
->   >     hICHEP_d.Draw("SAME") (~L297)
+>   >     hICHEP_a.Draw("SAME") (~L307)
+>   >     hICHEP_d.Draw("SAME") (~L308)
 
->   >     ratioICHEP_a = hICHEP_a.Clone("ratio") (~L317 - L323)
+>   >     ratioICHEP_a = hICHEP_a.Clone("ratio") (~L328 - L334)
 >   >     ratioICHEP_a.Divide(h_a)
 >   >     ratioICHEP_a.Draw("HIST SAME")
 >   >     ratioICHEP_d = hICHEP_d.Clone("ratio")
 >   >     ratioICHEP_d.Divide(h_a)
 >   >     ratioICHEP_d.Draw("HIST SAME")
 
->   >     del hICHEP_a (~L344)
->   >     del hICHEP_d (~L345)
->   >     del ratioICHEP_a (~L348)
->   >     del ratioICHEP_d (~L349)
->   >     fileICHEP_a.Close() (~L354)
->   >     fileICHEP_d.Close() (~L355)
+>   >     del hICHEP_a (~L355)
+>   >     del hICHEP_d (~L356)
+>   >     del ratioICHEP_a (~L359)
+>   >     del ratioICHEP_d (~L360)
+>   >     fileICHEP_a.Close() (~L365)
+>   >     fileICHEP_d.Close() (~L366)
 
-> CHANGE output path so it runs on a single CPU (~L376)
+> CHANGE output path so it runs on a single CPU (~L387)
 >   >     p = Pool(8) -> p = Pool(1)
 
 > CHANGE output directory for plot folders 
->   >     if not os.path.exists(sample): -> if not os.path.exists("140ifbade/" + sample): (L336)
->   >     os.makedirs(sample) -> os.makedirs("140ifbade/" + sample) (L337)
->   >     c.SaveAs(sample + "/" + name + ".png") -> c.SaveAs("140ifbade/" + sample + "/" + name + ".png") (L338)
->   >     c.SaveAs(sample + "/" + name + ".pdf") -> c.SaveAs("140ifbade/" + sample + "/" + name + ".pdf") (L339)
+>   >     if not os.path.exists(sample): -> if not os.path.exists("140ifbade/" + sample): (L345)
+>   >     os.makedirs(sample) -> os.makedirs("140ifbade/" + sample) (L346)
+>   >     c.SaveAs(sample + "/" + name + ".png") -> c.SaveAs("140ifbade/" + sample + "/" + name + ".png") (L348)
+>   >     c.SaveAs(sample + "/" + name + ".pdf") -> c.SaveAs("140ifbade/" + sample + "/" + name + ".pdf") (L349)
 
-> COMMENT OUT variables core running variables (~L377)
+> COMMENT OUT variables core running variables (~L389)
 >   >     p.map(plotSample, sample_names)
 
-> ADD looping of sample in main function (L367)
+> ADD looping of sample in main function (L390)
 >   >     for background_or_signal in sample_names :
 >   >        if background_or_signal == " ": #You can insert things you don't want to run over in here.
 >   >          continue
@@ -493,10 +514,10 @@ vim analysis_plotting_macro/check_signal_0L_a_d_e.py
 >   >          plotSample(background_or_signal)
 
 > ADD ptv split details
->   >     ptvregs = ["250ptv","150_250ptv"] (L117)
+>   >     ptvregs = ["250ptv","150_250ptv"] (L120)
 
 > ADD another nested layer in the loop for different ptv regions. Ensure everything afterwards is indented correctly.      
->   >     for ptv in ptvregs: (L134)
+>   >     for ptv in ptvregs: (L137)
 
 Now you can save (as a different file to not annoy Luca and such that he could use it) and run the macro
 ~~~
