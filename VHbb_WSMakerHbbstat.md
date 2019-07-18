@@ -417,7 +417,7 @@ vim analysis_plotting_macro/check_signal_0L_a_d_e.py
 >   >      BDT_bins["3"] = [0, 99, 184, 277, 370, 450, 524, 584, 635, 679, 718, 753, 787, 821, 861, 1002] -> BDT_bins["3"] = [0, 81, 157, 248, 338, 412, 481, 539, 586, 627, 665, 699, 732, 767, 808, 1002]
 
 > ADD binnings of the extreme ptv region (~L20)
->   >      BDT_bins["4"] = [1, 97, 268 524, 646, 715, 759, 729, 1002]
+>   >      BDT_bins["4"] = [1, 97, 268, 524, 646, 715, 759, 792, 1002]
 >   >      BDT_bins["6"] = [0, 192, 326, 545, 697, 774, 823, 867, 1002]
  
 > CHANGE the names of the variables names in the list and the target files (~L122 - L125) but COMMENT OUT
@@ -426,11 +426,17 @@ vim analysis_plotting_macro/check_signal_0L_a_d_e.py
 >   >     file_d = ROOT.TFile("../hist_d.root") -> file_d = ROOT.TFile("/eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/FullRunII2019/statArea/inputs/ZeroLep/v5/InputVar/LimitHistograms.VHbb.0Lep.13TeV.mc16d.Oxford.r32-15varInputs.root")  
 >   >     file_e = ROOT.TFile("../hist_e.root") -> file_e = ROOT.TFile("/eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/FullRunII2019/statArea/inputs/ZeroLep/v5/InputVar/LimitHistograms.VHbb.0Lep.13TeV.mc16e.Oxford.r32-15varInputs.root")
 
-> ADD region variable to accesss more binning regimes (~L184)
->   >     if "150_" in full_name:
->   >       region = jet
+> ADD region variable to accesss more binning regimes (~L178)
+>   >     if "2jet" in full_name: #This section will identify the analysis region such that the mva binning could be obtained
+>   >         if "150_" in full_name:
+>   >             region = "2"
+>   >         else:  
+>   >             region = "4"
 >   >     else:
->   >       region = jet * 2   
+>   >         if "150_" in full_name:
+>   >             region = "3"
+>   >         else:
+>   >             region = "6"   
 
 > CHANGE instances of 'jet' in BDT remapping functino to 'region' (~L190)
 >   >     remapBDTHisto(h_a, BDT_bins[jet]) -> h_a = remapBDTHisto(h_a, BDT_bins[region])
