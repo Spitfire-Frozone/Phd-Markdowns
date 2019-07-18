@@ -426,13 +426,13 @@ vim analysis_plotting_macro/check_signal_0L_a_d_e.py
 >   >     file_d = ROOT.TFile("../hist_d.root") -> file_d = ROOT.TFile("/eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/FullRunII2019/statArea/inputs/ZeroLep/v5/InputVar/LimitHistograms.VHbb.0Lep.13TeV.mc16d.Oxford.r32-15varInputs.root")  
 >   >     file_e = ROOT.TFile("../hist_e.root") -> file_e = ROOT.TFile("/eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/FullRunII2019/statArea/inputs/ZeroLep/v5/InputVar/LimitHistograms.VHbb.0Lep.13TeV.mc16e.Oxford.r32-15varInputs.root")
 
-ADD region variable to accesss more binning regimes (~L184)
+> ADD region variable to accesss more binning regimes (~L184)
 >   >     if "150_" in full_name:
 >   >       region = jet
 >   >     else:
 >   >       region = jet * 2   
 
-CHANGE instances of 'jet' in BDT remapping functino to 'region' (~L190)
+> CHANGE instances of 'jet' in BDT remapping functino to 'region' (~L190)
 >   >     remapBDTHisto(h_a, BDT_bins[jet]) -> h_a = remapBDTHisto(h_a, BDT_bins[region])
 >   >     remapBDTHisto(h_d, BDT_bins[jet]) -> h_d = remapBDTHisto(h_d, BDT_bins[region])
 >   >     remapBDTHisto(h_e, BDT_bins[jet]) -> h_e = remapBDTHisto(h_e, BDT_bins[region])
