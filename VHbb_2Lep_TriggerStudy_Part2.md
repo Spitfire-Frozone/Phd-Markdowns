@@ -253,8 +253,42 @@ cd run/
 
 root -b -l -q '../TriggerStudyPlots.cxx("/afs/cern.ch/work/d/dspiteri/VHbb/", "CxAODFramework_master/","SignalBoosted","old","newest","SIGNAL.root","2L","32-15","ade","CUT", "D1","SR")'
 ~~~
-Next one should check that all the inputs were fine.
+Next one should check that all the inputs were fine. Resubmitting failes ones as necessary.
 ~~~
 cd run/SignalBoosted_oldTrigger_TEST
 python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master/source/CxAODOperations_VHbb/scripts/checkReaderFails.py Reader_2L_32-15_a_CUT_D1
+
+cd ../SignalBoosted_newestTrigger_TEST
+python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master/source/CxAODOperations_VHbb/scripts/checkReaderFails.py Reader_2L_32-15_a_CUT_D1
+~~~
+Now to create the sample SIGNAL root files to test. 
+~~~
+cd /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_july2019/
+setupATLAS && lsetup git && lsetup "root 6.14.04-x86_64-slc6-gcc62-opt" 
+cd run/SignalBoosted_oldTrigger_TEST/Reader_2L_32-15_a_CUT_D1/fetch/
+hadd GGZH.root hist-ggZ*
+hadd QQWH.root hist-qqW*
+hadd QQZH.root hist-qqZ*
+hadd SIGNAL.root GGZH.root QQWH.root QQZH.root
+rm GGZH.root QQWH.root QQZH.root
+cd -
+
+cd run/SignalBoosted_newestTrigger_TEST/Reader_2L_32-15_a_CUT_D1/fetch/
+hadd GGZH.root hist-ggZ*
+hadd QQWH.root hist-qqW*
+hadd QQZH.root hist-qqZ*
+hadd SIGNAL.root GGZH.root QQWH.root QQZH.root
+rm GGZH.root QQWH.root QQZH.root
+cd -
+
+vim ../TriggerStudyPlots.cxx
+~~~
+> CHANGE vector of samples to the signal ones
+>   >     std::vector samples = {"ggZllH125", "qqZllH125", "qqWlvH125"}; //Signal
+~~~
+root -b -l -q '../TriggerStudyPlots.cxx("/afs/cern.ch/work/d/dspiteri/VHbb/", "CxAODFramework_master_july2019/","SignalBoosted","old","newest","SIGNAL.root","2L","32-15","a","CUT","D1","SR","_TEST","_TEST")'
+cd run
+mv SignalBoosted-oldandnewest_TriggerPlots SignalBoosted-oldandnewest_a_TriggerPlots
+cd SignalBoosted-oldandnewest_a_TriggerPlots
+imgcat *.pdf
 ~~~
