@@ -224,12 +224,12 @@ So we have some results and we want to investigate them further. The first thing
 >   /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/FullRunII2019/statArea/inputs/
 
 
-0L| ZeroLep/v5/Non-STXS/LimitHistograms.VHbb.0Lep.13TeV.mc16ad.Oxford.r32-15v5.root 
-0L| ZeroLep/v5/Non-STXS/LimitHistograms.VHbb.0Lep.13TeV.mc16e.Oxford.r32-15v5.root 
-1L| OneLep/r32-15_customCDI/no_STXS/LimitHistograms.VHbb.1Lep.13TeV.mc16ad.LAL.v01.NoSTXS.r32-15_customCDI.root
-1L| OneLep/r32-15_customCDI/no_STXS/LimitHistograms.VHbb.1Lep.13TeV.mc16e.LAL.v01.NoSTXS.r32-15_customCDI.root
-2L| TwoLep/r32-15_customCDI/v2/LimitHistograms.VHbb.2Lep.13TeV.mc16ad.Kyoto.r32-15_customCDI_v2.root
-2L| TwoLep/r32-15_customCDI/v2/LimitHistograms.VHbb.2Lep.13TeV.mc16e.Kyoto.r32-15_customCDI_v2.root
+0L| ZeroLep/v5/Non-STXS/LimitHistograms.VHbb.0Lep.13TeV.mc16ad.Oxford.r32-15v5.root                                         
+0L| ZeroLep/v5/Non-STXS/LimitHistograms.VHbb.0Lep.13TeV.mc16e.Oxford.r32-15v5.root                                             
+1L| OneLep/r32-15_customCDI/no_STXS/LimitHistograms.VHbb.1Lep.13TeV.mc16ad.LAL.v01.NoSTXS.r32-15_customCDI.root               
+1L| OneLep/r32-15_customCDI/no_STXS/LimitHistograms.VHbb.1Lep.13TeV.mc16e.LAL.v01.NoSTXS.r32-15_customCDI.root                 
+2L| TwoLep/r32-15_customCDI/v2/LimitHistograms.VHbb.2Lep.13TeV.mc16ad.Kyoto.r32-15_customCDI_v2.root                           
+2L| TwoLep/r32-15_customCDI/v2/LimitHistograms.VHbb.2Lep.13TeV.mc16e.Kyoto.r32-15_customCDI_v2.root                           
 
 ## Splitting the inputs in MC regions 
 ~~~
@@ -550,9 +550,9 @@ mv 140ifbade 140ifbade_ttbar
 ## Looking at input variables
 It would also be good to look at the distribution of input variables that go into the BDT, but as a default only the BDT plots are output. Firstly one needs to add the kinematic variables you want to the related inputConfig file and Split the histograms. Check the main int note (p35) for details
 The list of a set of kinematic variables for 
-0L| MET,pTB1,pTB2,mBB,dRBB,dPhiVBB,pTJ3,mBBJ,mBBJ3,dEtaBB,METSig,MEff,MEff3
-1L| pTV,MET,pTB1,pTB2,mBB,dRBB,dPhiVBB,dPhiLBmin,pTJ3,mBBJ,mTW,Mtop,dYWH
-2L| pTV,MET,pTB1,pTB2,mBB,dRBB,dPhiVBB,pTJ3,dEtaVBB,mLL,mBBJ3,dEtaBB
+0L| MET,pTB1,pTB2,mBB,dRBB,dPhiVBB,pTJ3,mBBJ,mBBJ3,dEtaBB,METSig,MEff,MEff3                                                   
+1L| pTV,MET,pTB1,pTB2,mBB,dRBB,dPhiVBB,dPhiLBmin,pTJ3,mBBJ,mTW,Mtop,dYWH                                                       
+2L| pTV,MET,pTB1,pTB2,mBB,dRBB,dPhiVBB,pTJ3,dEtaVBB,mLL,mBBJ3,dEtaBB                                                           
 
 Then one needs to change the location of the files themselves to point to the samples that have all the kinematic variables. Remember the base can be found here. 
 
@@ -620,16 +620,16 @@ vim inputVarchecker.sh
 > ADD Workspace comparisons to file (L1)
 >	 >     #!/bin/bash
 >	 >     WS="140ifb-0L-ade"
->  >     WS2="140ifb-0L-ade-Inputs_pTB2"
+>	 >     WS2="140ifb-0L-ade-Inputs_MET"
 >	 >     WS3="140ifb-0L-ade-Inputs_pTB1"
->	 >     WS4="140ifb-0L-ade-Inputs_MET"
->  >     WS5="140ifb-0L-ade-Inputs_mBB"
+>	 >     WS4="140ifb-0L-ade-Inputs_pTB2"
+>	 >     WS5="140ifb-0L-ade-Inputs_mBB"
 >	 >     WS6="140ifb-0L-ade-Inputs_dRBB"
->	 >     WS7="140ifb-0L-ade-Inputs_dEtaBB"
->  >     WS8="140ifb-0L-ade-Inputs_dPhiVBB"
->	 >     WS9="140ifb-0L-ade-Inputs_pTJ3"
->	 >     WS10="140ifb-0L-ade-Inputs_METSig"
->  >     WS11="140ifb-0L-ade-Inputs_mBBJ"
+>	 >     WS7="140ifb-0L-ade-Inputs_dPhiVBB"
+>	 >     WS8="140ifb-0L-ade-Inputs_pTJ3"
+>	 >     WS9="140ifb-0L-ade-Inputs_mBBJ"
+>	 >     WS10="140ifb-0L-ade-Inputs_dEtaBB"
+>	 >     WS11="140ifb-0L-ade-Inputs_METSig"
 >	 >	  
 >	 >     python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 2 -f ${WS} ${WS2}
 >	 >     python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 2 -f ${WS} ${WS3}
