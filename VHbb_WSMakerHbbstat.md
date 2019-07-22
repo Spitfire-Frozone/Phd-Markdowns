@@ -616,29 +616,29 @@ cd /afs/cern.ch/work/d/dspiteri/VHbb
 vim inputVarchecker.sh
 ~~~
 > ADD Workspace comparisons to file (L1)
->	  >	   #!/bin/bash
->	  >	   WS="140ifb-0L-ade"
->	  >	   WS2="140ifb-0L-ade-Inputs_pTB2"
->	  >	   WS3="140ifb-0L-ade-Inputs_pTB1"
->	  >	   WS4="140ifb-0L-ade-Inputs_MET"
->	  >	   WS5="140ifb-0L-ade-Inputs_mBB"
->	  >	   WS6="140ifb-0L-ade-Inputs_dRBB"
->	  >	   WS7="140ifb-0L-ade-Inputs_dEtaBB"
->	  >	   WS8="140ifb-0L-ade-Inputs_dPhiVBB"
->	  >	   WS9="140ifb-0L-ade-Inputs_pTJ3"
->	  >	   WS10="140ifb-0L-ade-Inputs_METSig"
->	  >	   WS11="140ifb-0L-ade-Inputs_mBBJ"
->	  >	  
->	  >	   python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 2 -f ${WS} ${WS2}
->	  >	   python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 2 -f ${WS} ${WS3}
->	  >	   python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 2 -f ${WS} ${WS4}
->	  >	   python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 2 -f ${WS} ${WS5}
->	  >	   python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 2 -f ${WS} ${WS6}
->	  >	   python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 2 -f ${WS} ${WS7}
->	  >	   python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 2 -f ${WS} ${WS8}
->	  >	   python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 2 -f ${WS} ${WS9}
->	  >    python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 2 -f ${WS} ${WS10}
->	  >	   python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 2 -f ${WS} ${WS11}
+>	 >     #!/bin/bash
+>	 >     WS="140ifb-0L-ade"
+>  >     WS2="140ifb-0L-ade-Inputs_pTB2"
+>	 >     WS3="140ifb-0L-ade-Inputs_pTB1"
+>	 >     WS4="140ifb-0L-ade-Inputs_MET"
+>  >     WS5="140ifb-0L-ade-Inputs_mBB"
+>	 >     WS6="140ifb-0L-ade-Inputs_dRBB"
+>	 >     WS7="140ifb-0L-ade-Inputs_dEtaBB"
+>  >     WS8="140ifb-0L-ade-Inputs_dPhiVBB"
+>	 >     WS9="140ifb-0L-ade-Inputs_pTJ3"
+>	 >     WS10="140ifb-0L-ade-Inputs_METSig"
+>  >     WS11="140ifb-0L-ade-Inputs_mBBJ"
+>	 >	  
+>	 >     python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 2 -f ${WS} ${WS2}
+>	 >     python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 2 -f ${WS} ${WS3}
+>	 >     python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 2 -f ${WS} ${WS4}
+>	 >     python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 2 -f ${WS} ${WS5}
+>	 >     python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 2 -f ${WS} ${WS6}
+>	 >     python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 2 -f ${WS} ${WS7}
+>	 >     python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 2 -f ${WS} ${WS8}
+>	 >     python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 2 -f ${WS} ${WS9}
+>  >     python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 2 -f ${WS} ${WS10}
+>  >     python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 2 -f ${WS} ${WS11}
 ~~~
 source ../inputVarchecker.sh
 ~~~
