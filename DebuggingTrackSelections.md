@@ -4,7 +4,6 @@
 ===============================================================================
 ## Last Edited: 12-07-2017 ##
 
-
 First check if your packages run as normal
 ~~~
 cd ~/Code_Development #or whatever directory you want to create your athena area
