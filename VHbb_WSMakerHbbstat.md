@@ -597,19 +597,20 @@ vim scripts/launch_default_jobs.py
 python scripts/launch_default_jobs.py 140ifb-0L-ade-Inputs
 
 cd output/
-mv *dEtaBB 140ifb-0L-ade-Inputs_dEtaBB
-mv *dPhiVBB 140ifb-0L-ade-Inputs_dPhiVBB
-mv *dRBB 140ifb-0L-ade-Inputs_dRBB
-mv *mBB 140ifb-0L-ade-Inputs_mBB
-mv *mBBJ 140ifb-0L-ade-Inputs_mBBJ
 mv *MET 140ifb-0L-ade-Inputs_MET
-mv *METSig 140ifb-0L-ade-Inputs_METSig
-mv *mLL 140ifb-0L-ade-Inputs_mLL
 mv *pTB1 140ifb-0L-ade-Inputs_pTB1
 mv *pTB2 140ifb-0L-ade-Inputs_pTB2
+mv *mBB 140ifb-0L-ade-Inputs_mBB
+mv *dRBB 140ifb-0L-ade-Inputs_dRBB
+mv *dPhiVBB 140ifb-0L-ade-Inputs_dPhiVBB
 mv *pTJ3 140ifb-0L-ade-Inputs_pTJ3
-mv *pTV 140ifb-0L-ade-Inputs_pTV
-rm -rf *dPhiLBmin *dYWH *MEff *MEff3 *Mtop *mBBJ3 *mTW *dEtaVBB *pTV
+mv *mBBJ 140ifb-0L-ade-Inputs_mBBJ
+mv *dEtaBB 140ifb-0L-ade-Inputs_dEtaBB
+mv *METSig 140ifb-0L-ade-Inputs_METSig
+mv *MEff 140ifb-0L-ade-Inputs_MEff
+mv *MEff3 140ifb-0L-ade-Inputs_MEff3
+rm -rf *dPhiLBmin *dYWH *Mtop *mBBJ3 *mTW *dEtaVBB *pTV *mLL
+
 ~~~
 Once this is done you now need to compare the split inputs against the standard. You are going to have around 18 outputs. To do this we will need to create a new script.
 ~~~
