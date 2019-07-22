@@ -1,10 +1,9 @@
 # This is aimed at the first part of qualification task of my PhD: Running and setting up a web interface to run and see plots more efficiently. This document is about editing old framework to be replaced. # 
 
 ## RUNNING DCUBE ##
-- <https://twiki.cern.ch/twiki/bin/viewauth/AtlasProtected/InDetPhysValMonitoring>
+<https://twiki.cern.ch/twiki/bin/viewauth/AtlasProtected/InDetPhysValMonitoring>
 ===============================================================================
 ## Last Edited: 05-12-2016 ##
-
 
 Set up ATLAS infrastructure, set up Rucio and Athena, set up ATLAS VO and change to the Athena directory. Build $PYTHONPATH correctly
 ~~~
