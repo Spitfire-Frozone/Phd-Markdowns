@@ -548,9 +548,9 @@ mv 140ifbade 140ifbade_ttbar
 ~~~
 
 ## Looking at input variables
-It would also be good to look at the distribution of input variables that go into the BDT, but as a default only the BDT plots are output. Firstly one needs to add the kinematic variables you want to the related inputConfig file and Split the histograms.
+It would also be good to look at the distribution of input variables that go into the BDT, but as a default only the BDT plots are output. Firstly one needs to add the kinematic variables you want to the related inputConfig file and Split the histograms. Check the main int note (p35) for details
 The list of a set of kinematic variables for 
-0L| MET,pTB1,pTB2,mBB,dRBB,dPhiVBB,dPhiLBmin,pTJ3,mBBJ,mLL,mBBJ3,dEtaBB,METSig
+0L| MET,pTB1,pTB2,mBB,dRBB,dPhiVBB,pTJ3,mBBJ,mBBJ3,dEtaBB,METSig,MEff,MEff3
 1L| pTV,MET,pTB1,pTB2,mBB,dRBB,dPhiVBB,dPhiLBmin,pTJ3,mBBJ,mTW,Mtop,dYWH
 2L| pTV,MET,pTB1,pTB2,mBB,dRBB,dPhiVBB,pTJ3,dEtaVBB,mLL,mBBJ3,dEtaBB
 
@@ -585,7 +585,7 @@ Once this is done you now need to run launch_default_jobs.py but with a few chan
 vim scripts/launch_default_jobs.py
 ~~~
 > CHANGE Variables to run the baseline FullRun2 (~L13)
->  >     version = "v01_Vars"        (L13)
+>  >     version = "v01_Vars"       (L13)
 >  >     doPostFit = True           (L15)
 
 >  >     channels = ["0"]           (L46)
@@ -596,6 +596,7 @@ vim scripts/launch_default_jobs.py
 ~~~
 python scripts/launch_default_jobs.py 140ifb-0L-ade-Inputs
 
+cd output/
 mv *dEtaBB 140ifb-0L-ade-Inputs_dEtaBB
 mv *dPhiVBB 140ifb-0L-ade-Inputs_dPhiVBB
 mv *dRBB 140ifb-0L-ade-Inputs_dRBB
