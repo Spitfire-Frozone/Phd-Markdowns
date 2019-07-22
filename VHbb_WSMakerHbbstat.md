@@ -550,9 +550,9 @@ mv 140ifbade 140ifbade_ttbar
 ## Looking at input variables
 It would also be good to look at the distribution of input variables that go into the BDT, but as a default only the BDT plots are output. Firstly one needs to add the kinematic variables you want to the related inputConfig file and Split the histograms.
 The list of a set of kinematic variables for 
-0L| MET,pTB1,pTB2,mBB,dRBB,dEtaBB,dPhiVBB,MEff,MEff3,pTJ3,mBBJ
-1L| pTV,MET,pTB1,pTB2,mBB,dRBB,dPhiVBB,dPhiLBmin,mTW,dYWH,Mtop,pTJ3,mBBJ,MET
-2L| pTV,MET,pTB1,pTB2,dRBB,dPhiVBB,dEtaVBB,mLL,pTJ3,mBBJ3,mBB,dEtaBB
+0L| MET,pTB1,pTB2,mBB,dRBB,dPhiVBB,dPhiLBmin,pTJ3,mBBJ,mLL,mBBJ3,dEtaBB,METSig
+1L| pTV,MET,pTB1,pTB2,mBB,dRBB,dPhiVBB,dPhiLBmin,pTJ3,mBBJ,mTW,Mtop,dYWH
+2L| pTV,MET,pTB1,pTB2,mBB,dRBB,dPhiVBB,pTJ3,dEtaVBB,mLL,mBBJ3,dEtaBB
 
 Then one needs to change the location of the files themselves to point to the samples that have all the kinematic variables. Remember the base can be found here. 
 
@@ -565,7 +565,8 @@ TwoLep/r32-15_allMVAVariables/LimitHistograms.VHbb.2Lep.13TeV.mc16ade.IOWAUSTC.r
 cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb/inputConfigs
 vim SMVHVZ_2019_MVA_mc16ade_v01.txt
 ~~~
-> CHANGE all instances of mva,mvadiboson with the relevant set of kinematic variables
+> CHANGE all instances of mva,mvadiboson with the relevant set of kinematic variables (for 0L)
+>   >      mva,mvadiboson,mBBMVA -> MET,pTB1,pTB2,mBB,dRBB,dPhiVBB,dPhiLBmin,pTJ3,mBBJ,mLL,mBBJ3,dEtaBB,METSig
 > CHANGE Absolute path files
 >   >      ZeroLep/v5/InputVar/LimitHistograms.VHbb.0Lep.13TeV.mc16ade.Oxford.r32-15varInputs.root
 >   >      TwoLep/r32-15_allMVAVariables/LimitHistograms.VHbb.2Lep.13TeV.mc16ade.IOWAUSTC.r32-15_AllMVAVariables.root
@@ -594,4 +595,50 @@ vim scripts/launch_default_jobs.py
 >  >     runP0 = False              (L66)
 ~~~
 python scripts/launch_default_jobs.py 140ifb-0L-ade-Inputs
+
+mv *dEtaBB 140ifb-0L-ade-Inputs_dEtaBB
+mv *dPhiVBB 140ifb-0L-ade-Inputs_dPhiVBB
+mv *dRBB 140ifb-0L-ade-Inputs_dRBB
+mv *mBB 140ifb-0L-ade-Inputs_mBB
+mv *mBBJ 140ifb-0L-ade-Inputs_mBBJ
+mv *MET 140ifb-0L-ade-Inputs_MET
+mv *METSig 140ifb-0L-ade-Inputs_METSig
+mv *mLL 140ifb-0L-ade-Inputs_mLL
+mv *pTB1 140ifb-0L-ade-Inputs_pTB1
+mv *pTB2 140ifb-0L-ade-Inputs_pTB2
+mv *pTJ3 140ifb-0L-ade-Inputs_pTJ3
+mv *pTV 140ifb-0L-ade-Inputs_pTV
+rm -rf *dPhiLBmin *dYWH *MEff *MEff3 *Mtop *mBBJ3 *mTW *dEtaVBB *pTV
+~~~
+Once this is done you now need to compare the split inputs against the standard. You are going to have around 18 outputs. To do this we will need to create a new script.
+~~~
+cd /afs/cern.ch/work/d/dspiteri/VHbb
+vim inputVarchecker.sh
+~~~
+> ADD Workspace comparisons to file (L1)
+>	  >	   #!/bin/bash
+>	  >	   WS="140ifb-0L-ade"
+>	  >	   WS2="140ifb-0L-ade-Inputs_pTB2"
+>	  >	   WS3="140ifb-0L-ade-Inputs_pTB1"
+>	  >	   WS4="140ifb-0L-ade-Inputs_MET"
+>	  >	   WS5="140ifb-0L-ade-Inputs_mBB"
+>	  >	   WS6="140ifb-0L-ade-Inputs_dRBB"
+>	  >	   WS7="140ifb-0L-ade-Inputs_dEtaBB"
+>	  >	   WS8="140ifb-0L-ade-Inputs_dPhiVBB"
+>	  >	   WS9="140ifb-0L-ade-Inputs_pTJ3"
+>	  >	   WS10="140ifb-0L-ade-Inputs_METSig"
+>	  >	   WS11="140ifb-0L-ade-Inputs_mBBJ"
+>	  >	  
+>	  >	   python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 2 -f ${WS} ${WS2}
+>	  >	   python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 2 -f ${WS} ${WS3}
+>	  >	   python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 2 -f ${WS} ${WS4}
+>	  >	   python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 2 -f ${WS} ${WS5}
+>	  >	   python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 2 -f ${WS} ${WS6}
+>	  >	   python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 2 -f ${WS} ${WS7}
+>	  >	   python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 2 -f ${WS} ${WS8}
+>	  >	   python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 2 -f ${WS} ${WS9}
+>	  >    python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 2 -f ${WS} ${WS10}
+>	  >	   python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 2 -f ${WS} ${WS11}
+~~~
+source ../inputVarchecker.sh
 ~~~
