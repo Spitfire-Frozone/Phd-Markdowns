@@ -421,7 +421,7 @@ vim analysis_plotting_macro/check_signal_0L_a_d_e.py
 >   >      BDT_bins["6"] = [0, 192, 326, 545, 697, 774, 823, 867, 1002]
  
 > CHANGE the names of the variables names in the list and the target files (~L122 - L125) but COMMENT OUT
->   >     var_names = ["njets", "NFwdJets", "nCentralJetsNoBtag", "mva", "MET", "mBB", "dRBB", "pTB1", "pTB2", "ActualMu"] ->   var_names = ["Njets", "NFwdJets", "mva", "METSig", "mBBJ", "dRBB", "pTB1", "pTB2", "ActualMu"]
+>   >     var_names = ["njets", "NFwdJets", "nCentralJetsNoBtag", "mva", "MET", "mBB", "dRBB", "pTB1", "pTB2", "ActualMu"] ->   var_names = ["Njets", "dEtaBB", "mva", "MET", "METSig", "mBB" ,"mBBJ", "dRBB", "pTB1", "pTB2", "ActualMu"] 
 >   >     file_a = ROOT.TFile("../hist_a.root") -> file_a = ROOT.TFile("/eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/FullRunII2019/statArea/inputs/ZeroLep/v5/InputVar/LimitHistograms.VHbb.0Lep.13TeV.mc16a.Oxford.r32-15varInputs.root")
 >   >     file_d = ROOT.TFile("../hist_d.root") -> file_d = ROOT.TFile("/eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/FullRunII2019/statArea/inputs/ZeroLep/v5/InputVar/LimitHistograms.VHbb.0Lep.13TeV.mc16d.Oxford.r32-15varInputs.root")  
 >   >     file_e = ROOT.TFile("../hist_e.root") -> file_e = ROOT.TFile("/eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/FullRunII2019/statArea/inputs/ZeroLep/v5/InputVar/LimitHistograms.VHbb.0Lep.13TeV.mc16e.Oxford.r32-15varInputs.root")
@@ -527,8 +527,24 @@ vim analysis_plotting_macro/check_signal_0L_a_d_e.py
 
 Now you can save (as a different file to not annoy Luca and such that he could use it) and run the macro
 ~~~
-mv analysis_plotting_macro/check_signal_0L_a_d_e.py mv analysis_plotting_macro/check_samples_140ifb_0L_a_d_e.py 
+mv analysis_plotting_macro/check_signal_0L_a_d_e.py analysis_plotting_macro/check_samples_140ifb_0L_a_d_e.py 
 python analysis_plotting_macro/check_samples_140ifb_0L_a_d_e.py 
+~~~
+
+Now for ttbar the analysis has MET filtering so if we want to check that this has been combined properly or is missing, we can run the same code, but change the source root files. 
+~~~
+mv 140ifbade 140ifbade_full
+vim analysis_plotting_macro/check_samples_140ifb_0L_a_d_e.py
+~~~
+>  COMMENT IN variable-split inputs (~L123)
+>  COMMENT OUT normal inputs (~L127)
+
+>  COMMENT IN single sample geneation (~L389)
+>   >    plotSample("qqZvvH125") -> plotSample("ttbar")
+>  COMMENT OUT looping over all samples for generation of plots (~L390)
+~~~
+python analysis_plotting_macro/check_samples_140ifb_0L_a_d_e.py 
+mv 140ifbade 140ifbade_ttbar
 ~~~
 
 ## Looking at input variables
