@@ -177,6 +177,6 @@ service
 - 6) Correct tool additions in the PhysValInDet_jobOptions.py file 
 
 > CHANGE
->    >   ToolSvc += indet_mon_tool -> ToolSvc += [indet_mon_tool,...]
+>    >   ToolSvc += indet_mon_tool -> ToolSvc += [indet_mon_tool,...]                                              
 >    >   mon_manager.AthenaMonTools += [toolFactory(indet_mon_tool,...)] -> mon_manager.AthenaMonTools += [indet_mon_tool,...]  
     
