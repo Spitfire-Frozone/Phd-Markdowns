@@ -2,7 +2,7 @@
 
 ## "VHbb WSMaker and Hbb Stat" ##
 ===============================================================================
-## Last Edited: 18-07-2019
+## Last Edited: 23-07-2019
 
 Once a basic familiarity with WSMaker has been established, (see VHbb_2Lep_Reader_Inputs.md ) a task, which gets more and more priority is to test reducing the number of bins in the inputs.
 
@@ -631,16 +631,16 @@ vim inputVarchecker.sh
 >	 >     WS10="140ifb-0L-ade-Inputs_dEtaBB"
 >	 >     WS11="140ifb-0L-ade-Inputs_METSig"
 >	 >	  
->	 >     python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 2 -f ${WS} ${WS2}
->	 >     python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 2 -f ${WS} ${WS3}
->	 >     python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 2 -f ${WS} ${WS4}
->	 >     python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 2 -f ${WS} ${WS5}
->	 >     python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 2 -f ${WS} ${WS6}
->	 >     python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 2 -f ${WS} ${WS7}
->	 >     python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 2 -f ${WS} ${WS8}
->	 >     python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 2 -f ${WS} ${WS9}
->  >     python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 2 -f ${WS} ${WS10}
->  >     python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 2 -f ${WS} ${WS11}
+>	 >     python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 3 -f ${WS} ${WS2}
+>	 >     python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 3 -f ${WS} ${WS3}
+>	 >     python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 3 -f ${WS} ${WS4}
+>	 >     python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 3 -f ${WS} ${WS5}
+>	 >     python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 3 -f ${WS} ${WS6}
+>	 >     python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 3 -f ${WS} ${WS7}
+>	 >     python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 3 -f ${WS} ${WS8}
+>	 >     python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 3 -f ${WS} ${WS9}
+>  >     python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 3 -f ${WS} ${WS10}
+>  >     python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 3 -f ${WS} ${WS11}
 ~~~
 source ../inputVarchecker.sh
 ~~~
