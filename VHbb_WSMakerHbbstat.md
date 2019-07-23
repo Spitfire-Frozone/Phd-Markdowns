@@ -644,3 +644,16 @@ vim inputVarchecker.sh
 ~~~
 source ../inputVarchecker.sh
 ~~~
+
+# Fit Studies
+Now we start getting into the real meat and bones of the fit. Here we shall try to combine some of the parameters in the fit. The main reason is that it is clear 0-lep should not be able to fix Wbb (W+hf) but we do have some information about Z+hf. We have four floating normalisation (NF) systematics: 
+- 1 NF for Z+hf 2-jet: norm_Zbb_J2
+- 1 NF for Z+hf 3-jet: norm_Zbb_J3
+- 1 NP for W+hf in 2-jet: WbbNorm_J2
+- 1 NP for W+hf in 3-jet: WbbNorm_J3
+
+and we have no real handle on two of them. The solution to this is to try and get information about Wbb somewhere else and this comes in one of two forms
+1) V+hf NFs (Combining W+hf and Z+hf and decorrelate in terms of njets)
+2) W+hf fixed and Z+hf floating (Keep the Z+hf as they are bu tget the W+hf stuff from the 1L fit).
+
+## V+hf NFs
