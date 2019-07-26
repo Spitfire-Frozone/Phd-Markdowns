@@ -656,4 +656,41 @@ and we have no real handle on two of them. The solution to this is to try and ge
 1) V+hf NFs (Combining W+hf and Z+hf and decorrelate in terms of njets)
 2) W+hf fixed and Z+hf floating (Keep the Z+hf as they are bu tget the W+hf stuff from the 1L fit).
 
-## V+hf NFs
+## V+hf Normilations Factors
+Option 1 consists of removing the individual Z+hf and W+hf markers for the fit and replacing them with a combined thing.
+~~~
+cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb
+setupATLAS && lsetup git && lsetup "root 6.14.04-x86_64-slc6-gcc62-opt"
+
+vim src/systematicslistsbuilder_vhbbrun2.cpp
+~~~
+> REMOVE 0L from W+hf items (~L144)
+>  >    if(hasZeroLep || hasTwoLep) -> if(hasTwoLep)
+
+> CHANGE Structure 0L in Z+hf items (~L163)
+>  >    if(hasTwoLep || hasZeroLep) { -> if(hasTwoLep) {
+>  >      normFact("Zbb", SysConfig{"Zhf"}.decorr(P::nJet));
+> MOVE normalisation for systematics to 2L only if case (L173 -> 166)
+>  >    normSys("SysZbbNorm", 0.07, SysConfig{"Zhf"}.applyIn(P::nLep==0).decorr(P::nLep));
+>  >    else { -> if(hasOneLep){ (~L168)
+
+> ADD merging of Z and W systematics (~L171)
+>  >    //Trialling combinationf Z+hf and W+hf in 0L
+>  >    if(hasZeroLep){ 
+>  >      normFact("Vbb", SysConfig{{"Zhf", "Whf"}}.decorr(P::nJet));
+>  >    }
+
+Once these changes have been made you need to run the fit 
+~~~
+cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb
+setupATLAS && lsetup git && lsetup "root 6.14.04-x86_64-slc6-gcc62-opt"
+source setup.sh
+cd build && cmake ..
+make -j10
+cd ..
+python scripts/launch_default_jobs.py 140ifb-0L-ade-WZmerge
+
+mv SMVHVZ_2019_MVA_mc16ade_v01.140ifb-0L-ade-WZmerge_fullRes_VHbb_140ifb-0L-ade-WZmerge_0_mc16ade_Systs_mva 140ifb-0L-ade-WZmerge
+python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade 140ifb-0L-ade-WZmerge -n -a 5 -l WbbZbb Vbb
+mv output/pullComparisons output/pullComparisons_WbbandZbb_vs_Vbb
+~~~
