@@ -493,14 +493,14 @@ vim analysis_plotting_macro/check_signal_0L_a_d_e.py
 >   >     ratioICHEP_d.Divide(h_a)
 >   >     ratioICHEP_d.Draw("HIST SAME")
 
->   >     del hICHEP_a (~L355)
->   >     del hICHEP_d (~L356)
->   >     del ratioICHEP_a (~L359)
->   >     del ratioICHEP_d (~L360)
->   >     fileICHEP_a.Close() (~L365)
->   >     fileICHEP_d.Close() (~L366)
+>   >     del hICHEP_a (~L361)
+>   >     del hICHEP_d (~L362)
+>   >     del ratioICHEP_a (~L365)
+>   >     del ratioICHEP_d (~L366)
+>   >     fileICHEP_a.Close() (~L371)
+>   >     fileICHEP_d.Close() (~L372)
 
-> CHANGE output path so it runs on a single CPU (~L387)
+> CHANGE output path so it runs on a single CPU (~L393)
 >   >     p = Pool(8) -> p = Pool(1)
 
 > CHANGE output directory for plot folders 
@@ -509,10 +509,10 @@ vim analysis_plotting_macro/check_signal_0L_a_d_e.py
 >   >     c.SaveAs(sample + "/" + name + ".png") -> c.SaveAs("140ifbade/" + sample + "/" + name + ".png") (L348)
 >   >     c.SaveAs(sample + "/" + name + ".pdf") -> c.SaveAs("140ifbade/" + sample + "/" + name + ".pdf") (L349)
 
-> COMMENT OUT variables core running variables (~L389)
+> COMMENT OUT variables core running variables (~L394)
 >   >     p.map(plotSample, sample_names)
 
-> ADD looping of sample in main function (L390)
+> ADD looping of sample in main function (L397)
 >   >     for background_or_signal in sample_names :
 >   >        if background_or_signal == " ": #You can insert things you don't want to run over in here.
 >   >          continue
@@ -644,6 +644,22 @@ vim inputVarchecker.sh
 ~~~
 source ../inputVarchecker.sh
 ~~~
+Here upon running and examining the METSig plots we actually see that we don't like the binning. This can be changed. The re-binning function can be seen in WSMaker/scripts/analysisPlottingConfig.py 
+~~~
+cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb
+vim WSMakerCore/scripts/plotMaker.py
+~~~
+> ADD re-binning of METSig plots by a factor 5 #L1172
+>  >     rebin_factor = 5 # This part will add automatic re-binning for all METSig plots. 
+>  >     if isinstance(hist, ROOT.TH1) and props and self.cfg.do_rebinning(props):
+>  >         if props["L"] == "0" and props["dist"] == "METSig":
+>  >             new_hist = hist.Rebin(rebin_factor,"newHist")
+
+Then assuming no changes have been made to launch_default_jobs.py you can just re-run this command. Otherwise you will have to edit the file to the state required to run the individual input variables. 
+~~~
+python scripts/launch_default_jobs.py 140ifb-0L-ade-Inputs
+~~~
+
 
 # Fit Studies
 Now we start getting into the real meat and bones of the fit. Here we shall try to combine some of the parameters in the fit. The main reason is that it is clear 0-lep should not be able to fix Wbb (W+hf) but we do have some information about Z+hf. We have four floating normalisation (NF) systematics: 
