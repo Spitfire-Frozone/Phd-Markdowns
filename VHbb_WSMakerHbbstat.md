@@ -2,7 +2,7 @@
 
 ## "VHbb WSMaker and Hbb Stat" ##
 ===============================================================================
-## Last Edited: 23-07-2019
+## Last Edited: 01-08-2019
 
 Once a basic familiarity with WSMaker has been established, (see VHbb_2Lep_Reader_Inputs.md ) a task, which gets more and more priority is to test reducing the number of bins in the inputs.
 
@@ -483,36 +483,36 @@ vim analysis_plotting_macro/check_signal_0L_a_d_e.py
 >   >     else:
 >   >        leg.AddEntry(hICHEP_d, "mc16d ICHEP (" + str(round(integralICHEP_d/integral_a - 1,3)*100) + "% mc16a)", "lp")
 
->   >     hICHEP_a.Draw("SAME") (~L307)
->   >     hICHEP_d.Draw("SAME") (~L308)
+>   >     hICHEP_a.Draw("SAME") (~L311)
+>   >     hICHEP_d.Draw("SAME") (~L312)
 
->   >     ratioICHEP_a = hICHEP_a.Clone("ratio") (~L328 - L334)
+>   >     ratioICHEP_a = hICHEP_a.Clone("ratio") (~L339 - L345)
 >   >     ratioICHEP_a.Divide(h_a)
 >   >     ratioICHEP_a.Draw("HIST SAME")
 >   >     ratioICHEP_d = hICHEP_d.Clone("ratio")
 >   >     ratioICHEP_d.Divide(h_a)
 >   >     ratioICHEP_d.Draw("HIST SAME")
 
->   >     del hICHEP_a (~L361)
->   >     del hICHEP_d (~L362)
->   >     del ratioICHEP_a (~L365)
->   >     del ratioICHEP_d (~L366)
->   >     fileICHEP_a.Close() (~L371)
->   >     fileICHEP_d.Close() (~L372)
+>   >     del hICHEP_a (~L366)
+>   >     del hICHEP_d (~L367)
+>   >     del ratioICHEP_a (~L370)
+>   >     del ratioICHEP_d (~L371)
+>   >     fileICHEP_a.Close() (~L376)
+>   >     fileICHEP_d.Close() (~L377)
 
-> CHANGE output path so it runs on a single CPU (~L393)
+> CHANGE output path so it runs on a single CPU (~L398)
 >   >     p = Pool(8) -> p = Pool(1)
 
-> CHANGE output directory for plot folders 
->   >     if not os.path.exists(sample): -> if not os.path.exists("140ifbade/" + sample): (L345)
->   >     os.makedirs(sample) -> os.makedirs("140ifbade/" + sample) (L346)
->   >     c.SaveAs(sample + "/" + name + ".png") -> c.SaveAs("140ifbade/" + sample + "/" + name + ".png") (L348)
->   >     c.SaveAs(sample + "/" + name + ".pdf") -> c.SaveAs("140ifbade/" + sample + "/" + name + ".pdf") (L349)
+> CHANGE output directory for plot folders (~L356-L360)
+>   >     if not os.path.exists(sample): -> if not os.path.exists("140ifbade/" + sample): 
+>   >     os.makedirs(sample) -> os.makedirs("140ifbade/" + sample)
+>   >     c.SaveAs(sample + "/" + name + ".png") -> c.SaveAs("140ifbade/" + sample + "/" + name + ".png") 
+>   >     c.SaveAs(sample + "/" + name + ".pdf") -> c.SaveAs("140ifbade/" + sample + "/" + name + ".pdf") 
 
-> COMMENT OUT variables core running variables (~L394)
+> COMMENT OUT variables core running variables (~L399)
 >   >     p.map(plotSample, sample_names)
 
-> ADD looping of sample in main function (L397)
+> ADD looping of sample in main function (~L402)
 >   >     for background_or_signal in sample_names :
 >   >        if background_or_signal == " ": #You can insert things you don't want to run over in here.
 >   >          continue
@@ -658,8 +658,19 @@ vim WSMakerCore/scripts/plotMaker.py
 Then assuming no changes have been made to launch_default_jobs.py you can just re-run this command. Otherwise you will have to edit the file to the state required to run the individual input variables. 
 ~~~
 python scripts/launch_default_jobs.py 140ifb-0L-ade-Inputs
-~~~
 
+cd output
+mv *METSig 140ifb-0L-ade-Inputs_METSig_2
+rm -rf SMVHVZ_2019_MVA_mc16ade_v01_Vars.140ifb-0L-ade-Inputs_fullRes_VHbb_140ifb-0L-ade-Inputs_0_mc16ade_Systs_*
+cd ..
+python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 3 -f 140ifb-0L-ade-Inputs_Base 140ifb-0L-ade-Inputs_METSig_2
+~~~
+Then if the new plots are to your liking then you can replace the old version of the METSig with the newer one
+~~~
+cd output 
+rm -rf 140ifb-0L-ade-Inputs_METSig
+mv 140ifb-0L-ade-Inputs_METSig_2 140ifb-0L-ade-Inputs_METSig
+~~~
 
 # Fit Studies
 Now we start getting into the real meat and bones of the fit. Here we shall try to combine some of the parameters in the fit. The main reason is that it is clear 0-lep should not be able to fix Wbb (W+hf) but we do have some information about Z+hf. We have four floating normalisation (NF) systematics: 
