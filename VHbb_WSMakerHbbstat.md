@@ -657,6 +657,12 @@ vim WSMakerCore/scripts/plotMaker.py
 
 Then assuming no changes have been made to launch_default_jobs.py you can just re-run this command. Otherwise you will have to edit the file to the state required to run the individual input variables. 
 ~~~
+cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb
+setupATLAS && lsetup git && lsetup "root 6.14.04-x86_64-slc6-gcc62-opt"
+source setup.sh
+cd build && cmake ..
+make -j10
+cd ..
 python scripts/launch_default_jobs.py 140ifb-0L-ade-Inputs
 
 cd output
