@@ -4,8 +4,8 @@
 
 Last Edited: 31-01-2017
 -------------------------------------------------------------------------------
-# Continues on from "ESD-NTUP_Physval Object Comparison" which itself # 
-# Continues on from "Running_ESD's_on_the_grid_on_lxplus.md" # 
+### Continues on from "ESD-NTUP_Physval Object Comparison" which itself ### 
+### Continues on from "Running_ESD's_on_the_grid_on_lxplus.md" ### 
 
 On the eventual inevitability that something goes wrong with your grid jobs you may need to do the one thing that no one in their right of mind would want to do willingly. Scroll through the log files fo the grid jobs and see what is the matter.
 It is usually very useful for you to have the pandaweb page of your run to hand http://bigpanda.cern.ch/task/10729125/
