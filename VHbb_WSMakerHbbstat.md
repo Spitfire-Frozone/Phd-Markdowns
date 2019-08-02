@@ -727,3 +727,35 @@ mv SMVHVZ_2019_MVA_mc16ade_v01.140ifb-0L-ade-WZmerge_fullRes_VHbb_140ifb-0L-ade-
 python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade 140ifb-0L-ade-WZmerge -n -a 5 -l WbbZbb Vbb
 mv output/pullComparisons output/pullComparisons_WbbandZbb_vs_Vbb
 ~~~
+
+## Setting W+hf Normilisations Factor(s) to 1L channel values
+Option 2 consists of removing the individual W+hf markers for the fit and setting them to the 1L value.
+~~~
+cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb
+setupATLAS && lsetup git && lsetup "root 6.14.04-x86_64-slc6-gcc62-opt"
+vim src/systematicslistsbuilder_vhbbrun2.cpp
+~~~
+> CHANGE Z+hf back to what it was (L164)
+>  >    if(hasTwoLep) -> if(hasTwoLep || hasZeroLep) 
+
+> COMMENT OUT Trialling combinationf Z+hf and W+hf in 0L (L171)
+>  >    //if(hasZeroLep){ 
+>  >    //  normFact("Vbb", SysConfig{{"Zhf", "Whf"}}.decorr(P::nJet));
+>  >    //}
+
+~~~
+
+in the function:
+@@ -156,12 +156,6 @@ TH1* InputsHandlerRun2::getHist(const Sample& sample, const TString& systname) {
+add this around line 158:
+if(res!= nullptr && sample.name() == "Whf" && Configuration::analysisType() == AnalysisType::VHbbRun2){
+res->Scale(1.1);
+}
+then remove the Wbb systematic uncertainties
+
+
+vim WSMakerCore/src/inputshandler_run2.cpp
+~~~
+> ADD Setting of W+hf to 1L value (~L158)
+>  >    if(res!= nullptr && sample.name() == "Whf" && Configuration::analysisType() == AnalysisType::VHbbRun2){
+res->Scale(1.1);
