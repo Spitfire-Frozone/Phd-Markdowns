@@ -292,3 +292,27 @@ mv SignalBoosted-oldandnewest_TriggerPlots SignalBoosted-oldandnewest_a_TriggerP
 cd SignalBoosted-oldandnewest_a_TriggerPlots
 imgcat *.pdf
 ~~~
+
+# Merging Updates
+~~~
+cd /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_july2019/
+setupATLAS && lsetup git && lsetup "root 6.14.04-x86_64-slc6-gcc62-opt" 
+vim CxAODTools_VHbb/CxAODTools_VHbb/TriggerTool_VHbb.h
+~~~
+- Remove initialisation of MET Trigger Variables
+- Harmonise naming procedures. m_do_1L_MuonTrigger -> m_doMuonTriggerin1L & m_METTriggerin2L -> m_doMETTriggerin2L
+~~~
+vim CxAODTools_VHbb/Root/TriggerTool_VHbb.cxx
+vim CxAODTools_VHbb/Root/TriggerTool_VHbb2Lep.cxx
+vim CxAODTools_VHbb/Root/TriggerTool_VHbb1Lep.cxx
+vim CxAODReader_VHbb/Root/AnalysisReader_VHQQ.cxx
+vim CxAODReader_VHbb/Root/AnalysisReader_VHQQ2Lep.cxx
+vim CxAODReader_VHbb/CxAODReader_VHbb/AnalysisReader_VHQQ.h
+vim CxAODReader_VHbb/data/framework-read.cfg
+vim CxAODReader_VHbb/data/framework-read-automatic.cfg
+~~~
+- Propogate name changes throughout code.
+~~~
+vim CxAODTools_VHbb/Root/TriggerTool_VHbb.cxx
+~~~
+- Remove excess if statements 
