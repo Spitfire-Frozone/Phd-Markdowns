@@ -744,18 +744,23 @@ vim src/systematicslistsbuilder_vhbbrun2.cpp
 >  >    //}
 
 ~~~
-
-in the function:
-@@ -156,12 +156,6 @@ TH1* InputsHandlerRun2::getHist(const Sample& sample, const TString& systname) {
-add this around line 158:
-if(res!= nullptr && sample.name() == "Whf" && Configuration::analysisType() == AnalysisType::VHbbRun2){
-res->Scale(1.1);
-}
-then remove the Wbb systematic uncertainties
-
-
 vim WSMakerCore/src/inputshandler_run2.cpp
 ~~~
-> ADD Setting of W+hf to 1L value (~L158)
+> ADD Setting of W+hf to 1L value (~L158) before (  if(res == nullptr) )
 >  >    if(res!= nullptr && sample.name() == "Whf" && Configuration::analysisType() == AnalysisType::VHbbRun2){
-res->Scale(1.1);
+>  >       res->Scale(1.1);
+>  >    }
+
+Once these changes have been made you need to run the fit again 
+~~~
+cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb
+setupATLAS && lsetup git && lsetup "root 6.14.04-x86_64-slc6-gcc62-opt"
+source setup.sh
+cd build && cmake ..
+make -j10
+cd ..
+python scripts/launch_default_jobs.py 140ifb-0L-ade-Wbbfixed
+
+mv SMVHVZ_2019_MVA_mc16ade_v01.140ifb-0L-ade-Wbbfixed_fullRes_VHbb_140ifb-0L-ade-Wbbfixed_0_mc16ade_Systs_mva 140ifb-0L-ade-Wbbfixed
+python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade 140ifb-0L-ade-WZmerge 140ifb-0L-ade-Wbbfixed -n -a 5 -l WbbZbb Vbb Wfixed
+mv output/pullComparisons output/pullComparisons_WbbandZbb_vs_Vbb_vs_Wfixed
