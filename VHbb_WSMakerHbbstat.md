@@ -713,6 +713,19 @@ vim src/systematicslistsbuilder_vhbbrun2.cpp
 >  >      normFact("Vbb", SysConfig{{"Zhf", "Whf"}}.decorr(P::nJet));
 >  >    }
 
+~~~
+vim scripts/launch_default_jobs.py
+~~~
+> CHANGE Variables to run the baseline FullRun2 (~L13)
+>  >     version = "v01"            (L13)
+>  >     doPostFit = False          (L15)
+
+>  >     channels = ["0"]           (L46)
+>  >     MCTypes = ["mc16ade"]      (L48)
+
+>  >     runPulls = True           (L62)
+>  >     runP0 = True              (L66)
+
 Once these changes have been made you need to run the fit 
 ~~~
 cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb
@@ -761,6 +774,7 @@ make -j10
 cd ..
 python scripts/launch_default_jobs.py 140ifb-0L-ade-Wbbfixed
 
+cd output
 mv SMVHVZ_2019_MVA_mc16ade_v01.140ifb-0L-ade-Wbbfixed_fullRes_VHbb_140ifb-0L-ade-Wbbfixed_0_mc16ade_Systs_mva 140ifb-0L-ade-Wbbfixed
 python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade 140ifb-0L-ade-WZmerge 140ifb-0L-ade-Wbbfixed -n -a 5 -l WbbZbb Vbb Wfixed
 mv output/pullComparisons output/pullComparisons_WbbandZbb_vs_Vbb_vs_Wfixed
