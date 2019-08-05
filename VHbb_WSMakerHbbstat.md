@@ -774,7 +774,6 @@ make -j10
 cd ..
 python scripts/launch_default_jobs.py 140ifb-0L-ade-Wbbfixed
 
-cd output
-mv SMVHVZ_2019_MVA_mc16ade_v01.140ifb-0L-ade-Wbbfixed_fullRes_VHbb_140ifb-0L-ade-Wbbfixed_0_mc16ade_Systs_mva 140ifb-0L-ade-Wbbfixed
+mv output/SMVHVZ_2019_MVA_mc16ade_v01.140ifb-0L-ade-Wbbfixed_fullRes_VHbb_140ifb-0L-ade-Wbbfixed_0_mc16ade_Systs_mva output/140ifb-0L-ade-Wbbfixed
 python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade 140ifb-0L-ade-WZmerge 140ifb-0L-ade-Wbbfixed -n -a 5 -l WbbZbb Vbb Wfixed
 mv output/pullComparisons output/pullComparisons_WbbandZbb_vs_Vbb_vs_Wfixed
