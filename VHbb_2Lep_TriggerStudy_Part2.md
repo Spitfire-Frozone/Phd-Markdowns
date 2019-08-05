@@ -251,7 +251,6 @@ vim ../source/CxAODOperations_VHbb/scripts/submitReader.sh
 cd run/
 ../source/CxAODOperations_VHbb/scripts/submitReader.sh /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/VH/CxAOD_r32-15 SignalBoosted_newestTrigger_TEST 2L a VHbb CUT D1 32-15 2lsignal none 1
 
-root -b -l -q '../TriggerStudyPlots.cxx("/afs/cern.ch/work/d/dspiteri/VHbb/", "CxAODFramework_master/","SignalBoosted","old","newest","SIGNAL.root","2L","32-15","ade","CUT", "D1","SR")'
 ~~~
 Next one should check that all the inputs were fine. Resubmitting failes ones as necessary.
 ~~~
