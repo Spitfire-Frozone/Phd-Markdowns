@@ -2,7 +2,7 @@
 
 ## VHbb 2 Lepton Trigger Study Part 2 ##
 
-Last Edited: 10-07-2019
+Last Edited: 07-08-2019
 -------------------------------------------------------------------------------
 
 # Setup Script
@@ -355,4 +355,21 @@ vim ../source/CxAODOperations_VHbb/scripts/submitReader.sh
 ../source/CxAODOperations_VHbb/scripts/submitReader.sh /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/VH/CxAOD_r32-15 SignalResolved_newestTrigger 2L a,d,e VHbb MVA D1 32-15 none none 1
 
 ../source/CxAODOperations_VHbb/scripts/submitReader.sh /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/VH/CxAOD_r32-15 SignalBoosted_newestTrigger 1L a VHbb CUT D1 32-15 none none 1
+~~~
+Now to hadd the files
+~~~
+cd /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_july2019/
+setupATLAS && lsetup git && lsetup "root 6.14.04-x86_64-slc6-gcc62-opt" 
+
+cd run/SignalBoosted_oldTrigger
+source VHbbHaddAll2LadeCUT.sh
+source VHbbHaddAll1LadeCUT.sh
+cd ../SignalBoosted_newestTrigger
+source VHbbHaddAll2LadeCUT.sh
+source VHbbHaddAll1LadeCUT.sh
+
+cd ../SignalResolved_oldTrigger
+source VHbbHaddAll2LadeMVA.sh
+cd ../SignalResolved_newestTrigger
+source VHbbHaddAll2LadeMVA.sh
 ~~~
