@@ -315,3 +315,44 @@ vim CxAODReader_VHbb/data/framework-read-automatic.cfg
 vim CxAODTools_VHbb/Root/TriggerTool_VHbb.cxx
 ~~~
 - Remove excess if statements 
+
+
+# Producing Final Plots
+~~~
+cd /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_july2019/
+setupATLAS && lsetup git && lsetup "root 6.14.04-x86_64-slc6-gcc62-opt" 
+release=`cat source/CxAODBootstrap_VHbb/bootstrap/release.txt` && echo "release=$release"
+asetup $release,AnalysisBase
+cd build
+make -j10
+source x86_64-centos7-gcc62-opt/setup.sh
+lsetup 'lcgenv -p LCG_91 x86_64-centos7-gcc62-opt numpy'
+cd ../run
+
+vim ../source/CxAODOperations_VHbb/scripts/submitReader.sh
+~~~
+> CHANGE 
+>  >    DO2LMETTRIGGER="false" (L266)
+~~~
+../source/CxAODOperations_VHbb/scripts/submitReader.sh /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/VH/CxAOD_r32-15 SignalBoosted_oldTrigger 2L a,d,e VHbb CUT D1 32-15 none none 1
+~~~
+We also want to generate some final plots for the Resolved analysis as well.
+~~~
+../source/CxAODOperations_VHbb/scripts/submitReader.sh /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/VH/CxAOD_r32-15 SignalResolved_oldTrigger 2L a,d,e VHbb MVA D1 32-15 none none 1
+~~~
+But since there have been changes to 1L as well as 2L, one needs to generate plots for 1L to show that the code doesn't affect the plots. 
+~~~
+../source/CxAODOperations_VHbb/scripts/submitReader.sh /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/VH/CxAOD_r32-15 SignalBoosted_oldTrigger 1L a VHbb CUT D1 32-15 none none 1
+
+
+vim ../source/CxAODOperations_VHbb/scripts/submitReader.sh
+~~~
+> CHANGE 
+>  >    DO2LMETTRIGGER="true" (L266)
+~~~
+../source/CxAODOperations_VHbb/scripts/submitReader.sh /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/VH/CxAOD_r32-15 SignalBoosted_newestTrigger 2L a,d,e VHbb CUT D1 32-15 none none 1
+
+../source/CxAODOperations_VHbb/scripts/submitReader.sh /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/VH/CxAOD_r32-15 SignalResolved_newestTrigger 2L a,d,e VHbb MVA D1 32-15 none none 1
+
+../source/CxAODOperations_VHbb/scripts/submitReader.sh /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/VH/CxAOD_r32-15 SignalBoosted_newestTrigger 1L a VHbb CUT D1 32-15 none none 1
+~~~
