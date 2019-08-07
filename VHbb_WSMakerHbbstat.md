@@ -2,7 +2,7 @@
 
 ## "VHbb WSMaker and Hbb Stat" ##
 ===============================================================================
-## Last Edited: 01-08-2019
+## Last Edited: 07-08-2019
 
 Once a basic familiarity with WSMaker has been established, (see VHbb_2Lep_Reader_Inputs.md ) a task, which gets more and more priority is to test reducing the number of bins in the inputs.
 
@@ -703,6 +703,7 @@ vim src/systematicslistsbuilder_vhbbrun2.cpp
 > CHANGE Structure 0L in Z+hf items (~L163)
 >  >    if(hasTwoLep || hasZeroLep) { -> if(hasTwoLep) {
 >  >      normFact("Zbb", SysConfig{"Zhf"}.decorr(P::nJet));
+
 > MOVE normalisation for systematics to 2L only if case (L173 -> 166)
 >  >    normSys("SysZbbNorm", 0.07, SysConfig{"Zhf"}.applyIn(P::nLep==0).decorr(P::nLep));
 >  >    else { -> if(hasOneLep){ (~L168)
