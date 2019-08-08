@@ -2,7 +2,7 @@
 
 ## VHbb 2 Lepton Trigger Study Part 2 ##
 
-Last Edited: 07-08-2019
+Last Edited: 08-08-2019
 -------------------------------------------------------------------------------
 
 # Setup Script
@@ -399,14 +399,14 @@ cd /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_july2019/
 setupATLAS && lsetup git && lsetup "root 6.14.04-x86_64-slc6-gcc62-opt" 
 
 cd run/SignalBoosted_oldTrigger
-source VHbbHaddAll2LadeCUT.sh
-source VHbbHaddAll1LadeCUT.sh
+source /afs/cern.ch/work/d/dspiteri/VHbb/VHbbHaddAll2LadeCUT.sh
+source /afs/cern.ch/work/d/dspiteri/VHbb/VHbbHaddAll1LaCUT.sh
 cd ../SignalBoosted_newestTrigger
-source VHbbHaddAll2LadeCUT.sh
-source VHbbHaddAll1LadeCUT.sh
+source /afs/cern.ch/work/d/dspiteri/VHbb/VHbbHaddAll2LadeCUT.sh
+source /afs/cern.ch/work/d/dspiteri/VHbb/VHbbHaddAll1LaCUT.sh
 
 cd ../SignalResolved_oldTrigger
-source VHbbHaddAll2LadeMVA.sh
+source /afs/cern.ch/work/d/dspiteri/VHbb/VHbbHaddAll2LadeMVA.sh
 cd ../SignalResolved_newestTrigger
-source VHbbHaddAll2LadeMVA.sh
+source /afs/cern.ch/work/d/dspiteri/VHbb/VHbbHaddAll2LadeMVA.sh
 ~~~
