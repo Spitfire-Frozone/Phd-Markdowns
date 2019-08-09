@@ -334,21 +334,21 @@ vim ../source/CxAODOperations_VHbb/scripts/submitReader.sh
 > CHANGE 
 >  >    DO2LMETTRIGGER="false" (L266)
 ~~~
-../source/CxAODOperations_VHbb/scripts/submitReader.sh /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/VH/CxAOD_r32-15 SignalBoosted_oldTrigger 2L a,d,e VHbb CUT D1 32-15 none none 1
+../source/CxAODOperations_VHbb/scripts/submitReader.sh /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/VH/CxAOD_r32-15 FullBoosted_oldTrigger 2L a,d,e VHbb CUT D1 32-15 none none 1
 ~~~
 
 But since there have been changes to 1L as well as 2L, one needs to generate plots for 1L to show that the code doesn't affect the plots. 
 ~~~
-../source/CxAODOperations_VHbb/scripts/submitReader.sh /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/VH/CxAOD_r32-15 SignalBoosted_oldTrigger 1L a VHbb CUT D1 32-15 none none 1
+../source/CxAODOperations_VHbb/scripts/submitReader.sh /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/VH/CxAOD_r32-15 FullBoosted_oldTrigger 1L a VHbb CUT D1 32-15 none none 1
 
 vim ../source/CxAODOperations_VHbb/scripts/submitReader.sh
 ~~~
 > CHANGE 
 >  >    DO2LMETTRIGGER="true" (L269)
 ~~~
-../source/CxAODOperations_VHbb/scripts/submitReader.sh /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/VH/CxAOD_r32-15 SignalBoosted_newestTrigger 2L a,d,e VHbb CUT D1 32-15 none none 1
+../source/CxAODOperations_VHbb/scripts/submitReader.sh /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/VH/CxAOD_r32-15 FullBoosted_newestTrigger 2L a,d,e VHbb CUT D1 32-15 none none 1
 
-../source/CxAODOperations_VHbb/scripts/submitReader.sh /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/VH/CxAOD_r32-15 SignalBoosted_newestTrigger 1L a VHbb CUT D1 32-15 none none 1
+../source/CxAODOperations_VHbb/scripts/submitReader.sh /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/VH/CxAOD_r32-15 FullBoosted_newestTrigger 1L a VHbb CUT D1 32-15 none none 1
 ~~~
 
 We also want to generate some final plots for the Resolved analysis as well.
@@ -358,37 +358,38 @@ vim ../source/CxAODOperations_VHbb/scripts/submitReader.sh
 > CHANGE 
 >  >    ANASTRATEGY="Resolved" (L235)
 >  >    DO2LMETTRIGGER="false" (L269)
+>  >    DOPTVSPLITTING250GEV="true" (L828)
 ~~~
-../source/CxAODOperations_VHbb/scripts/submitReader.sh /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/VH/CxAOD_r32-15 SignalResolved_oldTrigger 2L a,d,e VHbb MVA D1 32-15 none none 1
+../source/CxAODOperations_VHbb/scripts/submitReader.sh /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/VH/CxAOD_r32-15 FullResolved_oldTrigger 2L a,d,e VHbb MVA D1 32-15 none none 1
 
 vim ../source/CxAODOperations_VHbb/scripts/submitReader.sh
 ~~~
 > CHANGE 
 >  >    DO2LMETTRIGGER="true" (L269)
 ~~~
-../source/CxAODOperations_VHbb/scripts/submitReader.sh /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/VH/CxAOD_r32-15 SignalResolved_newestTrigger 2L a,d,e VHbb MVA D1 32-15 none none 1
+../source/CxAODOperations_VHbb/scripts/submitReader.sh /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/VH/CxAOD_r32-15 FullResolved_newestTrigger 2L a,d,e VHbb MVA D1 32-15 none none 1
 ~~~
 
 Once those files have been submitted to the grid and have run. Next one should check that all the inputs were fine. Resubmitting failes ones as necessary.
 ~~~
-cd run/SignalBoosted_oldTrigger
+cd run/FullBoosted_oldTrigger
 python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master/source/CxAODOperations_VHbb/scripts/checkReaderFails.py Reader_2L_32-15_a_CUT_D1
 python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master/source/CxAODOperations_VHbb/scripts/checkReaderFails.py Reader_2L_32-15_d_CUT_D1
 python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master/source/CxAODOperations_VHbb/scripts/checkReaderFails.py Reader_2L_32-15_e_CUT_D1
 python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master/source/CxAODOperations_VHbb/scripts/checkReaderFails.py Reader_1L_32-15_a_CUT_D1
 
-cd ../SignalBoosted_newestTrigger
+cd ../FullBoosted_newestTrigger
 python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master/source/CxAODOperations_VHbb/scripts/checkReaderFails.py Reader_2L_32-15_a_CUT_D1
 python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master/source/CxAODOperations_VHbb/scripts/checkReaderFails.py Reader_2L_32-15_d_CUT_D1
 python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master/source/CxAODOperations_VHbb/scripts/checkReaderFails.py Reader_2L_32-15_e_CUT_D1
 python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master/source/CxAODOperations_VHbb/scripts/checkReaderFails.py Reader_1L_32-15_a_CUT_D1
 
-cd ../SignalResolved_oldTrigger
+cd ../FullResolved_oldTrigger
 python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master/source/CxAODOperations_VHbb/scripts/checkReaderFails.py Reader_2L_32-15_a_MVA_D1
 python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master/source/CxAODOperations_VHbb/scripts/checkReaderFails.py Reader_2L_32-15_d_MVA_D1
 python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master/source/CxAODOperations_VHbb/scripts/checkReaderFails.py Reader_2L_32-15_e_MVA_D1
 
-cd ../SignalResolved_newestTrigger
+cd ../FullResolved_newestTrigger
 python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master/source/CxAODOperations_VHbb/scripts/checkReaderFails.py Reader_2L_32-15_a_MVA_D1
 python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master/source/CxAODOperations_VHbb/scripts/checkReaderFails.py Reader_2L_32-15_d_MVA_D1
 python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master/source/CxAODOperations_VHbb/scripts/checkReaderFails.py Reader_2L_32-15_e_MVA_D1
@@ -398,15 +399,48 @@ Once all the jobs have succeeded. Now to hadd the files
 cd /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_july2019/
 setupATLAS && lsetup git && lsetup "root 6.14.04-x86_64-slc6-gcc62-opt" 
 
-cd run/SignalBoosted_oldTrigger
+cd run/FullBoosted_oldTrigger
 source /afs/cern.ch/work/d/dspiteri/VHbb/VHbbHaddAll2LadeCUT.sh
 source /afs/cern.ch/work/d/dspiteri/VHbb/VHbbHaddAll1LaCUT.sh
-cd ../SignalBoosted_newestTrigger
+cd ../FullBoosted_newestTrigger
 source /afs/cern.ch/work/d/dspiteri/VHbb/VHbbHaddAll2LadeCUT.sh
 source /afs/cern.ch/work/d/dspiteri/VHbb/VHbbHaddAll1LaCUT.sh
 
-cd ../SignalResolved_oldTrigger
+cd ../FullResolved_oldTrigger
 source /afs/cern.ch/work/d/dspiteri/VHbb/VHbbHaddAll2LadeMVA.sh
-cd ../SignalResolved_newestTrigger
+cd ../FullResolved_newestTrigger
 source /afs/cern.ch/work/d/dspiteri/VHbb/VHbbHaddAll2LadeMVA.sh
+~~~
+And now the money plots
+~~~
+cd /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_july2019/
+
+vim ../TriggerStudyPlots.cxx
+~~~
+> CHANGE vector of samples to the signal ones (~L110)
+>   >     std::vector samples = {"ggZllH125", "qqZllH125", "qqWlvH125"}; //2L Signal
+~~~
+
+root -b -l -q '../TriggerStudyPlots.cxx("/afs/cern.ch/work/d/dspiteri/VHbb/", "CxAODFramework_master_july2019/","FullBoosted","old","newest","SIGNAL.root","2L","32-15","ade","CUT","D1","SR")'
+mv run/FullBoosted-oldandnewest_TriggerPlots run/SignalBoosted-oldandnewest_ade_TriggerPlots
+
+root -b -l -q '../TriggerStudyPlots.cxx("/afs/cern.ch/work/d/dspiteri/VHbb/", "CxAODFramework_master_july2019/","FullResolved","old","newest","SIGNAL.root","2L","32-15","ade","MVA","D1","SR")'
+mv run/FullBoosted-oldandnewest_TriggerPlots run/SignalResolved-oldandnewest_ade_TriggerPlots
+
+
+vim ../TriggerStudyPlots.cxx
+~~~
+> CHANGE vector of samples to the signal ones (~L110)
+>   >     std::vector samples = {"ggZllH125", "ggZvvH125", "ggZZ", "qqWlvH125", "qqZllH125", "qqZvvH125", "stops", "stopt", "stopWt", "ttbar", "Wbb", "Wbc", "Wbl", "Wcc", "Wcl", "Wl", "WZ", "Zbb","Zbc","Zbl","Zcc", "Zcl", "Zl", "ZZ"}; //Everything 
+~~~
+
+root -b -l -q '../TriggerStudyPlots.cxx("/afs/cern.ch/work/d/dspiteri/VHbb/", "CxAODFramework_master_july2019/","FullBoosted","old","newest","2LEPALL.root","2L","32-15","ade","CUT","D1","SR")'
+mv run/FullBoosted-oldandnewest_TriggerPlots run/FullBoosted-oldandnewest_ade_TriggerPlots
+
+root -b -l -q '../TriggerStudyPlots.cxx("/afs/cern.ch/work/d/dspiteri/VHbb/", "CxAODFramework_master_july2019/","FullBoosted","old","newest","2LEPALL.root","1L","32-15","a","CUT","D1","SR")'
+mv run/FullBoosted-oldandnewest_TriggerPlots run/FullBoosted-oldandnewest_1L_a_TriggerPlots
+
+root -b -l -q '../TriggerStudyPlots.cxx("/afs/cern.ch/work/d/dspiteri/VHbb/", "CxAODFramework_master_july2019/","FullBoosted","old","newest","2LEPALL.root","2L","32-15","ade","MVA","D1","SR")'
+mv run/FullBoosted-oldandnewest_TriggerPlots run/FullResolved-oldandnewest_ade_TriggerPlots
+
 ~~~
