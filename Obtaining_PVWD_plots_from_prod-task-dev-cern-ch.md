@@ -12,4 +12,3 @@ dataset and if it does these are the NTUPS you are looking for.
 
 Log into lxplus and download the files and follow the proceedure set out in 
 "ESD-NTUP_PhysVal comparison"
- 
