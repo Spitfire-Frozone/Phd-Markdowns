@@ -9,7 +9,7 @@ ORIGIN - The fork you make of a repository
 UPSTREAM - The main repository
 ___________________________
 # 0) Creating a git repository
----------------------------------
+---------------------------
 
 You will only have to do this if you are working on something else separate to a common analysis framework. To create a project in your personal repository, you can go to https://gitlab.cern.ch/<your cern username>.
 Then click on "New project" and give it a title and a privacy setting - default is "private"
@@ -35,7 +35,7 @@ git push -u origin master
 ~~~
 ___________________________
 # 1) Setup
----------------------------------
+---------------------------
 
 ~~~
 cd Code_Development/ATHENA
