@@ -739,8 +739,8 @@ cd ..
 python scripts/launch_default_jobs.py 140ifb-0L-ade-WZmerge
 
 mv output/SMVHVZ_2019_MVA_mc16ade_v01.140ifb-0L-ade-WZmerge_fullRes_VHbb_140ifb-0L-ade-WZmerge_0_mc16ade_Systs_mva output140ifb-0L-ade-WZmerge
-python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade 140ifb-0L-ade-WZmerge -n -a 5 -l WbbZbb Vbb
-mv output/pullComparisons output/pullComparisons_WbbandZbb_vs_Vbb
+python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade 140ifb-0L-ade-WZmerge -n -a 5 -l Zbb Vbb
+mv output/pullComparisons output/pullComparisons_Zbb_vs_Vbb
 ~~~
 
 ## Setting W+hf Normilisations Factor(s) to 1L channel values
