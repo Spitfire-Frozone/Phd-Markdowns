@@ -1,7 +1,7 @@
 # This is aimed at the main analysis of my PhD: Associated Production of Higgs with a Vector boson (most likely Z) where the Higgs decays to a pair of bottom quarks. This document is about generating and creating ntuples from VHbb CxAOD's and testing them. #
 
 ## "VHbb 2 Lepton Reader Inputs" ##
-===============================================================================
+
 Last Edited: 17-06-2018
 -------------------------------------------------------------------------------
 
@@ -22,29 +22,29 @@ source getMaster.sh r31-10 CxAODFramework_tag_r31-10 1 1
 So the standard variable settings in the newly obtained directory are not necessary going to be the same as what you want. All the important files will need to be checked.
 
 ### FrameworkExe/scripts/SubmitReader.sh
->   DRIVER = "LSF" (L55)
->   JOBSIZELIMITMB="-1"  (L58)
->   NRFILESPERJOB="100"  (L59)
+>   DRIVER = "LSF" (L55)                                                                                        
+>   JOBSIZELIMITMB="-1"  (L58)                                                                                  
+>   NRFILESPERJOB="100"  (L59)                                                                               
 
 ### FrameworkExe/data/framework-read-automatic.cfg
->   vector<string> TMVATrainingTool.InputVarNames = pTV mLL MET dRBB mBB pTB1 pTB2 pTJ3 mBBJ dPhiVBB dEtaVBB (L80)
+>   vector<string> TMVATrainingTool.InputVarNames = pTV mLL MET dRBB mBB pTB1 pTB2 pTJ3 mBBJ dPhiVBB dEtaVBB (L80)           
 >   string bQueue              = 8nh (L91)
 
 ### CxAODReader_VHbb/Root/AnalysisReader_VHbb2Lep.cxx
->   > L1062
->   m_histSvc->BookFillHist("pTV", 20, 0, 500, m_MVAInputs2l->pTV, m_weight);
->   m_histSvc->BookFillHist("mLL", 20, 80, 100, m_MVAInputs2l->mLL, m_weight);
->   m_histSvc->BookFillHist("MET", 25,0, 500, m_MVAInputs2l->MET, m_weight);
->   m_histSvc->BookFillHist("dRBB", 20, 0, 5, m_MVAInputs2l->dRBB, m_weight);
+>   > L1062                                                                                                
+>   m_histSvc->BookFillHist("pTV", 20, 0, 500, m_MVAInputs2l->pTV, m_weight);                                            
+>   m_histSvc->BookFillHist("mLL", 20, 80, 100, m_MVAInputs2l->mLL, m_weight);                                            
+>   m_histSvc->BookFillHist("MET", 25,0, 500, m_MVAInputs2l->MET, m_weight);                                                
+>   m_histSvc->BookFillHist("dRBB", 20, 0, 5, m_MVAInputs2l->dRBB, m_weight);                                               
 >   m_histSvc->BookFillHist("mBB", 25, 0., 500., m_MVAInputs2l->mBB, m_weight);
->   m_histSvc->BookFillHist("pTB1", 50, 0., 500., m_MVAInputs2l->pTB1, m_weight);
->   m_histSvc->BookFillHist("pTB2", 50, 0., 500., m_MVAInputs2l->pTB2, m_weight);
->   m_histSvc->BookFillHist("pTJ3", 50, 0., 500., m_MVAInputs2l->pTJ3, m_weight);
->   m_histSvc->BookFillHist("mBBJ", 15, 0, 750, m_MVAInputs2l->mBBJ, m_weight);
->   m_histSvc->BookFillHist("dPhiVBB", 15, 1.5, 3.15, m_MVAInputs2l->dPhiVBB, m_weight);
->   m_histSvc->BookFillHist("dEtaVBB", 20, 0, 5, m_MVAInputs2l->dEtaVBB, m_weight);
-> }
-
+>   m_histSvc->BookFillHist("pTB1", 50, 0., 500., m_MVAInputs2l->pTB1, m_weight);                                         
+>   m_histSvc->BookFillHist("pTB2", 50, 0., 500., m_MVAInputs2l->pTB2, m_weight);                                            
+>   m_histSvc->BookFillHist("pTJ3", 50, 0., 500., m_MVAInputs2l->pTJ3, m_weight);                                         
+>   m_histSvc->BookFillHist("mBBJ", 15, 0, 750, m_MVAInputs2l->mBBJ, m_weight);                                  
+>   m_histSvc->BookFillHist("dPhiVBB", 15, 1.5, 3.15, m_MVAInputs2l->dPhiVBB, m_weight);                                
+>   m_histSvc->BookFillHist("dEtaVBB", 20, 0, 5, m_MVAInputs2l->dEtaVBB, m_weight);                             
+>   }                                                                               
+               
 ~~~
 cd /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_tag_r31-10/build/
 setupATLAS
