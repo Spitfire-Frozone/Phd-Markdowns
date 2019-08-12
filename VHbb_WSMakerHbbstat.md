@@ -679,39 +679,40 @@ mv 140ifb-0L-ade-Inputs_METSig_2 140ifb-0L-ade-Inputs_METSig
 ~~~
 
 # Fit Studies
-Now we start getting into the real meat and bones of the fit. Here we shall try to combine some of the parameters in the fit. The main reason is that it is clear 0-lep should not be able to fix Wbb (W+hf) but we do have some information about Z+hf. We have four floating normalisation (NF) systematics: 
-- 1 NF for Z+hf 2-jet: norm_Zbb_J2
-- 1 NF for Z+hf 3-jet: norm_Zbb_J3
+Now we start getting into the real meat and bones of the fit. Here we shall try to combine some of the parameters in the fit. The main reason is that it is clear 0-lep should not be able to fix Wbb (W+hf) but we do have some information about Z+hf. We have four systematics and two floating normalisation (NF) for Zbb: 
+- 1 NP for Z+hf 2-jet: norm_Zbb_J2
+- 1 NP for Z+hf 3-jet: norm_Zbb_J3
 - 1 NP for W+hf in 2-jet: WbbNorm_J2
 - 1 NP for W+hf in 3-jet: WbbNorm_J3
 
-and we have no real handle on two of them. The solution to this is to try and get information about Wbb somewhere else and this comes in one of two forms
-1) V+hf NFs (Combining W+hf and Z+hf and decorrelate in terms of njets)
-2) W+hf fixed and Z+hf floating (Keep the Z+hf as they are bu tget the W+hf stuff from the 1L fit).
+- 1 FN for Z+hf in 2jet
+- 1 FN for Z+hf in 3jet 
+
+and we have no real handle on floating normalisations for W+hf in 0L. The solution to this is to try and get information about Wbb somewhere else and this comes in one of two forms
+1) V+hf NFs (Combining NF's for both W+hf and Z+hf and decorrelate in terms of njets)
+2) W+hf fixed and Z+hf floating (Keep the Z+hf as they are but get the W+hf stuff from the 1L fit).
 
 ## V+hf Normilations Factors
-Option 1 consists of removing the individual Z+hf and W+hf markers for the fit and replacing them with a combined thing.
+Option 1 consists of removing the individual Z+hf markers for the fit and replacing them with a combined object.
 ~~~
 cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb
 setupATLAS && lsetup git && lsetup "root 6.14.04-x86_64-slc6-gcc62-opt"
 
 vim src/systematicslistsbuilder_vhbbrun2.cpp
 ~~~
-> REMOVE 0L from W+hf items (~L144)
->  >    if(hasZeroLep || hasTwoLep) -> if(hasTwoLep)
-
-> CHANGE Structure 0L in Z+hf items (~L163)
+> CHANGE Structure 0L in Z+hf items (~L164)
 >  >    if(hasTwoLep || hasZeroLep) { -> if(hasTwoLep) {
 >  >      normFact("Zbb", SysConfig{"Zhf"}.decorr(P::nJet));
 
-> MOVE normalisation for systematics to 2L only if case (L173 -> 166)
+> MOVE normalisation for systematics to 2L only if case (L169 -> 166)
 >  >    normSys("SysZbbNorm", 0.07, SysConfig{"Zhf"}.applyIn(P::nLep==0).decorr(P::nLep));
 >  >    else { -> if(hasOneLep){ (~L168)
 
-> ADD merging of Z and W systematics (~L171)
+> ADD merging of Z and W systematics (~L172)
 >  >    //Trialling combinationf Z+hf and W+hf in 0L
 >  >    if(hasZeroLep){ 
 >  >      normFact("Vbb", SysConfig{{"Zhf", "Whf"}}.decorr(P::nJet));
+>  >      normSys("SysZbbNorm", 0.07, SysConfig{"Zhf"}.applyIn(P::nLep==0).decorr(P::nLep));
 >  >    }
 
 ~~~
@@ -737,13 +738,16 @@ make -j10
 cd ..
 python scripts/launch_default_jobs.py 140ifb-0L-ade-WZmerge
 
-mv SMVHVZ_2019_MVA_mc16ade_v01.140ifb-0L-ade-WZmerge_fullRes_VHbb_140ifb-0L-ade-WZmerge_0_mc16ade_Systs_mva 140ifb-0L-ade-WZmerge
+mv output/SMVHVZ_2019_MVA_mc16ade_v01.140ifb-0L-ade-WZmerge_fullRes_VHbb_140ifb-0L-ade-WZmerge_0_mc16ade_Systs_mva output140ifb-0L-ade-WZmerge
 python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade 140ifb-0L-ade-WZmerge -n -a 5 -l WbbZbb Vbb
 mv output/pullComparisons output/pullComparisons_WbbandZbb_vs_Vbb
 ~~~
 
 ## Setting W+hf Normilisations Factor(s) to 1L channel values
-Option 2 consists of removing the individual W+hf markers for the fit and setting them to the 1L value.
+Option 2 consists of introducing a W+hf floating normalisation for the fit by either doing one of two things. 
+- Creating a FN for Wbb in the fit and setting it to the value of the 1L fit.
+- Scaling the fir inputs by the 1L value.
+This shall note the stpes to attempt the second way as it is easier and these should be identical. 
 ~~~
 cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb
 setupATLAS && lsetup git && lsetup "root 6.14.04-x86_64-slc6-gcc62-opt"
@@ -752,18 +756,24 @@ vim src/systematicslistsbuilder_vhbbrun2.cpp
 > CHANGE Z+hf back to what it was (L164)
 >  >    if(hasTwoLep) -> if(hasTwoLep || hasZeroLep) 
 
-> COMMENT OUT Trialling combinationf Z+hf and W+hf in 0L (L171)
+> COMMENT OUT Trialling combinationf Z+hf and W+hf in 0L (L172)
 >  >    //if(hasZeroLep){ 
 >  >    //  normFact("Vbb", SysConfig{{"Zhf", "Whf"}}.decorr(P::nJet));
+>  >    //  normSys("SysZbbNorm", 0.07, SysConfig{"Zhf"}.applyIn(P::nLep==0).decorr(P::nLep));
 >  >    //}
 
+To see what individual samples are merged together to make W+hf you will need to look in samplesbuilder_vhbbrun2.cpp
 ~~~
+vim WSMakerCore/src/samplesbuilder_vhbbrun2.cpp
+
 vim WSMakerCore/src/inputshandler_run2.cpp
 ~~~
-> ADD Setting of W+hf to 1L value (~L158) before (  if(res == nullptr) )
->  >    if(res!= nullptr && sample.name() == "Whf" && Configuration::analysisType() == AnalysisType::VHbbRun2){
->  >       res->Scale(1.1);
->  >    }
+> ADD Setting of W+hf (via components as found) to 1L value (~L158) before (  if(res == nullptr) )
+>  >      if(res!= nullptr && Configuration::analysisType() == AnalysisType::VHbbRun2){
+>  >          if (sample.name() == "Wbb" || sample.name() == "Wbc" || sample.name() == "Wbl" || sample.name() == "Wcc"){
+>  >            res->Scale(1.1);
+>  >          }
+>  >      }
 
 Once these changes have been made you need to run the fit again 
 ~~~
