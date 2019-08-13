@@ -425,7 +425,7 @@ root -b -l -q '../TriggerStudyPlots.cxx("/afs/cern.ch/work/d/dspiteri/VHbb/", "C
 mv run/FullBoosted-oldandnewest_TriggerPlots run/SignalBoosted-oldandnewest_ade_TriggerPlots
 
 root -b -l -q '../TriggerStudyPlots.cxx("/afs/cern.ch/work/d/dspiteri/VHbb/", "CxAODFramework_master_july2019/","FullResolved","old","newest","SIGNAL.root","2L","32-15","ade","MVA","D1","SR")'
-mv run/FullBoosted-oldandnewest_TriggerPlots run/SignalResolved-oldandnewest_ade_TriggerPlots
+mv run/FullResolved-oldandnewest_TriggerPlots run/SignalResolved-oldandnewest_ade_TriggerPlots
 
 
 vim ../TriggerStudyPlots.cxx
@@ -441,6 +441,6 @@ root -b -l -q '../TriggerStudyPlots.cxx("/afs/cern.ch/work/d/dspiteri/VHbb/", "C
 mv run/FullBoosted-oldandnewest_TriggerPlots run/FullBoosted-oldandnewest_1L_a_TriggerPlots
 
 root -b -l -q '../TriggerStudyPlots.cxx("/afs/cern.ch/work/d/dspiteri/VHbb/", "CxAODFramework_master_july2019/","FullBoosted","old","newest","2LEPALL.root","2L","32-15","ade","MVA","D1","SR")'
-mv run/FullBoosted-oldandnewest_TriggerPlots run/FullResolved-oldandnewest_ade_TriggerPlots
+mv run/FullResolved-oldandnewest_TriggerPlots run/FullResolved-oldandnewest_ade_TriggerPlots
 
 ~~~
