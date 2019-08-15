@@ -19,32 +19,34 @@ source getMaster.sh origin/master CxAODFramework_master_0Linputs2019 1 1
 
 ## Reconfiguration of necessary files.
 
-Setup:
+## Setup:
 - CxAOD production r32-15
 - latest CxAODReader, CxAODReader_VHbb, CxAODTools, CorrsAndSysts, CxAODOperations_VHbb
-- all systematics: NOMINALONLY="false"
-- only fit inputs: DOONLYINPUTS="true"
-- start with non-STXS, we will need STXS_stage=2 for the final configuration 
-      -> rerunning only the signal in STXS mode after the rest of the inputs are fully done
-- b-tagging: make sure you use
-      -> BTAGGINGCONFIGS="MV2c10 70 AntiKt4EMTopoJets FixedCut"
-      -> Latest custom CDI: BTAGGINGCDIFILE="/afs/cern.ch/user/i/iluise/public/2019-13TeV_Feb19_CDI-2019-02-18_v1_Continuous.root"
-- split histograms at ptv=250: DOPTVSPLITTING250GEV="true"
+~~~
+vim source/CxAODOperations_VHbb/scripts/submitReader.sh
+~~~
+- only fit inputs: DOONLYINPUTS="true" (~L194)
+- all systematics: NOMINALONLY="false" (~L204)
+- start with non-STXS, we will need STXS_stage=2 for the final configuration: GENERATESTXSSIGNALS="false" (~L211)
+>  rerunning only the signal in STXS mode after the rest of the inputs are fully done
+- Latest custom CDI: BTAGGINGCDIFILE="/afs/cern.ch/user/i/iluise/public/2019-13TeV_Feb19_CDI-2019-02-18_v1_Continuous.root" (~L553)
+- b-tagging: BTAGGINGCONFIGS="MV2c10 70 AntiKt4EMTopoJets FixedCut" (L566)
+- split histograms at ptv=250: DOPTVSPLITTING250GEV="true" (L661)
 - truth-tagging: use full hybrid, mode H
 - harmonized CBA/MVA: DONEWREGIONS="true"
       -> we should  consider a "false" production, but I propose to launch it only once this one is done
 - periods: files for a, d, e, ad, ade
-- include low pTV (75-150 GeV)
-Feel free to remind me any point we discussed on the previous productions you might think useful.
+- include medium pTV (75-150 GeV)
 
-Outputs:
-- outputs should be stored here:
+## Outputs:
+The outputs from the running should be stored here:
 /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/FullRunII2019/statArea/inputs/XLep/r32-15_customCDI_DATE/
-with XLep the folder of your channel. I think it is clearer if we create a new folder with the date than piling up files with just a version number
-- ouputs should be named:
+with XLep the folder of your channel. Thomas Calvet thinks it is clearer if we create a new folder with the date than piling up files with just a version number.
+
+Ouputs should have the following naming convention:
 - LimitHistograms.VHbb.*x*Lep.13TeV.mc16*y*.*z*.root
-- with: x=0,1,2 for your channel
+- With: x=0,1,2 for your channel
           y=a,d,e,ad,ade depending on the period
           z="yourInstitute.version" (version=r32-15+addOnIfNeeded)
-- a README file containing all setup information for your channel (for example detail which samples are truthtagged)
-- ideally you can put the configuration file (framework-read or logfile) of the CxAOD reader in the folder
+- A README file containing all setup information for your channel (for example detail which samples are truthtagged)
+- Ideally the configuration file (framework-read or logfile) of the CxAOD reader in the folder
