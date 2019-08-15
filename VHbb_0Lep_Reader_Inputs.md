@@ -34,7 +34,7 @@ vim source/CxAODOperations_VHbb/scripts/submitReader.sh
 - split histograms at ptv=250: DOPTVSPLITTING250GEV="true" (L661)
 - truth-tagging: use full hybrid, mode H
 - harmonized CBA/MVA: DONEWREGIONS="true"
-      -> we should  consider a "false" production, but I propose to launch it only once this one is done
+>   should  consider a "false" production, but I propose to launch it only once this one is done
 - periods: files for a, d, e, ad, ade
 - include medium pTV (75-150 GeV)
 
@@ -45,8 +45,9 @@ with XLep the folder of your channel. Thomas Calvet thinks it is clearer if we c
 
 Ouputs should have the following naming convention:
 - LimitHistograms.VHbb.*x*Lep.13TeV.mc16*y*.*z*.root
-- With: x=0,1,2 for your channel
-          y=a,d,e,ad,ade depending on the period
-          z="yourInstitute.version" (version=r32-15+addOnIfNeeded)
+>  x=0,1,2 for your channel                                                                                    
+>  y=a,d,e,ad,ade depending on the period                                                                      
+>  z="yourInstitute.version" (version=r32-15+addOnIfNeeded)   
+
 - A README file containing all setup information for your channel (for example detail which samples are truthtagged)
 - Ideally the configuration file (framework-read or logfile) of the CxAOD reader in the folder
