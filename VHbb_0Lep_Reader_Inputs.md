@@ -18,7 +18,9 @@ source getMaster.sh origin/master CxAODFramework_master_0Linputs2019 1 1
 ~~~
 
 ## Reconfiguration of necessary files.
-
+~~~
+cd /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_0Linputs2019/
+~~~
 ## Setup:
 - CxAOD production r32-15
 - latest CxAODReader, CxAODReader_VHbb, CxAODTools, CorrsAndSysts, CxAODOperations_VHbb
@@ -37,6 +39,20 @@ vim source/CxAODOperations_VHbb/scripts/submitReader.sh
 >   should  consider a "false" production, but I propose to launch it only once this one is done
 - periods: files for a, d, e, ad, ade
 - include medium pTV (75-150 GeV)
+
+## Running 
+~~~
+cd /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_0Linputs2019/
+setupATLAS && lsetup git && lsetup "root 6.14.04-x86_64-slc6-gcc62-opt" 
+release=`cat source/CxAODBootstrap_VHbb/bootstrap/release.txt` && echo "release=$release"
+asetup $release,AnalysisBase
+cd build && rm -rf *
+cmake ../source
+make -j10
+source x86_64-centos7-gcc62-opt/setup.sh
+lsetup 'lcgenv -p LCG_91 x86_64-centos7-gcc62-opt numpy'
+cd ..
+~~~
 
 ## Outputs:
 The outputs from the running should be stored here:
