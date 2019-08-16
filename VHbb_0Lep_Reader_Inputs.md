@@ -49,9 +49,12 @@ asetup $release,AnalysisBase
 cd build && rm -rf *
 cmake ../source
 make -j10
-source x86_64-centos7-gcc62-opt/setup.sh
+source x86_64-centos7-gcc8-opt/setup.sh
 lsetup 'lcgenv -p LCG_91 x86_64-centos7-gcc62-opt numpy'
-cd ..
+cd ../run
+
+../source/CxAODOperations_VHbb/scripts/submitReader.sh /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/VH/CxAOD_r32-15 LimitHistograms.VHbb.0Lep.13TeV.mc16e.Glasgow.root 0L e VHbb MVA H 32-15 none none 1
+
 ~~~
 
 ## Outputs:
