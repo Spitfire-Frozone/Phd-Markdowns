@@ -31,12 +31,12 @@ vim source/CxAODOperations_VHbb/scripts/submitReader.sh
 - all systematics: NOMINALONLY="false" (~L204)
 - start with non-STXS, we will need STXS_stage=2 for the final configuration: GENERATESTXSSIGNALS="false" (~L211)
 >  rerunning only the signal in STXS mode after the rest of the inputs are fully done
-- Latest custom CDI: BTAGGINGCDIFILE="/afs/cern.ch/user/i/iluise/public/2019-13TeV_Feb19_CDI-2019-02-18_v1_Continuous.root" (~L553)
-- b-tagging: BTAGGINGCONFIGS="MV2c10 70 AntiKt4EMTopoJets FixedCut" (L566)
+- harmonized CBA/MVA: DONEWREGIONS="true" (L274)
+>   should  consider a "false" production, but I propose to launch it only once this one is done
+- Latest custom CDI: BTAGGINGCDIFILE="/afs/cern.ch/user/i/iluise/public/2019-13TeV_Feb19_CDI-2019-02-18_v1_Continuous.root" (~L560)
+- b-tagging: BTAGGINGCONFIGS="MV2c10 70 AntiKt4EMTopoJets FixedCut" (L571)
 - split histograms at ptv=250: DOPTVSPLITTING250GEV="true" (L661)
 - truth-tagging: use full hybrid, mode H
-- harmonized CBA/MVA: DONEWREGIONS="true"
->   should  consider a "false" production, but I propose to launch it only once this one is done
 - periods: files for a, d, e, ad, ade
 - include medium pTV (75-150 GeV)
 
