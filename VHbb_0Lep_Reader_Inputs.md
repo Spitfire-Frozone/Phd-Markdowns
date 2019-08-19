@@ -2,7 +2,7 @@
 
 ## "VHbb 0 Lepton Reader Inputs" ##
 
-Last Edited: 17-08-2019
+Last Edited: 19-08-2019
 -------------------------------------------------------------------------------
 
 # Setup
@@ -69,3 +69,12 @@ Ouputs should have the following naming convention:
 
 - A README file containing all setup information for your channel (for example detail which samples are truthtagged)
 - Ideally the configuration file (framework-read or logfile) of the CxAOD reader in the folder
+
+## Checking Inputs 
+~~~
+cd /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_0Linputs2019/
+setupATLAS && lsetup git && lsetup "root 6.14.04-x86_64-slc6-gcc62-opt" 
+
+cd run/LimitHistograms.VHbb.0Lep.13TeV.mc16e.Glasgow.root/Reader_0L_32-15_e_MVA_H/
+python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_0Linputs2019/source/CxAODOperations_VHbb/scripts/checkReaderFails.py Reader_0L_32-15_e_MVA_H/
+~~~
