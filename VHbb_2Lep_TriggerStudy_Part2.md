@@ -2,7 +2,7 @@
 
 ## VHbb 2 Lepton Trigger Study Part 2 ##
 
-Last Edited: 08-08-2019
+Last Edited: 21-08-2019
 -------------------------------------------------------------------------------
 
 # Setup Script
@@ -420,8 +420,8 @@ vim ../TriggerStudyPlots.cxx
 > CHANGE vector of samples to the signal ones (~L110)
 >   >     std::vector samples = {"ggZllH125", "qqZllH125", "qqWlvH125"}; //2L Signal
 
-> CHANGE the legend of the plots
->   >     legend.AddEntry(TProfileInputPlot2, Form("0l Signal (%) Gain = %f",improvement), "-");   
+> CHANGE the legend of the plots (~L495)
+>   >     legend.AddEntry(TProfileInputPlot2, Form("2L Signal (%) Gain = %f",improvement), "-");   
 ~~~
 
 root -b -l -q '../TriggerStudyPlots.cxx("/afs/cern.ch/work/d/dspiteri/VHbb/", "CxAODFramework_master_july2019/","FullBoosted","old","newest","SIGNAL.root","2L","32-15","ade","CUT","D1","SR")'
@@ -433,11 +433,11 @@ mv run/FullResolved-oldandnewest_TriggerPlots run/SignalResolved-oldandnewest_ad
 
 vim ../TriggerStudyPlots.cxx
 ~~~
-> CHANGE vector of samples to the background ones (~L110)
+> CHANGE vector of samples to the everything ones (~L110)
 >   >     std::vector samples = {"ggZllH125", "ggZvvH125", "ggZZ", "qqWlvH125", "qqZllH125", "qqZvvH125", "stops", "stopt", "stopWt", "ttbar", "Wbb", "Wbc", "Wbl", "Wcc", "Wcl", "Wl", "WZ", "Zbb","Zbc","Zbl","Zcc", "Zcl", "Zl", "ZZ"}; //Everything 
 
 > CHANGE the legend of the plots
->   >     legend.AddEntry(TProfileInputPlot2, Form("All Bkgs (%) Gain = %f",improvement), "-");   
+>   >     legend.AddEntry(TProfileInputPlot2, Form("2LS+B(%) Gain = %f",improvement), "-");   
 ~~~
 
 root -b -l -q '../TriggerStudyPlots.cxx("/afs/cern.ch/work/d/dspiteri/VHbb/", "CxAODFramework_master_july2019/","FullBoosted","old","newest","2LEPALL.root","2L","32-15","ade","CUT","D1","SR")'
