@@ -448,5 +448,35 @@ mv run/FullBoosted-oldandnewest_TriggerPlots run/FullBoosted-oldandnewest_1L_a_T
 
 root -b -l -q '../TriggerStudyPlots.cxx("/afs/cern.ch/work/d/dspiteri/VHbb/", "CxAODFramework_master_july2019/","FullBoosted","old","newest","2LEPALL.root","2L","32-15","ade","MVA","D1","SR")'
 mv run/FullResolved-oldandnewest_TriggerPlots run/FullResolved-oldandnewest_ade_TriggerPlots
+~~~
 
+## Comparison with older stuff.
+Although technically it is a box-ticking exercise, it is important to test the changes themselves such that the act of putting in a flag, even though it is set to false does nothing. For this we will need to test the 'old' version of the 1L trigger on the development branch to a run on the master. 
+~~~
+cd /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_july2019/
+setupATLAS && lsetup git && lsetup "root 6.14.04-x86_64-slc6-gcc62-opt" 
+
+cd source/CxAODOperations_VHbb
+git checkout master
+cd ../CxAODTools_VHbb
+git checkout master
+cd ../CxAODReader_VHbb
+git checkout master
+
+cd /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_july2019/
+release=`cat source/CxAODBootstrap_VHbb/bootstrap/release.txt` && echo "release=$release"
+asetup $release,AnalysisBase
+cd build
+make -j10
+source x86_64-centos7-gcc62-opt/setup.sh
+lsetup 'lcgenv -p LCG_91 x86_64-centos7-gcc62-opt numpy'
+cd ../run
+
+vim ../source/CxAODOperations_VHbb/scripts/submitReader.sh
+~~~
+> CHANGE 
+>  >    ANASTRATEGY="Merged" (L235)
+>  >    DOPTVSPLITTING250GEV="true" (L752)
+~~~
+../source/CxAODOperations_VHbb/scripts/submitReader.sh /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/VH/CxAOD_r32-15 FullBoosted_master 1L a VHbb CUT D1 32-15 none none 1
 ~~~
