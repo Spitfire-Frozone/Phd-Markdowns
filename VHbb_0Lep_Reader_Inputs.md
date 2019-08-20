@@ -51,26 +51,19 @@ cmake ../source
 make -j10
 source x86_64-centos7-gcc8-opt/setup.sh
 cd ../run
-
-../source/CxAODOperations_VHbb/scripts/submitReader.sh /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/VH/CxAOD_r32-15 LimitHistograms.VHbb.0Lep.13TeV.mc16e.Glasgow.root 0L e VHbb MVA H 32-15 none none 1
-
 ~~~
-
-## Outputs:
-The outputs from the running should be stored here:
-/eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/FullRunII2019/statArea/inputs/XLep/r32-15_customCDI_DATE/
-with XLep the folder of your channel. Thomas Calvet thinks it is clearer if we create a new folder with the date than piling up files with just a version number.
-
 Ouputs should have the following naming convention:
 - LimitHistograms.VHbb.*x*Lep.13TeV.mc16*y*.*z*.root
 >  x=0,1,2 for your channel                                                                                    
 >  y=a,d,e,ad,ade depending on the period                                                                      
 >  z="yourInstitute.version" (version=r32-15+addOnIfNeeded)   
+~~~
+../source/CxAODOperations_VHbb/scripts/submitReader.sh /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/VH/CxAOD_r32-15 LimitHistograms.VHbb.0Lep.13TeV.mc16e.Glasgow 0L e VHbb MVA H 32-15 none none 1
 
-- A README file containing all setup information for your channel (for example detail which samples are truthtagged)
-- Ideally the configuration file (framework-read or logfile) of the CxAOD reader in the folder
+~~~
+## Outputs:
 
-## Checking Inputs 
+The inputs need to be checked for errors that occurred during the run. 
 ~~~
 cd /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_0Linputs2019/
 setupATLAS && lsetup git && lsetup "root 6.14.04-x86_64-slc6-gcc62-opt" 
@@ -78,3 +71,49 @@ setupATLAS && lsetup git && lsetup "root 6.14.04-x86_64-slc6-gcc62-opt"
 cd run/LimitHistograms.VHbb.0Lep.13TeV.mc16e.Glasgow.root/Reader_0L_32-15_e_MVA_H/
 python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_0Linputs2019/source/CxAODOperations_VHbb/scripts/checkReaderFails.py Reader_0L_32-15_e_MVA_H/
 ~~~
+Once you are happy that all the files are all present and correct. You can hadd the output.
+~~~
+cd run/LimitHistograms.VHbb.0Lep.13TeV.mc16e.Glasgow/Reader_0L_32-15_e_MVA_H/fetch
+
+hadd DATA.root hist-data*
+hadd GGZH.root hist-ggZ*
+hadd GGZZ.root hist-ggZqq*
+hadd QQWH.root hist-qqW*
+hadd QQZH.root hist-qqZ*
+hadd STOPs.root hist-stop*
+hadd TTBAR_DILEP.root hist-ttbar_dilep*
+hadd TTBAR_1PLUSLEP.root hist-ttbar_nonallhad*
+hadd WENUB.root hist-WenuB*
+hadd WENU.root hist-Wenu_Sh221*
+hadd WMUNUB.root hist-WmunuB*
+hadd WMUNU.root hist-Wmunu_Sh221*
+hadd WTAUNUB.root hist-WtaunuB*
+hadd WTAUNU.root hist-Wtaunu_Sh221*
+hadd WZ.root  hist-WlvZ* hist-WqqZ*
+hadd ZZ.root  hist-ZbbZ* hist-ZqqZ*
+hadd ZEEB.root  hist-ZeeB*
+hadd ZEE.root  hist-Zee_Sh221*
+hadd ZMUMUB.root  hist-ZmumuB*
+hadd ZMUMU.root  hist-Zmumu_Sh221-*
+hadd ZTAUTAUB.root  hist-ZtautauB*
+hadd ZTAUTAU.root  hist-Ztautau_Sh221*
+
+hadd LimitHistograms.VHbb.0Lep.13TeV.mc16e.Glasgow.root GGZH.root GGZZ.root QQWH.root QQZH.root STOPs.root TTBAR_DILEP.root  TTBAR_1PLUSLEP.root  WENUB.root WENU.root WMUNUB.root WMUNU.root WTAUNUB.root WTAUNU.root WZ.root ZZ.root  ZEEB.root  ZEE.root  ZMUMUB.root ZMUMU.root ZTAUTAUB.root ZTAUTAU.root  
+
+rm DATA.root GGZH.root GGZZ.root QQWH.root QQZH.root STOPs.root TTBAR_DILEP.root TTBAR_1PLUSLEP.root WENUB.root WENU.root WMUNUB.root WMUNU.root WTAUNUB.root WTAUNU.root WZ.root ZZ.root ZEEB.root ZEE.root ZMUMUB.root ZMUMU.root ZTAUTAUB.root ZTAUTAU.root 
+~~~
+The outputs from the running should be stored here:
+/eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/FullRunII2019/statArea/inputs/XLep/r32-15_customCDI_DATE/
+>  /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/FullRunII2019/statArea/inputs/ZeroLep/r32-15_customCDI_20190820/
+
+- A README file containing all setup information for your channel (for example detail which samples are truthtagged)
+- Ideally the configuration file (framework-read or logfile) of the CxAOD reader in the folder
+~~~
+cd /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/FullRunII2019/statArea/inputs/ZeroLep/r32-15_customCDI_20190820/
+cp /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_0Linputs2019/run/LimitHistograms.VHbb.0Lep.13TeV.mc16e.Glasgow/Reader_0L_32-15_e_MVA_H/fetch/LimitHistograms.VHbb.0Lep.13TeV.mc16e.Glasgow.root .
+cp /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_0Linputs2019/run/LimitHistograms.VHbb.0Lep.13TeV.mc16e.Glasgow/Reader_0L_32-15_e_MVA_H/submit/run.log .
+mv run.log run_e.log
+cp /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_0Linputs2019/source/CxAODReader_VHbb/data/framework-read-automatic.cfg .
+mv framework-read-automatic.cfg framework-read-e-automatic.cfg
+~~~
+
