@@ -477,9 +477,8 @@ asetup $release,AnalysisBase
 cd build && rm -rf *
 cmake ../source
 make -j10
-source x86_64-centos7-gcc62-opt/setup.sh
-lsetup 'lcgenv -p LCG_91 x86_64-centos7-gcc62-opt numpy'
-cd ..
+source x86_64-centos7-gcc8-opt/setup.sh
+cd ../run
 
 vim ../source/CxAODOperations_VHbb/scripts/submitReader.sh
 ~~~
