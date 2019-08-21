@@ -446,7 +446,7 @@ mv run/FullBoosted-oldandnewest_TriggerPlots run/FullBoosted-oldandnewest_ade_Tr
 root -b -l -q '../TriggerStudyPlots.cxx("/afs/cern.ch/work/d/dspiteri/VHbb/", "CxAODFramework_master_july2019/","FullBoosted","old","newest","2LEPALL.root","1L","32-15","a","CUT","D1","SR")'
 mv run/FullBoosted-oldandnewest_TriggerPlots run/FullBoosted-oldandnewest_1L_a_TriggerPlots
 
-root -b -l -q '../TriggerStudyPlots.cxx("/afs/cern.ch/work/d/dspiteri/VHbb/", "CxAODFramework_master_july2019/","FullBoosted","old","newest","2LEPALL.root","2L","32-15","ade","MVA","D1","SR")'
+root -b -l -q '../TriggerStudyPlots.cxx("/afs/cern.ch/work/d/dspiteri/VHbb/", "CxAODFramework_master_july2019/","FullResolved","old","newest","2LEPALL.root","2L","32-15","ade","MVA","D1","SR")'
 mv run/FullResolved-oldandnewest_TriggerPlots run/FullResolved-oldandnewest_ade_TriggerPlots
 ~~~
 
