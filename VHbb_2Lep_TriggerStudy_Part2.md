@@ -455,14 +455,21 @@ Although technically it is a box-ticking exercise, it is important to test the c
 ~~~
 cd /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_july2019/
 setupATLAS && lsetup git && lsetup "root 6.14.04-x86_64-slc6-gcc62-opt" 
-
+~~~
+Ensure that ALL the sub-directories are up-to-date. Here I have only put the ones I've edited, but all the others have to be edited as well.  
+~~~
 cd source/CxAODOperations_VHbb
 git checkout master
+git pull
+
 cd ../CxAODTools_VHbb
 git checkout master
+git pull
+ 
 cd ../CxAODReader_VHbb
 git checkout master
-
+git pull
+ 
 cd /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_july2019/
 release=`cat source/CxAODBootstrap_VHbb/bootstrap/release.txt` && echo "release=$release"
 asetup $release,AnalysisBase
