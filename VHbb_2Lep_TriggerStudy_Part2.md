@@ -471,13 +471,15 @@ git checkout master
 git pull
  
 cd /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_july2019/
+setupATLAS && lsetup git && lsetup "root 6.14.04-x86_64-slc6-gcc62-opt" 
 release=`cat source/CxAODBootstrap_VHbb/bootstrap/release.txt` && echo "release=$release"
 asetup $release,AnalysisBase
-cd build
+cd build && rm -rf *
+cmake ../source
 make -j10
 source x86_64-centos7-gcc62-opt/setup.sh
 lsetup 'lcgenv -p LCG_91 x86_64-centos7-gcc62-opt numpy'
-cd ../run
+cd ..
 
 vim ../source/CxAODOperations_VHbb/scripts/submitReader.sh
 ~~~
@@ -485,5 +487,5 @@ vim ../source/CxAODOperations_VHbb/scripts/submitReader.sh
 >  >    ANASTRATEGY="Merged" (L235)
 >  >    DOPTVSPLITTING250GEV="true" (L752)
 ~~~
-../source/CxAODOperations_VHbb/scripts/submitReader.sh /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/VH/CxAOD_r32-15 FullBoosted_master 1L a VHbb CUT D1 32-15 none none 1
+../source/CxAODOperations_VHbb/scripts/submitReader.sh /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/VH/CxAOD_r32-15 FullBoosted_master 1L,2L a VHbb CUT D1 32-15 none none 1
 ~~~
