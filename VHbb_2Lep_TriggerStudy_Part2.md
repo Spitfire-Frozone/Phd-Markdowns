@@ -478,6 +478,7 @@ cd build && rm -rf *
 cmake ../source
 make -j10
 source x86_64-centos7-gcc8-opt/setup.sh
+lsetup 'lcgenv -p LCG_94 x86_64-centos7-gcc8-opt numpy'
 cd ../run
 
 vim ../source/CxAODOperations_VHbb/scripts/submitReader.sh
