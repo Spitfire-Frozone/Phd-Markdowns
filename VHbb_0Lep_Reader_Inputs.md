@@ -115,5 +115,18 @@ cp /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_0Linputs2019/run/Limi
 mv run.log run_e.log
 cp /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_0Linputs2019/source/CxAODReader_VHbb/data/framework-read-automatic.cfg .
 mv framework-read-automatic.cfg framework-read-e-automatic.cfg
-~~~
 
+vim README.v01.r32-15_customCDI.txt
+~~~
+> 
+> LimitHistograms.VHbb.0Lep.13TeV.mc16e.Glasgow.root
+> 
+> -2019/08/20
+> 
+> * 32-15 CxAOD files
+> * Used August 15th 2019 checkout of CxAODReader master
+> * Catagories split at ptV=250GeV
+> * CDI file = /afs/cern.ch/user/i/iluise/public/2019-13TeV_Feb19_CDI-2019-02-18_v1_Continuous.root
+> * Ran with the 'H' tag. All samples hybrid tagged
+> * STXS signals: none 
+> * New Regions = none
