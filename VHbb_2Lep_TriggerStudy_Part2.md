@@ -504,6 +504,7 @@ vim Reader_1L_32-15_a_CUT_D1/submit/segments
 ~~~
 >    1, 3, 12, 36, 121, 364
 ~~~
+cd Reader_1L_32-15_a_CUT_D1
 ./submit/run 1
 ./submit/run 3
 ./submit/run 12
@@ -511,6 +512,7 @@ vim Reader_1L_32-15_a_CUT_D1/submit/segments
 ./submit/run 121
 ./submit/run 364
 
+cd ..
 python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master/source/CxAODOperations_VHbb/scripts/checkReaderFails.py Reader_2L_32-15_a_CUT_D1
 ~~~
 >    qqZllHbbJ_PwPy8MINLO-0, qqZllHccJ_PwPy8MINLO-4, ttbar_nonallhad_PwPy8-9
