@@ -527,3 +527,6 @@ Once all the jobs have succeeded. Now to hadd the files
 ~~~
 cd run/FullBoosted_oldTrigger
 source /afs/cern.ch/work/d/dspiteri/VHbb/VHbbHaddAll1LaCUT.sh
+
+cd Reader_2L_32-15_a_CUT_D1/fetch
+source 
