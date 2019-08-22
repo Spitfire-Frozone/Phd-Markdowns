@@ -498,9 +498,9 @@ setupATLAS && lsetup git && lsetup "root 6.14.04-x86_64-slc6-gcc62-opt"
 cd run/FullBoosted_master
 python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master/source/CxAODOperations_VHbb/scripts/checkReaderFails.py Reader_1L_32-15_a_CUT_D1
 ~~~
->    qZllHbbJ_PwPy8MINLO-0, qqWlvHbbJ_PwPy8MINLO-0, qqWlvHbbJ_PwPy8MINLO-9, WenuB_Sh221-0, WmunuB_Sh221-34, ttbar_dilep_PwPy8-36
+>    qqZllHbbJ_PwPy8MINLO-0, qqWlvHbbJ_PwPy8MINLO-0, qqWlvHbbJ_PwPy8MINLO-9, WenuB_Sh221-0, WmunuB_Sh221-34, ttbar_dilep_PwPy8-36
 ~~~
-vim Reader_2L_32-15_a_CUT_D1/submit/segments
+vim Reader_1L_32-15_a_CUT_D1/submit/segments
 ~~~
 >    1, 3, 12, 36, 121, 364
 ~~~
@@ -517,8 +517,9 @@ python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master/source/CxAODOpera
 ~~~
 vim Reader_2L_32-15_a_CUT_D1/submit/segments
 ~~~
->    1, 5, 9
+>    1, 15, 159
 ~~~
+cd Reader_2L_32-15_a_CUT_D1
 ./submit/run 1
 ./submit/run 15
 ./submit/run 159
