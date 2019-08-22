@@ -450,7 +450,7 @@ root -b -l -q '../TriggerStudyPlots.cxx("/afs/cern.ch/work/d/dspiteri/VHbb/", "C
 mv run/FullResolved-oldandnewest_TriggerPlots run/FullResolved-oldandnewest_ade_TriggerPlots
 ~~~
 
-## Comparison with older stuff.
+## Comparison with the master branch.
 Although technically it is a box-ticking exercise, it is important to test the changes themselves such that the act of putting in a flag, even though it is set to false does nothing. For this we will need to test the 'old' version of the 1L trigger on the development branch to a run on the master. 
 ~~~
 cd /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_july2019/
@@ -489,3 +489,32 @@ vim ../source/CxAODOperations_VHbb/scripts/submitReader.sh
 ~~~
 ../source/CxAODOperations_VHbb/scripts/submitReader.sh /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/VH/CxAOD_r32-15 FullBoosted_master 1L,2L a VHbb CUT D1 32-15 none none 1
 ~~~
+So now these inputs just need to be tested and hadded in the usual way
+~~~
+cd /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_july2019/
+setupATLAS && lsetup git && lsetup "root 6.14.04-x86_64-slc6-gcc62-opt" 
+
+cd run/FullBoosted_master
+python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master/source/CxAODOperations_VHbb/scripts/checkReaderFails.py Reader_1L_32-15_a_CUT_D1
+> qZllHbbJ_PwPy8MINLO-0, qqWlvHbbJ_PwPy8MINLO-0, qqWlvHbbJ_PwPy8MINLO-9, WenuB_Sh221-0, WmunuB_Sh221-34, ttbar_dilep_PwPy8-36
+vim Reader_2L_32-15_a_CUT_D1/submit/segments
+> 1, 3, 12, 36, 121, 364
+./submit/run 1
+./submit/run 3
+./submit/run 12
+./submit/run 36
+./submit/run 121
+./submit/run 364
+
+python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master/source/CxAODOperations_VHbb/scripts/checkReaderFails.py Reader_2L_32-15_a_CUT_D1
+> qqZllHbbJ_PwPy8MINLO-0, qqZllHccJ_PwPy8MINLO-4, ttbar_nonallhad_PwPy8-9
+vim Reader_2L_32-15_a_CUT_D1/submit/segments
+> 1, 5, 9
+./submit/run 1
+./submit/run 15
+./submit/run 159
+~~~
+Once all the jobs have succeeded. Now to hadd the files
+~~~
+cd run/FullBoosted_oldTrigger
+source /afs/cern.ch/work/d/dspiteri/VHbb/VHbbHaddAll1LaCUT.sh
