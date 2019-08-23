@@ -488,14 +488,14 @@ vim ../source/CxAODOperations_VHbb/scripts/submitReader.sh
 >  >    ANASTRATEGY="Merged" (L235)
 >  >    DOPTVSPLITTING250GEV="true" (L752)
 ~~~
-../source/CxAODOperations_VHbb/scripts/submitReader.sh /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/VH/CxAOD_r32-15 FullBoosted_master 1L,2L a VHbb CUT D1 32-15 none none 1
+../source/CxAODOperations_VHbb/scripts/submitReader.sh /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/VH/CxAOD_r32-15 FullBoosted_masterTrigger 1L,2L a VHbb CUT D1 32-15 none none 1
 ~~~
 So now these inputs just need to be tested and hadded in the usual way
 ~~~
 cd /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_july2019/
 setupATLAS && lsetup git && lsetup "root 6.14.04-x86_64-slc6-gcc62-opt" 
 
-cd run/FullBoosted_master
+cd run/FullBoosted_masterTrigger
 python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master/source/CxAODOperations_VHbb/scripts/checkReaderFails.py Reader_1L_32-15_a_CUT_D1
 ~~~
 >    qqZllHbbJ_PwPy8MINLO-0, qqWlvHbbJ_PwPy8MINLO-0, qqWlvHbbJ_PwPy8MINLO-9, WenuB_Sh221-0, WmunuB_Sh221-34, ttbar_dilep_PwPy8-36
@@ -528,8 +528,28 @@ cd Reader_2L_32-15_a_CUT_D1
 ~~~
 Once all the jobs have succeeded. Now to hadd the files
 ~~~
-cd run/FullBoosted_oldTrigger
+cd run/FullBoosted_masterTrigger
 source /afs/cern.ch/work/d/dspiteri/VHbb/VHbbHaddAll1LaCUT.sh
 
 cd Reader_2L_32-15_a_CUT_D1/fetch
-source 
+source /afs/cern.ch/work/d/dspiteri/VHbb/VHbbHaddAllDeleteData.sh
+~~~
+Now to create one set of plots against the master.
+~~~
+vim ../TriggerStudyPlots.cxx
+~~~
+> CHANGE vector of samples to the everything ones (~L110)
+>   >     std::vector samples = {"ggZllH125", "ggZvvH125", "ggZZ", "qqWlvH125", "qqZllH125", "qqZvvH125", "stops", "stopt", "stopWt", "ttbar", "Wbb", "Wbc", "Wbl", "Wcc", "Wcl", "Wl", "WZ", "Zbb","Zbc","Zbl","Zcc", "Zcl", "Zl", "ZZ"}; //Everything 
+
+> CHANGE the legend of the plots
+>   >     legend.AddEntry(TProfileInputPlot2, Form("2LS+B(%) Gain = %f",improvement), "-");   
+~~~
+
+root -b -l -q '../TriggerStudyPlots.cxx("/afs/cern.ch/work/d/dspiteri/VHbb/", "CxAODFramework_master_july2019/","FullBoosted","master","old","2LEPALL.root","2L","32-15","a","CUT","D1","SR")'
+mv run/FullBoosted-masterandold_TriggerPlots run/FullBoosted-masterandold_2L_a_TriggerPlots
+
+"CxAODFramework_master_july2019/","FullBoosted","master","old","2LEPALL.root","1L","32-15","a","CUT","D1","SR")'
+mv run/FullBoosted-masterandold_TriggerPlots run/FullBoosted-masterandold_1L_a_TriggerPlots
+
+
+bsub -q 8nh -L /bin/bash /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_july2019/run/FullBoosted_master/Reader_2L_32-15_a_CUT_D1/submit/run ttbar_nonallhad_PwPy8-5  &&  bsub -q 8nh -L /bin/bash /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_july2019/run/FullBoosted_master/Reader_2L_32-15_a_CUT_D1/submit/run ttbar_nonallhad_PwPy8-6  &&  bsub -q 8nh -L /bin/bash /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_july2019/run/FullBoosted_master/Reader_2L_32-15_a_CUT_D1/submit/run ttbar_nonallhad_PwPy8-7  &&  bsub -q 8nh -L /bin/bash /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_july2019/run/FullBoosted_master/Reader_2L_32-15_a_CUT_D1/submit/run ttbar_nonallhad_PwPy8-8  &&  bsub -q 8nh -L /bin/bash /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_july2019/run/FullBoosted_master/Reader_2L_32-15_a_CUT_D1/submit/run ttbar_nonallhad_PwPy8-9  &&  bsub -q 8nh -L /bin/bash /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_july2019/run/FullBoosted_master/Reader_2L_32-15_a_CUT_D1/submit/run ttbar_nonallhad_PwPy8-10  &&  bsub -q 8nh -L /bin/bash /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_july2019/run/FullBoosted_master/Reader_2L_32-15_a_CUT_D1/submit/run ttbar_nonallhad_PwPy8-11  &&  bsub -q 8nh -L /bin/bash /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_july2019/run/FullBoosted_master/Reader_2L_32-15_a_CUT_D1/submit/run ttbar_nonallhad_PwPy8-12  &&  bsub -q 8nh -L /bin/bash /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_july2019/run/FullBoosted_master/Reader_2L_32-15_a_CUT_D1/submit/run ttbar_nonallhad_PwPy8-13  &&  bsub -q 8nh -L /bin/bash /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_july2019/run/FullBoosted_master/Reader_2L_32-15_a_CUT_D1/submit/run ttbar_nonallhad_PwPy8-14  &&  bsub -q 8nh -L /bin/bash /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_july2019/run/FullBoosted_master/Reader_2L_32-15_a_CUT_D1/submit/run ttbar_nonallhad_PwPy8-15  &&  bsub -q 8nh -L /bin/bash /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_july2019/run/FullBoosted_master/Reader_2L_32-15_a_CUT_D1/submit/run ttbar_nonallhad_PwPy8-16  &&  bsub -q 8nh -L /bin/bash /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_july2019/run/FullBoosted_master/Reader_2L_32-15_a_CUT_D1/submit/run ttbar_nonallhad_PwPy8-17  &&  bsub -q 8nh -L /bin/bash /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_july2019/run/FullBoosted_master/Reader_2L_32-15_a_CUT_D1/submit/run ttbar_nonallhad_PwPy8-18  &&  bsub -q 8nh -L /bin/bash /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_july2019/run/FullBoosted_master/Reader_2L_32-15_a_CUT_D1/submit/run ttbar_nonallhad_PwPy8-19  &&  bsub -q 8nh -L /bin/bash /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_july2019/run/FullBoosted_master/Reader_2L_32-15_a_CUT_D1/submit/run ttbar_nonallhad_PwPy8-20  &&  bsub -q 8nh -L /bin/bash /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_july2019/run/FullBoosted_master/Reader_2L_32-15_a_CUT_D1/submit/run ttbar_nonallhad_PwPy8-21  &&  bsub -q 8nh -L /bin/bash /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_july2019/run/FullBoosted_master/Reader_2L_32-15_a_CUT_D1/submit/run ttbar_nonallhad_PwPy8-22  &&  bsub -q 8nh -L /bin/bash /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_july2019/run/FullBoosted_master/Reader_2L_32-15_a_CUT_D1/submit/run ttbar_nonallhad_PwPy8-23  &&  bsub -q 8nh -L /bin/bash /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_july2019/run/FullBoosted_master/Reader_2L_32-15_a_CUT_D1/submit/run ttbar_nonallhad_PwPy8-24  &&  bsub -q 8nh -L /bin/bash /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_july2019/run/FullBoosted_master/Reader_2L_32-15_a_CUT_D1/submit/run ttbar_nonallhad_PwPy8-25  &&  bsub -q 8nh -L /bin/bash /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_july2019/run/FullBoosted_master/Reader_2L_32-15_a_CUT_D1/submit/run stopWt_PwPy8-0  &&  bsub -q 8nh -L /bin/bash /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_july2019/run/FullBoosted_master/Reader_2L_32-15_a_CUT_D1/submit/run stops_PwPy8-0  &&  bsub -q 8nh -L /bin/bash /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_july2019/run/FullBoosted_master/Reader_2L_32-15_a_CUT_D1/submit/run stopt_PwPy8-0  &&  bsub -q 8nh -L /bin/bash /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_july2019/run/FullBoosted_master/Reader_2L_32-15_a_CUT_D1/submit/run WlvZbb_Sh221-0  &&  bsub -q 8nh -L /bin/bash /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_july2019/run/FullBoosted_master/Reader_2L_32-15_a_CUT_D1/submit/run ZbbZvv_Sh221-0  &&  bsub -q 8nh -L /bin/bash /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_july2019/run/FullBoosted_master/Reader_2L_32-15_a_CUT_D1/submit/run ZbbZll_Sh221-0  &&  bsub -q 8nh -L /bin/bash /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_july2019/run/FullBoosted_master/Reader_2L_32-15_a_CUT_D1/submit/run ZbbZll_Sh221-1  &&  bsub -q 8nh -L /bin/bash /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_july2019/run/FullBoosted_master/Reader_2L_32-15_a_CUT_D1/submit/run ZbbZll_Sh221-2  &&  bsub -q 8nh -L /bin/bash /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_july2019/run/FullBoosted_master/Reader_2L_32-15_a_CUT_D1/submit/run ZbbZll_Sh221-3  &&  bsub -q 8nh -L /bin/bash /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_july2019/run/FullBoosted_master/Reader_2L_32-15_a_CUT_D1/submit/run data15-0  &&  bsub -q 8nh -L /bin/bash /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_july2019/run/FullBoosted_master/Reader_2L_32-15_a_CUT_D1/submit/run data16-0  &&  bsub -q 8nh -L /bin/bash /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_july2019/run/FullBoosted_master/Reader_2L_32-15_a_CUT_D1/submit/run data16-1  &&  bsub -q 8nh -L /bin/bash /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_july2019/run/FullBoosted_master/Reader_2L_32-15_a_CUT_D1/submit/run data16-2  &&  bsub -q 8nh -L /bin/bash /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_july2019/run/FullBoosted_master/Reader_2L_32-15_a_CUT_D1/submit/run ggZqqZvv_Sh222-0  &&  bsub -q 8nh -L /bin/bash /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_july2019/run/FullBoosted_master/Reader_2L_32-15_a_CUT_D1/submit/run ggZqqZll_Sh222-0
