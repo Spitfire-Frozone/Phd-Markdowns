@@ -5,7 +5,7 @@
 ## Last Edited: 30-08-2019
 
 Once a basic familiarity with WSMaker has been established, and a newer set of inputs has been created. These will need to be tested.  
-~~~
+
 1) MC16ad new + new regions Global Conditional
 2) MC16ad new + new regions Asimov
 3) MC16ad new + new regions Asimov fitting only CRs
@@ -20,8 +20,12 @@ The first thing though, is to check out a new version of the WSMaker.
 ~~~
 cd /afs/cern.ch/work/d/dspiteri/VHbb
 setupATLAS && lsetup git 
+(mv WSMaker_VHbb WSMaker_VHbb_WZjets) #Temprorarily move this such that the git clone works.
 git clone --recursive ssh://git@gitlab.cern.ch:7999/atlas-physics/higgs/hbb/WSMaker_VHbb.git
-mv WSMaker_VHbb WSMaker_VHbb_New0Linputs && cd WSMaker_VHbb_New0Linput
+
+
+mv WSMaker_VHbb WSMaker_VHbb_New0Linputs (&& mv WSMaker_VHbb_WZjets WSMaker_VHbb)
+cd WSMaker_VHbb_New0Linputs
 source setup.sh
 mkdir inputs
 cd build
