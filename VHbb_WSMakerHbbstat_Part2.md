@@ -1,8 +1,9 @@
 # This is aimed at the main analysis of my PhD: Associated Production of Higgs with a Vector boson (most likely Z) where the Higgs decays to a pair of bottom quarks. This document is about editing the framework that produces the fits to VHbb CxAOD's inputs and varying it. # 
 
-## "VHbb WSMaker and Hbb Stat Part 2" ##
-===============================================================================
+## VHbb WSMaker and Hbb Stat Part 2 ##
+
 ## Last Edited: 30-08-2019
+--------------------------------------------------------------------------
 
 Once a basic familiarity with WSMaker has been established, and a newer set of inputs has been created. These will need to be tested.  
 
@@ -31,7 +32,15 @@ mkdir inputs
 cd build
 cmake ..
 make -j8
+cd ..
 ~~~
+
+Now we have to switch to a specific branch
+~~~
+git branch --all | grep kalkhour
+git checkout -b master-kalkhour-Adapt_WS-to_NewRegions origin/master-kalkhour-Adapt_WS-to_NewRegions --track
+~~~
+
 The next step is to split the new inputs 
 ~~~
 vim setup.sh
