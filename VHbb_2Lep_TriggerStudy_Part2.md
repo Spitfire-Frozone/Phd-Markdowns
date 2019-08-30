@@ -2,7 +2,7 @@
 
 ## VHbb 2 Lepton Trigger Study Part 2 ##
 
-Last Edited: 21-08-2019
+Last Edited: 30-08-2019
 -------------------------------------------------------------------------------
 
 # Setup Script
@@ -548,6 +548,5 @@ vim ../TriggerStudyPlots.cxx
 root -b -l -q '../TriggerStudyPlots.cxx("/afs/cern.ch/work/d/dspiteri/VHbb/", "CxAODFramework_master_july2019/","FullBoosted","master","old","2LEPALL.root","2L","32-15","a","CUT","D1","SR")'
 mv run/FullBoosted-masterandold_TriggerPlots run/FullBoosted-masterandold_2L_a_TriggerPlots
 
-root -b -l -q '../TriggerStudyPlots.cxx("/afs/cern.ch/work/d/dspiteri/VHbb/", 
-"CxAODFramework_master_july2019/","FullBoosted","master","old","2LEPALL.root","1L","32-15","a","CUT","D1","SR")'
+root -b -l -q '../TriggerStudyPlots.cxx("/afs/cern.ch/work/d/dspiteri/VHbb/", "CxAODFramework_master_july2019/","FullBoosted","master","old","2LEPALL.root","1L","32-15","a","CUT","D1","SR")'
 mv run/FullBoosted-masterandold_TriggerPlots run/FullBoosted-masterandold_1L_a_TriggerPlots
