@@ -1,8 +1,9 @@
 # This is aimed at the main analysis of my PhD: Associated Production of Higgs with a Vector boson (most likely Z) where the Higgs decays to a pair of bottom quarks. This document is about editing the framework that produces the fits to VHbb CxAOD's inputs and varying it. # 
 
-## "VHbb WSMaker and Hbb Stat" ##
-===============================================================================
-## Last Edited: 07-08-2019
+## VHbb WSMaker and Hbb Stat ##
+
+## Last Edited: 30-08-2019
+-------------------------------------------------------------------------------
 
 Once a basic familiarity with WSMaker has been established, (see VHbb_2Lep_Reader_Inputs.md ) a task, which gets more and more priority is to test reducing the number of bins in the inputs.
 
