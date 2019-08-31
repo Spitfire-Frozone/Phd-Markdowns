@@ -41,20 +41,10 @@ git branch --all | grep kalkhour
 git checkout -b master-kalkhour-Adapt_WS-to_NewRegions origin/master-kalkhour-Adapt_WS-to_NewRegions --track
 ~~~
 
-The next step is to split the new inputs 
+The next step is to split the new inputs, normally you would do this yourself but if they have already been split then you can just copy forward.
 ~~~
-vim setup.sh
-~~~
->  CHANGE blinding to be on. 
->   >     IS_BLINDED = 1 (L6)
-~~~
-source setup.sh
-cd build && cmake ..
-make -j10
-cd ..
-SplitInputs -r Run2 -v SMVHVZ_Summer18_MVA_mc16ad_v07_fixed2
-~~~
-One the inputs have been split, open the job launcher and ensure that  that these settings are there
-~~~
-vim scripts/launch_default_jobs.py
+cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_New0Linputs
+setupATLAS && lsetup git 
+cd inputs
+cp -r /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/FullRunII2019/statArea/inputs/AfterWSMakerSplit/2019-08-20/ZeroLepton-mc16ad .
 ~~~
