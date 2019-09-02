@@ -41,10 +41,34 @@ git branch --all | grep kalkhour
 git checkout -b master-kalkhour-Adapt_WS-to_NewRegions origin/master-kalkhour-Adapt_WS-to_NewRegions --track
 ~~~
 
-The next step is to split the new inputs, normally you would do this yourself but if they have already been split then you can just copy forward.
+The next step is to split the new inputs. To do this we need to create a new file. Referencing files from /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/FullRunII2019/statArea/inputs/ZeroLep/r32-15_customCDI_20190820. To perform the first 4 tasks, we need all So ade 
 ~~~
 cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_New0Linputs
 setupATLAS && lsetup git 
-cd inputs
-cp -r /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/FullRunII2019/statArea/inputs/AfterWSMakerSplit/2019-08-20/ZeroLepton-mc16ad .
+cd inputConfigs
+vim SMVHVZ_2019_MVA_mc16ade_v02_0L.txt
+~~~
+> ADD path ot 0L file (~L1)
+>  >    CoreRegions
+>  >    ZeroLepton ZeroLep/r32-15_customCDI_20190820/LimitHistograms.VHbb.0Lep.13TeV.mc16ade.Oxford.32-15NewRegionsOldExtensions.root mva,mvadiboson
+~~~
+source setup.sh
+cd build && cmake ..
+make -j10
+cd ..
+SplitInputs -r Run2 -v SMVHVZ_2019_MVA_mc16ade_v02_0L
+~~~
+With the inputs now split, it's time to start running the fit. 
+~~~
+vim scripts/launch_default_jobs.py
+~~~
+>  CHANGE Variables to run the new 0L baseline FullRun2
+>   >  version = "v02_0L"       (~L13)
+>   >  channels = ["0"]         (~L48)
+>   >  MCTypes = ["mc16ade"]    (~L50)
+>   >  syst_type = ["Systs"]    (~L53)
+>   >  runPulls = True          (~L64)
+>   >  runP0 = True             (~L68)
+~~~
+python scripts/launch_default_jobs.py 140ifb-0L-ade-Inputs
 ~~~
