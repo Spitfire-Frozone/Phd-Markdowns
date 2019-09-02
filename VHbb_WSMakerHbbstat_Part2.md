@@ -5,6 +5,7 @@
 ## Last Edited: 30-08-2019
 --------------------------------------------------------------------------
 
+# Initial Setup and Running
 Once a basic familiarity with WSMaker has been established, and a newer set of inputs has been created. These will need to be tested.  
 
 1) MC16ad new + new regions Global Conditional
@@ -52,8 +53,6 @@ vim SMVHVZ_2019_MVA_mc16ade_v02_0L.txt
 >  >    CoreRegions
 >  >    ZeroLepton ZeroLep/r32-15_customCDI_20190820/LimitHistograms.VHbb.0Lep.13TeV.mc16ade.Oxford.32-15NewRegionsOldExtensions.root mBB,MET,mva,mvadiboson 
 ~~~
-
-
 SplitInputs -r Run2 -v SMVHVZ_2019_MVA_mc16ade_v02_0L
 ~~~
 With the inputs now split, it's time to start running the fit. We will need to run this 4 times. 
@@ -111,3 +110,32 @@ vim scripts/AnalysisMgr_VHbbRun2.py
 python scripts/launch_default_jobs.py 140ifb-0L-ade-SRCR-Asimov
 
 mv output/SMVHVZ_2019_MVA_mc16ade_v02_0L.140ifb-0L-ade-SRCR-Asimov_fullRes_VHbb_140ifb-0L-ade-SRCR-Asimov_0_mc16ade_Systs_mva output/140ifb-0L-ade-SRCR-Asimov
+~~~
+# Pull plots
+
+There are several kinds of fits you want to compare and they all can't be run with the 'normal' flag of -5-. See lines 414-421 of comparePulls.py.
+~~~
+cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_New0Linputs
+setupATLAS && lsetup git 
+source setup.sh
+cd build && cmake ..
+make -j10
+cd ..
+
+vim WSMakerCore/scripts/comparePulls.py
+~~~
+>  2: unconditional ( start with mu=1 )
+>  4: conditional mu = 0
+>  5: conditional mu = 1
+>  6: run Asimov mu = 1 toys: randomize Poisson term
+>  7: unconditional fit to asimov where asimov is built with mu=1
+>  8: unconditional fit to asimov where asimov is built with mu=0
+>  9: conditional fit to asimov where asimov is built with mu=1
+>  10: conditional fit to asimov where asimov is built with mu=0
+~~~
+python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-SRCR  140ifb-0L-ade-SRCR-Asimov -n -a 9 -l SR-CR SR-CR-Asv
+mv output/pullComparisons output/pullComparisons_SRCR
+
+python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-CR-Asimov 140ifb-0L-ade-SRCR-Asimov -n -a 7 -l CR-Asv SR-CR-Asv
+mv output/pullComparisons output/pullComparisons_Asimov
+~~~
