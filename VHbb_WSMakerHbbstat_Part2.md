@@ -50,25 +50,64 @@ vim SMVHVZ_2019_MVA_mc16ade_v02_0L.txt
 ~~~
 > ADD path ot 0L file (~L1)
 >  >    CoreRegions
->  >    ZeroLepton ZeroLep/r32-15_customCDI_20190820/LimitHistograms.VHbb.0Lep.13TeV.mc16ade.Oxford.32-15NewRegionsOldExtensions.root mva,mvadiboson
+>  >    ZeroLepton ZeroLep/r32-15_customCDI_20190820/LimitHistograms.VHbb.0Lep.13TeV.mc16ade.Oxford.32-15NewRegionsOldExtensions.root mBB,MET,mva,mvadiboson 
 ~~~
-source setup.sh
-cd build && cmake ..
-make -j10
-cd ..
+
+
 SplitInputs -r Run2 -v SMVHVZ_2019_MVA_mc16ade_v02_0L
 ~~~
-With the inputs now split, it's time to start running the fit. 
+With the inputs now split, it's time to start running the fit. We will need to run this 4 times. 
+
+### 1) MC16ad new + new regions Global Conditional
 ~~~
 vim scripts/launch_default_jobs.py
 ~~~
->  CHANGE Variables to run the new 0L baseline FullRun2
+>  CHANGE Variables to run the new 0L baseline FullRun2. All other boolean variables should be false
 >   >  version = "v02_0L"       (~L13)
+>   >  GlobalRun = True         (~L14)
 >   >  channels = ["0"]         (~L48)
 >   >  MCTypes = ["mc16ade"]    (~L50)
 >   >  syst_type = ["Systs"]    (~L53)
 >   >  runPulls = True          (~L64)
+>   >  doExp = "0"              (~L57)
+>   >  runP0 = False            (~L68)
+~~~
+python scripts/launch_default_jobs.py 140ifb-0L-ade-SRCR
+
+mv output/SMVHVZ_2019_MVA_mc16ade_v02_0L.140ifb-0L-ade-SRCR_fullRes_VHbb_140ifb-0L-ade-SRCR_0_mc16ade_Systs_mva output/140ifb-0L-ade-SRCR
+~~~
+### 4) MC16ad new + new regions Global Conditional fitting only CRs
+~~~
+vim scripts/AnalysisMgr_VHbbRun2.py
+~~~
+>  COMMENT OUT SR region from new regions to only run over the CR's (~L57)
+>   >  #self["Regions"].append(energy+"_ZeroLepton_{0}tag{1}jet_{2}ptv_SR_{3}".format(t, j, p, var2tag)) 
+~~~
+python scripts/launch_default_jobs.py 140ifb-0L-ade-CR
+
+mv output/SMVHVZ_2019_MVA_mc16ade_v02_0L.140ifb-0L-ade-CR_fullRes_VHbb_140ifb-0L-ade-CR_0_mc16ade_Systs_mva output/140ifb-0L-ade-CR
+~~~
+### 3) MC16ad new + new regions Asimov fitting only CRs
+~~~
+vim scripts/launch_default_jobs.py
+~~~
+>  CHANGE Variables from Global conditional run to Asimov run.
+>   >  GlobalRun = False        (~L14)
+>   >  runPulls = True          (~L64)
+>   >  doExp = "1"              (~L57)
 >   >  runP0 = True             (~L68)
 ~~~
-python scripts/launch_default_jobs.py 140ifb-0L-ade-Inputs
+python scripts/launch_default_jobs.py 140ifb-0L-ade-CR-Asimov
+
+mv output/SMVHVZ_2019_MVA_mc16ade_v02_0L.140ifb-0L-ade-CR-Asimov_fullRes_VHbb_140ifb-0L-ade-CR-Asimov_0_mc16ade_Systs_mva output/140ifb-0L-ade-CR-Asimov
 ~~~
+### 2) MC16ad new + new regions Asimov
+~~~
+vim scripts/AnalysisMgr_VHbbRun2.py
+~~~
+>  COMMENT IN SR region from new regions to only run over the CR's (~L57)
+>   >  self["Regions"].append(energy+"_ZeroLepton_{0}tag{1}jet_{2}ptv_SR_{3}".format(t, j, p, var2tag)) 
+~~~
+python scripts/launch_default_jobs.py 140ifb-0L-ade-SRCR-Asimov
+
+mv output/SMVHVZ_2019_MVA_mc16ade_v02_0L.140ifb-0L-ade-SRCR-Asimov_fullRes_VHbb_140ifb-0L-ade-SRCR-Asimov_0_mc16ade_Systs_mva output/140ifb-0L-ade-SRCR-Asimov
