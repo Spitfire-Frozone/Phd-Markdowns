@@ -123,15 +123,16 @@ make -j10
 cd ..
 
 vim WSMakerCore/scripts/comparePulls.py
-~~~
->  2: unconditional ( start with mu=1 )
->  4: conditional mu = 0
->  5: conditional mu = 1
->  6: run Asimov mu = 1 toys: randomize Poisson term
->  7: unconditional fit to asimov where asimov is built with mu=1
->  8: unconditional fit to asimov where asimov is built with mu=0
->  9: conditional fit to asimov where asimov is built with mu=1
->  10: conditional fit to asimov where asimov is built with mu=0
+~~~  
+>   2: unconditional ( start with mu=1 )                                                                             
+>   4: conditional mu = 0                                                                                 
+>   5: conditional mu = 1                                                                                              
+>   6: run Asimov mu = 1 toys: randomize Poisson term                                                                      
+>   7: unconditional fit to asimov where asimov is built with mu=1                                                   
+>   8: unconditional fit to asimov where asimov is built with mu=0                                                    
+>   9: conditional fit to asimov where asimov is built with mu=1                                                      
+>   10: conditional fit to asimov where asimov is built with mu=0                                                          
+
 ~~~
 python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-SRCR  140ifb-0L-ade-SRCR-Asimov -n -a 9 -l SR-CR SR-CR-Asv
 mv output/pullComparisons output/pullComparisons_SRCR
