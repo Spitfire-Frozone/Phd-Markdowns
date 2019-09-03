@@ -113,7 +113,7 @@ mv output/SMVHVZ_2019_MVA_mc16ade_v02_0L.140ifb-0L-ade-SRCR-Asimov_fullRes_VHbb_
 ~~~
 # Pull plots
 
-There are several kinds of fits you want to compare and they all can't be run with the 'normal' flag of -5-. See lines 414-421 of comparePulls.py.
+There are several kinds of fits you want to compare and they all can't be run with the same flag. See lines 414-421 of comparePulls.py. However for the data vs Asimov one we only run the one folder and we use the flag 5.
 ~~~
 cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_New0Linputs
 setupATLAS && lsetup git 
@@ -134,9 +134,52 @@ vim WSMakerCore/scripts/comparePulls.py
 >   10: conditional fit to asimov where asimov is built with mu=0                                                          
 
 ~~~
-python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-SRCR  140ifb-0L-ade-SRCR-Asimov -n -a 9 -l SR-CR SR-CR-Asv
+python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-SRCR -n -a 5
 mv output/pullComparisons output/pullComparisons_SRCR
+
 
 python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-CR-Asimov 140ifb-0L-ade-SRCR-Asimov -n -a 7 -l CR-Asv SR-CR-Asv
 mv output/pullComparisons output/pullComparisons_Asimov
 ~~~
+
+# Late Updates
+Turns out someone wants a quick check of pulls for ad vs e for the new nominal input. After creating two new files called vim SMVHVZ_2019_MVA_mc16e_v02_0L.txt and vim SMVHVZ_2019_MVA_mc16ad_v02_0L.txt in inputConfigs.
+
+LimitHistograms.VHbb.0Lep.13TeV.mc16ad.Oxford.32-15.v02.root
+LimitHistograms.VHbb.0Lep.13TeV.mc16e.Oxford.32-15NewRegionsOldExtensions.root
+~~~
+cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_New0Linputs
+setupATLAS && lsetup git 
+source setup.sh
+cd build && cmake ..
+make -j10
+cd ..
+
+SplitInputs -r Run2 -v SMVHVZ_2019_MVA_mc16ad_v02_0L
+SplitInputs -r Run2 -v SMVHVZ_2019_MVA_mc16e_v02_0L
+
+
+vim scripts/launch_default_jobs.py
+~~~
+>  CHANGE Variables to run the new 0L baseline FullRun2, and the MCTypes to "mc16ad"
+>   >  version = "v02_0L"       (~L13)
+>   >  GlobalRun = True         (~L14)
+>   >  channels = ["0"]         (~L48)
+>   >  MCTypes = ["mc16ad"]     (~L50)
+>   >  syst_type = ["Systs"]    (~L53)
+>   >  runPulls = True          (~L64)
+>   >  doExp = "0"              (~L57)
+>   >  runP0 = False            (~L68)
+~~~
+python scripts/launch_default_jobs.py 140ifb-0L-ad-SRCR
+
+mv output/SMVHVZ_2019_MVA_mc16ade_v02_0L.140ifb-0L-ad-SRCR_fullRes_VHbb_140ifb-0L-ad-SRCR_0_mc16ade_Systs_mva output/140ifb-0L-ad-SRCR
+
+vim scripts/launch_default_jobs.py
+~~~
+>  CHANGE the MC period
+>   >  MCTypes = ["mc16e"]     (~L50)
+~~~
+python scripts/launch_default_jobs.py 140ifb-0L-e-SRCR
+
+mv output/SMVHVZ_2019_MVA_mc16ade_v02_0L.140ifb-0L-e-SRCR_fullRes_VHbb_140ifb-0L-ade-SRCR_0_mc16e_Systs_mva output/140ifb-0L-e-SRCR
