@@ -173,7 +173,7 @@ vim scripts/launch_default_jobs.py
 ~~~
 python scripts/launch_default_jobs.py 140ifb-0L-ad-SRCR
 
-mv output/SMVHVZ_2019_MVA_mc16ade_v02_0L.140ifb-0L-ad-SRCR_fullRes_VHbb_140ifb-0L-ad-SRCR_0_mc16ade_Systs_mva output/140ifb-0L-ad-SRCR
+mv output/SMVHVZ_2019_MVA_mc16ad_v02_0L.140ifb-0L-ad-SRCR_fullRes_VHbb_140ifb-0L-ad-SRCR_0_mc16ad_Systs_mva output/140ifb-0L-ad-SRCR
 
 vim scripts/launch_default_jobs.py
 ~~~
@@ -182,4 +182,7 @@ vim scripts/launch_default_jobs.py
 ~~~
 python scripts/launch_default_jobs.py 140ifb-0L-e-SRCR
 
-mv output/SMVHVZ_2019_MVA_mc16ade_v02_0L.140ifb-0L-e-SRCR_fullRes_VHbb_140ifb-0L-ade-SRCR_0_mc16e_Systs_mva output/140ifb-0L-e-SRCR
+mv output/SMVHVZ_2019_MVA_mc16e_v02_0L.140ifb-0L-e-SRCR_fullRes_VHbb_140ifb-0L-e-SRCR_0_mc16e_Systs_mva output/140ifb-0L-e-SRCR
+
+python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-SRCR 140ifb-0L-ad-SRCR 140ifb-0L-e-SRCR -n -a 5 -l ade ad e
+mv output/pullComparisons output/pullComparisons_adeade
