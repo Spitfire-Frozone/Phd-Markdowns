@@ -111,7 +111,7 @@ python scripts/launch_default_jobs.py 140ifb-0L-ade-SRCR-Asimov
 
 mv output/SMVHVZ_2019_MVA_mc16ade_v02_0L.140ifb-0L-ade-SRCR-Asimov_fullRes_VHbb_140ifb-0L-ade-SRCR-Asimov_0_mc16ade_Systs_mva output/140ifb-0L-ade-SRCR-Asimov
 ~~~
-# Pull plots
+## Pull plots
 
 There are several kinds of fits you want to compare and they all can't be run with the same flag. See lines 414-421 of comparePulls.py. However for the data vs Asimov one we only run the one folder and we use the flag 5.
 ~~~
@@ -142,7 +142,7 @@ python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-CR-Asimov 140ifb-0L-
 mv output/pullComparisons output/pullComparisons_Asimov
 ~~~
 
-# Late Updates
+## Late Updates
 Turns out someone wants a quick check of pulls for ad vs e for the new nominal input. After creating two new files called vim SMVHVZ_2019_MVA_mc16e_v02_0L.txt and vim SMVHVZ_2019_MVA_mc16ad_v02_0L.txt in inputConfigs.
 
 LimitHistograms.VHbb.0Lep.13TeV.mc16ad.Oxford.32-15.v02.root
@@ -186,3 +186,43 @@ mv output/SMVHVZ_2019_MVA_mc16e_v02_0L.140ifb-0L-e-SRCR_fullRes_VHbb_140ifb-0L-e
 
 python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-SRCR 140ifb-0L-ad-SRCR 140ifb-0L-e-SRCR -n -a 5 -l ade ad e
 mv output/pullComparisons output/pullComparisons_adeade
+~~~
+# New Inputs
+Plots for the new baseline. This time the splitInputs have been provided for 0, 1 and 2 Lepton.
+>   /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/FullRunII2019/statArea/inputs/AfterWSMakerSplit/2019-08-20/milestone1
+~~~
+cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_New0Linputs/inputs 
+cp -r /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/FullRunII2019/statArea/inputs/AfterWSMakerSplit/2019-08-20/milestone1 .
+mv milestone1 SMVHVZ_2019_MVA_mc16ade_v03_baseline
+~~~
+We also want to change the binning for some of the control regions. This is done in binning_vhbbrun2.cpp
+~~~
+vim src/binning_vhbbrun2.cpp
+~~~
+>    CHANGE number of bins from multiple to 1 in the pTV>250 (L113)
+>   >     if (c[Property::binMin] == 250) return {6};  -> if (c[Property::binMin] == 250) return oneBin(c);
+
+~~~
+vim scripts/launch_default_jobs.py
+~~~
+>    CHANGE Variables to run the new 0L baseline FullRun2, and the MCTypes to "mc16ade"
+>   >  version = "v03_baseline" (~L13)
+>   >  GlobalRun = True         (~L14)
+>   >  channels = ["0"]         (~L48)
+>   >  MCTypes = ["mc16ade"]    (~L50)
+>   >  syst_type = ["Systs"]    (~L53)
+>   >  runPulls = True          (~L64)
+>   >  doExp = "0"              (~L57)
+>   >  runP0 = False            (~L68)
+~~~
+setupATLAS && lsetup git 
+source setup.sh
+cd build && cmake ..
+make -j10
+cd ..
+
+python scripts/launch_default_jobs.py 140ifb-0L-ade-baseline
+~~~
+if (c(Property::descr).Contains("CRLow") && c[Property::binMin] == 250) return oneBin(c);
+if (c(Property::descr).Contains("CRHigh") && c[Property::binMin] == 250) return {6};
+~~~
