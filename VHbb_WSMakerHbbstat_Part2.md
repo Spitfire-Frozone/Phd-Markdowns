@@ -188,21 +188,14 @@ python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-SRCR 140ifb-0L-ad-SR
 mv output/pullComparisons output/pullComparisons_adeade
 ~~~
 # New Inputs
-Plots for the new baseline. This time the splitInputs have been provided for 0, 1 and 2 Lepton.
+Plots for the new baseline. This time the splitInputs have been provided for 0, 1 and 2 Lepton. These inputs have additional control regions in dRBB and operate with different binnin regimes.
+
 >   /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/FullRunII2019/statArea/inputs/AfterWSMakerSplit/2019-08-20/milestone1
 ~~~
 cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_New0Linputs/inputs 
 cp -r /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/FullRunII2019/statArea/inputs/AfterWSMakerSplit/2019-08-20/milestone1 .
 mv milestone1 SMVHVZ_2019_MVA_mc16ade_v03_baseline
-~~~
-We also want to change the binning for some of the control regions. This is done in binning_vhbbrun2.cpp
-~~~
-vim src/binning_vhbbrun2.cpp
-~~~
->    CHANGE number of bins from multiple to 1 in the pTV>250 (L113)
->   >     if (c[Property::binMin] == 250) return {6};  -> if (c[Property::binMin] == 250) return oneBin(c);
 
-~~~
 vim scripts/launch_default_jobs.py
 ~~~
 >    CHANGE Variables to run the new 0L baseline FullRun2, and the MCTypes to "mc16ade"
@@ -214,6 +207,7 @@ vim scripts/launch_default_jobs.py
 >   >  runPulls = True          (~L64)
 >   >  doExp = "0"              (~L57)
 >   >  runP0 = False            (~L68)
+
 ~~~
 setupATLAS && lsetup git 
 source setup.sh
@@ -222,8 +216,49 @@ make -j10
 cd ..
 
 python scripts/launch_default_jobs.py 140ifb-0L-ade-baseline
-~~~
-if (c(Property::descr).Contains("CRLow") && c[Property::binMin] == 250) return oneBin(c);
-if (c(Property::descr).Contains("CRHigh") && c[Property::binMin] == 250) return {6};
-~~~
 mv output/SMVHVZ_2019_MVA_mc16ade_v03_baseline.140ifb-0L-ade-baseline_fullRes_VHbb_140ifb-0L-ade-baseline_0_mc16ade_Systs_mva output/140ifb-0L-ade-baseline
+
+~~~
+# Investingation of different binning regimes
+We also want to change the binning for some of the control regions. This is done in binning_vhbbrun2.cpp .We have too many bins. Taking the convention CRLow high-ptv/CRLow Extreme-ptv/CRHigh high-ptv/CRHigh Extreme-ptv we currently have <6/<6/<6/<6 bins which ends up with 5/4/5/4. This ends up with too few events in the bins of CRLow Extreme-ptv. Also, since 1L have got good significance with fewer bins we want to try two regimes.
+
+- 1/1/1/1 and 
+- 2/1/2/2
+~~~
+cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_New0Linputs/
+
+vim src/binning_vhbbrun2.cpp
+~~~
+- For option 1
+>    COMMENT OUT  
+>   >     //if (c[Property::binMin] == 250) return {6}; 
+>    CHANGE the default number of bins to be run to be 1 (L114)
+>   >     else return {2};  -> return oneBin(c);
+
+- For option 2
+>    ADD differing bins between CRHigh and CRLow (L113)
+>   >       if (doNewRegions){
+>   >           if (c(Property::descr).Contains("CRLow") && (c(Property::dist) == "pTV" || c(Property::dist) == "MET")) {
+>   >             if (c[Property::binMin] == 250) return oneBin(c);
+>   >             else return {2};
+>   >           }  
+>   >           if (c(Property::descr).Contains("CRHigh") && (c(Property::dist) == "pTV" || c(Property::dist) == "MET")) {
+>   >             return {2};
+>   >           } 
+>   >        }
+
+~~~
+setupATLAS && lsetup git 
+source setup.sh
+cd build && cmake ..
+make -j10
+cd ..
+
+python scripts/launch_default_jobs.py 140ifb-0L-ade-baseline1111
+mv output/SMVHVZ_2019_MVA_mc16ade_v03_baseline.140ifb-0L-ade-baseline1111_fullRes_VHbb_140ifb-0L-ade-baseline1111_0_mc16ade_Systs_mva output/140ifb-0L-ade-baseline1111
+
+python scripts/launch_default_jobs.py 140ifb-0L-ade-baseline2122
+mv output/SMVHVZ_2019_MVA_mc16ade_v03_baseline.140ifb-0L-ade-baseline2122_fullRes_VHbb_140ifb-0L-ade-baseline2122_0_mc16ade_Systs_mva output/140ifb-0L-ade-baseline2122
+~~~
+
+
