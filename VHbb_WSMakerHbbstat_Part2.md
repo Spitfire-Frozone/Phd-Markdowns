@@ -226,3 +226,4 @@ python scripts/launch_default_jobs.py 140ifb-0L-ade-baseline
 if (c(Property::descr).Contains("CRLow") && c[Property::binMin] == 250) return oneBin(c);
 if (c(Property::descr).Contains("CRHigh") && c[Property::binMin] == 250) return {6};
 ~~~
+mv output/SMVHVZ_2019_MVA_mc16ade_v03_baseline.140ifb-0L-ade-baseline_fullRes_VHbb_140ifb-0L-ade-baseline_0_mc16ade_Systs_mva output/140ifb-0L-ade-baseline
