@@ -273,14 +273,14 @@ For option 1
 ~~~
 python scripts/launch_default_jobs.py 140ifb-0L-ade-baseline1111
 mv output/SMVHVZ_2019_MVA_mc16ade_v03_baseline.140ifb-0L-ade-baseline1111_fullRes_VHbb_140ifb-0L-ade-baseline1111_0_mc16ade_Systs_mva output/140ifb-0L-ade-baseline1111
-python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-SRCR 140ifb-0L-ade-baseline 140ifb-0L-ade-baseline1111 -n -a 5 -l CR-qFree CR-1111 
+python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-baseline 140ifb-0L-ade-baseline1111 -n -a 5 -l CR-qFree CR-1111 
 mv output/pullComparisons output/pullComparisons_1111
 ~~~
 For option 2
 ~~~
 python scripts/launch_default_jobs.py 140ifb-0L-ade-baseline2122
 mv output/SMVHVZ_2019_MVA_mc16ade_v03_baseline.140ifb-0L-ade-baseline2122_fullRes_VHbb_140ifb-0L-ade-baseline2122_0_mc16ade_Systs_mva output/140ifb-0L-ade-baseline2122
-python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-SRCR 140ifb-0L-ade-baseline 140ifb-0L-ade-baseline2122 -n -a 5 -l CR-qFree CR-2122 
+python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-baseline 140ifb-0L-ade-baseline2122 -n -a 5 -l CR-qFree CR-2122 
 mv output/pullComparisons output/pullComparisons_2122
 ~~~
 
