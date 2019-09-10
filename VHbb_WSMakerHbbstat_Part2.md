@@ -241,25 +241,27 @@ vim src/binning_vhbbrun2.cpp
 
 >    COMMENT OUT previous lines in doNewRegions if statement (L113).
 >    ADD differing bins between CRHigh and CRLow (L114)
->   >       if (doNewRegions){
+>   >       if (doNewRegions){                                                                      
 >   >           if (c(Property::descr).Contains("CRLow") && (c(Property::dist) == "pTV" || c(Property::dist) == "MET")) {
 >   >             if (c[Property::binMin] == 250) return oneBin(c);
->   >             else return {2};
->   >           }  
+>   >             else return {2};                                                                      
+>   >           }                                                  
 >   >           if (c(Property::descr).Contains("CRHigh") && (c(Property::dist) == "pTV" || c(Property::dist) == "MET")) {
 >   >             return {2};
->   >           } 
->   >        }
->    ADD forcing of bin changing in CRHigh and CRLow (L136)
->   >       else if (doNewRegions) res = {2}; -> else if (doNewRegions) {
->   >           if (c(Property::descr).Contains("CRLow") && (c(Property::dist) == "pTV" || c(Property::dist) == "MET")){
->   >               if (c[Property::binMin] == 150) res = getBinsFromEdges(sig,{250,200,150});
->   >           }
->   >           if (c(Property::descr).Contains("CRHigh") && (c(Property::dist) == "pTV" || c(Property::dist) == "MET")) {
->   >                if (c[Property::binMin] == 150) res = getBinsFromEdges(sig,{250,200,150});
->   >                if (c[Property::binMin] == 250) res = getBinsFromEdges(sig,{480,370,260});
->   >           }    
->   >       }
+>   >           }                                                                                         
+>   >        }                                                                                    
+>    ADD forcing of bin changing in CRHigh and CRLow in 0L (L132)
+>   >       if(c[Property::nLep] == 0) res = {2}; ->  if(c[Property::nLep] == 0) {
+>   >           if (doNewRegions) {                                                              
+>   >               if (c(Property::descr).Contains("CRLow") && (c(Property::dist) == "pTV" || c(Property::dist) == "MET")){
+>   >                   if (c[Property::binMin] == 150) res = getBinsFromEdges(sig,{250,200,150});
+>   >               }                                                                      
+>   >               if (c(Property::descr).Contains("CRHigh") && (c(Property::dist) == "pTV" || c(Property::dist) == "MET")) {
+>   >                   if (c[Property::binMin] == 150) res = getBinsFromEdges(sig,{250,200,150});
+>   >                   if (c[Property::binMin] == 250) res = getBinsFromEdges(sig,{480,370,260});
+>   >               }                                                                                            
+>   >           }                                                                                       
+>   >       }                                                                                                  
 ~~~
 setupATLAS && lsetup git 
 source setup.sh
