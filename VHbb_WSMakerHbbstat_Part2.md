@@ -211,15 +211,15 @@ vim scripts/launch_default_jobs.py
 ~~~
 setupATLAS && lsetup git 
 source setup.sh
-cd build && cmake ..
-make -j10
+cd build && rm -rf *
+cmake .. && make -j10
 cd ..
 
 python scripts/launch_default_jobs.py 140ifb-0L-ade-baseline
 mv output/SMVHVZ_2019_MVA_mc16ade_v03_baseline.140ifb-0L-ade-baseline_fullRes_VHbb_140ifb-0L-ade-baseline_0_mc16ade_Systs_mva output/140ifb-0L-ade-baseline
 
 ~~~
-# Investingation of different binning regimes
+# Investigation of different binning regimes
 We also want to change the binning for some of the control regions. This is done in binning_vhbbrun2.cpp .We have too many bins. Taking the convention CRLow high-ptv/CRLow Extreme-ptv/CRHigh high-ptv/CRHigh Extreme-ptv we currently have <6/<6/<6/<6 bins which ends up with 5/4/5/4. This ends up with too few events in the bins of CRLow Extreme-ptv. Also, since 1L have got good significance with fewer bins we want to try two regimes.
 
 - 1/1/1/1 and 
@@ -230,13 +230,17 @@ cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_New0Linputs/
 vim src/binning_vhbbrun2.cpp
 ~~~
 - For option 1
->    COMMENT OUT  
+>    COMMENT OUT  extreme-ptv exception
 >   >     //if (c[Property::binMin] == 250) return {6}; 
 >    CHANGE the default number of bins to be run to be 1 (L114)
 >   >     else return {2};  -> return oneBin(c);
 
 - For option 2
->    ADD differing bins between CRHigh and CRLow (L113)
+>   ADD TH1* object for fixing of bins. (L103)
+>   >       TH1* sig = c.getSigHist();
+
+>    COMMENT OUT previous lines in doNewRegions if statement (L113).
+>    ADD differing bins between CRHigh and CRLow (L114)
 >   >       if (doNewRegions){
 >   >           if (c(Property::descr).Contains("CRLow") && (c(Property::dist) == "pTV" || c(Property::dist) == "MET")) {
 >   >             if (c[Property::binMin] == 250) return oneBin(c);
@@ -246,19 +250,36 @@ vim src/binning_vhbbrun2.cpp
 >   >             return {2};
 >   >           } 
 >   >        }
-
+>    ADD forcing of bin changing in CRHigh and CRLow (L136)
+>   >       else if (doNewRegions) res = {2}; -> else if (doNewRegions) {
+>   >           if (c(Property::descr).Contains("CRLow") && (c(Property::dist) == "pTV" || c(Property::dist) == "MET")){
+>   >               if (c[Property::binMin] == 150) res = getBinsFromEdges(sig,{250,200,150});
+>   >           }
+>   >           if (c(Property::descr).Contains("CRHigh") && (c(Property::dist) == "pTV" || c(Property::dist) == "MET")) {
+>   >                if (c[Property::binMin] == 150) res = getBinsFromEdges(sig,{250,200,150});
+>   >                if (c[Property::binMin] == 250) res = getBinsFromEdges(sig,{480,370,260});
+>   >           }    
+>   >       }
 ~~~
 setupATLAS && lsetup git 
 source setup.sh
 cd build && cmake ..
 make -j10
 cd ..
-
+~~~
+For option 1
+~~~
 python scripts/launch_default_jobs.py 140ifb-0L-ade-baseline1111
 mv output/SMVHVZ_2019_MVA_mc16ade_v03_baseline.140ifb-0L-ade-baseline1111_fullRes_VHbb_140ifb-0L-ade-baseline1111_0_mc16ade_Systs_mva output/140ifb-0L-ade-baseline1111
-
+python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-SRCR 140ifb-0L-ade-baseline 140ifb-0L-ade-baseline1111 -n -a 5 -l CR-qFree CR-1111 
+mv output/pullComparisons output/pullComparisons_1111
+~~~
+For option 2
+~~~
 python scripts/launch_default_jobs.py 140ifb-0L-ade-baseline2122
 mv output/SMVHVZ_2019_MVA_mc16ade_v03_baseline.140ifb-0L-ade-baseline2122_fullRes_VHbb_140ifb-0L-ade-baseline2122_0_mc16ade_Systs_mva output/140ifb-0L-ade-baseline2122
+python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-SRCR 140ifb-0L-ade-baseline 140ifb-0L-ade-baseline2122 -n -a 5 -l CR-qFree CR-2122 
+mv output/pullComparisons output/pullComparisons_2122
 ~~~
 
 
