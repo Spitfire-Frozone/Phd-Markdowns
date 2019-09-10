@@ -206,7 +206,7 @@ vim scripts/launch_default_jobs.py
 >   >  syst_type = ["Systs"]    (~L53)
 >   >  runPulls = True          (~L64)
 >   >  doExp = "0"              (~L57)
->   >  runP0 = False            (~L68)
+>   >  runP0 = True             (~L68)
 
 ~~~
 setupATLAS && lsetup git 
@@ -219,7 +219,7 @@ python scripts/launch_default_jobs.py 140ifb-0L-ade-baseline
 mv output/SMVHVZ_2019_MVA_mc16ade_v03_baseline.140ifb-0L-ade-baseline_fullRes_VHbb_140ifb-0L-ade-baseline_0_mc16ade_Systs_mva output/140ifb-0L-ade-baseline
 
 ~~~
-# Investigation of different binning regimes
+# Investigation of different binning regimes with Significances
 We also want to change the binning for some of the control regions. This is done in binning_vhbbrun2.cpp .We have too many bins. Taking the convention CRLow high-ptv/CRLow Extreme-ptv/CRHigh high-ptv/CRHigh Extreme-ptv we currently have <6/<6/<6/<6 bins which ends up with 5/4/5/4. This ends up with too few events in the bins of CRLow Extreme-ptv. Also, since 1L have got good significance with fewer bins we want to try two regimes.
 
 - 1/1/1/1 and 
@@ -263,6 +263,11 @@ vim src/binning_vhbbrun2.cpp
 >   >           }                                                                                       
 >   >       }                                                                                                  
 ~~~
+vim scripts/launch_default_jobs.py
+~~~
+>    CHANGE runp0 so that one can compare significances.
+>   >  runP0 = True            (~L68)
+~~~
 setupATLAS && lsetup git 
 source setup.sh
 cd build && cmake ..
@@ -282,6 +287,15 @@ python scripts/launch_default_jobs.py 140ifb-0L-ade-baseline2122
 mv output/SMVHVZ_2019_MVA_mc16ade_v03_baseline.140ifb-0L-ade-baseline2122_fullRes_VHbb_140ifb-0L-ade-baseline2122_0_mc16ade_Systs_mva output/140ifb-0L-ade-baseline2122
 python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-baseline 140ifb-0L-ade-baseline2122 -n -a 5 -l CR-qFree CR-2122 
 mv output/pullComparisons output/pullComparisons_2122
+
+python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-baseline 140ifb-0L-ade-baseline1111 140ifb-0L-ade-baseline2122 -n -a 5 -l CR-qFree CR-1111  CR-2122 
+mv output/pullComparisons output/pullComparisons_11112122
+~~~
+To obtain the significances of the different fits you can print the last 10 lines of the log to the screen
+~~~
+tail -n 10 140ifb-0L-ade-baseline/logs/output_getSig_125.log
+tail -n 10 140ifb-0L-ade-baseline1111/logs/output_getSig_125.log
+tail -n 10 140ifb-0L-ade-baseline2122/logs/output_getSig_125.log
 ~~~
 
 
