@@ -553,13 +553,12 @@ mv run/FullBoosted-masterandold_TriggerPlots run/FullBoosted-masterandold_1L_a_T
 ~~~
 
 ## Post-milestone checks.
-Now after the plots have been circulated that show the inclusion of this trigger change is both good for the analysis and not going to change anything for 1L, there still remains an issue of the missing trigger in data15 and the MC16a. Since thse  There were two main schools of thought here for an investigation. 
+Now after the plots have been circulated that show the inclusion of this trigger change is both good for the analysis and not going to change anything for 1L, there still remains an issue of the missing trigger in data15 and the MC16a. Since those events do not have  MET trigger, when the code snippet switched from triggering on muons to MET, these events would just not be triggered. There were two main schools of thought here for an investigation to rectify this. 
 
 - Trigger on the Single Lepton
-- Use a different trigger regime. 
+- Use a different MET trigger for data15. 
 
-
-One quick check that can be done
+But if there is a patch in the derivation that fixes this, then this isn't needed. The first option is harder to impliment but the second one can be done reasonably quickly. Since the data15 events have the trigger used in the data16, we can check the effect of replacing the xe70 trigger with this one on the 1L analysis. The theory is that all the events that pass the xe90-[] trigger should pass the xe70 trigger.
 
 After checking out a new version of the Analysis
 ~~~
@@ -580,9 +579,9 @@ asetup $release,AnalysisBase
 cd build && rm -rf *
 cmake ../source
 make -j10
-source x86_64-centos7-gcc62-opt/setup.sh
+source x86_64-centos7-gcc8-opt/setup.sh
 lsetup 'lcgenv -p LCG_91 x86_64-centos7-gcc62-opt numpy'
 cd ../run
 
-../source/CxAODOperations_VHbb/scripts/submitReader.sh /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/VH/CxAOD_r32-15 FullBoosted_master 1L,2L a VHbb CUT D1 32-15 none none 1
+../source/CxAODOperations_VHbb/scripts/submitReader.sh /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/VH/CxAOD_r32-15 FullBoosted_masterAlt 1L a VHbb CUT D1 32-15 none none 1
 ~~~
