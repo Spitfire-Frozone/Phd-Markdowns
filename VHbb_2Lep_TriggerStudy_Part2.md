@@ -550,3 +550,39 @@ mv run/FullBoosted-masterandold_TriggerPlots run/FullBoosted-masterandold_2L_a_T
 
 root -b -l -q '../TriggerStudyPlots.cxx("/afs/cern.ch/work/d/dspiteri/VHbb/", "CxAODFramework_master_july2019/","FullBoosted","master","old","2LEPALL.root","1L","32-15","a","CUT","D1","SR")'
 mv run/FullBoosted-masterandold_TriggerPlots run/FullBoosted-masterandold_1L_a_TriggerPlots
+~~~
+
+## Post-milestone checks.
+Now after the plots have been circulated that show the inclusion of this trigger change is both good for the analysis and not going to change anything for 1L, there still remains an issue of the missing trigger in data15 and the MC16a. Since thse  There were two main schools of thought here for an investigation. 
+
+- Trigger on the Single Lepton
+- Use a different trigger regime. 
+
+
+One quick check that can be done
+
+After checking out a new version of the Analysis
+~~~
+cd /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_august2019/
+setupATLAS && lsetup git && lsetup "root 6.14.04-x86_64-slc6-gcc62-opt" 
+
+vim source/CxAODTools/Root/TriggerTool.cxx
+~~~
+>   COMMENT OUT the old data15 trigger for the while analysis (L102)
+>   >    //ADD_TRIG(HLT_xe70,             any, data15, data15);
+>   >    //ADD_TRIG(HLT_xe90_mht_L1XE50,  any, data16A, data16BD3);
+
+>   CHANGE the data16A-B MET trigger to include the data15 period (L104)
+>   >    ADD_TRIG(HLT_xe90_mht_L1XE50,  any, data15, data16BD3); // Trial MET trigger configuration
+~~~
+release=`cat source/CxAODBootstrap_VHbb/bootstrap/release.txt` && echo "release=$release"
+asetup $release,AnalysisBase
+cd build && rm -rf *
+cmake ../source
+make -j10
+source x86_64-centos7-gcc62-opt/setup.sh
+lsetup 'lcgenv -p LCG_91 x86_64-centos7-gcc62-opt numpy'
+cd ../run
+
+../source/CxAODOperations_VHbb/scripts/submitReader.sh /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/VH/CxAOD_r32-15 FullBoosted_master 1L,2L a VHbb CUT D1 32-15 none none 1
+~~~
