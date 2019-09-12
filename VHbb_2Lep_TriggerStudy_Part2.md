@@ -558,7 +558,7 @@ Now after the plots have been circulated that show the inclusion of this trigger
 - Trigger on the Single Lepton
 - Use a different MET trigger for data15. 
 
-But if there is a patch in the derivation that fixes this, then this isn't needed. The first option is harder to impliment but the second one can be done reasonably quickly. Since the data15 events have the trigger used in the data16, we can check the effect of replacing the xe70 trigger with this one on the 1L analysis. The theory is that all the events that pass the xe90-[] trigger should pass the xe70 trigger.
+But if there is a patch in the derivation that fixes this, then this isn't needed. The first option is harder to impliment but the second one can be done reasonably quickly. Since the data15 events have the trigger used in the data16, we can check the effect of replacing the xe70 trigger with this one on the 1L analysis. The theory is that all the events that pass the xe90-[...] trigger should pass the xe70 trigger.
 
 After checking out a new version of the Analysis
 ~~~
@@ -580,7 +580,6 @@ cd build && rm -rf *
 cmake ../source
 make -j10
 source x86_64-centos7-gcc8-opt/setup.sh
-lsetup 'lcgenv -p LCG_91 x86_64-centos7-gcc62-opt numpy'
 cd ../run
 
 ../source/CxAODOperations_VHbb/scripts/submitReader.sh /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/VH/CxAOD_r32-15 FullBoosted_masterAlt 1L a VHbb CUT D1 32-15 none none 1
