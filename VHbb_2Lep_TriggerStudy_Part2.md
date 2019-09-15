@@ -582,5 +582,12 @@ make -j10
 source x86_64-centos7-gcc8-opt/setup.sh
 cd ../run
 
-../source/CxAODOperations_VHbb/scripts/submitReader.sh /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/VH/CxAOD_r32-15 FullBoosted_masterAlt 1L a VHbb CUT D1 32-15 none none 1
+../source/CxAODOperations_VHbb/scripts/submitReader.sh /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/VH/CxAOD_r32-15 FullBoosted_master_xe90 1L a VHbb CUT D1 32-15 none none 1
+
+cd /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_august2019/run/FullBoosted_masterAlt
+python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master/source/CxAODOperations_VHbb/scripts/checkReaderFails.py Reader_1L_32-15_a_CUT_D1
+
+source /afs/cern.ch/work/d/dspiteri/VHbb/VHbbHaddAll1LaCUT.sh
+
+../source/CxAODOperations_VHbb/scripts/submitReader.sh /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/VH/CxAOD_r32-15 FullBoosted_master_xe90xe70 1L,2L a VHbb CUT D1 32-15 none none 1
 ~~~
