@@ -199,14 +199,14 @@ mv milestone1 SMVHVZ_2019_MVA_mc16ade_v03_baseline
 vim scripts/launch_default_jobs.py
 ~~~
 >    CHANGE Variables to run the new 0L baseline FullRun2, and the MCTypes to "mc16ade"
->   >  version = "v03_baseline" (~L13)
->   >  GlobalRun = True         (~L14)
->   >  channels = ["0"]         (~L48)
->   >  MCTypes = ["mc16ade"]    (~L50)
->   >  syst_type = ["Systs"]    (~L53)
->   >  runPulls = True          (~L64)
->   >  doExp = "0"              (~L57)
->   >  runP0 = True             (~L68)
+>   >  version = "v03_baseline" (~L13)                                                                                   
+>   >  GlobalRun = True         (~L14)                                                                                       
+>   >  channels = ["0"]         (~L48)                                                                                        
+>   >  MCTypes = ["mc16ade"]    (~L50)                                                                                     
+>   >  syst_type = ["Systs"]    (~L53)                                                                                    
+>   >  runPulls = True          (~L64)                                                                                     
+>   >  doExp = "0"              (~L57)                                                                                      
+>   >  runP0 = True             (~L68)                                                                                   
 
 ~~~
 setupATLAS && lsetup git 
