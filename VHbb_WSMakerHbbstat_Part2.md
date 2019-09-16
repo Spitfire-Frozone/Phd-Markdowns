@@ -298,4 +298,17 @@ tail -n 10 140ifb-0L-ade-baseline1111/logs/output_getSig_125.log
 tail -n 10 140ifb-0L-ade-baseline2122/logs/output_getSig_125.log
 ~~~
 
-
+# Running Official 0L Plots 
+Once we understand the fit we can produce the official plots for public consumption. 
+~~~
+cd /afs/cern.ch/work/d/dspiteri/VHbb
+setupATLAS && lsetup git 
+git clone --recursive ssh://git@gitlab.cern.ch:7999/atlas-physics/higgs/hbb/WSMaker_VHbb.git
+mv WSMaker_VHbb WSMaker_VHbb_Official
+source setup.sh
+mkdir inputs
+cd build
+cmake ..
+make -j8
+cd ..
+~~~
