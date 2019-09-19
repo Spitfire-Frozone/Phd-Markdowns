@@ -565,9 +565,14 @@ After checking out a new version of the Analysis
 cd /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_august2019/
 setupATLAS && lsetup git && lsetup "root 6.14.04-x86_64-slc6-gcc62-opt" 
 
+vim source/xAODOperations_VHbb/scripts/submitReader.sh
+~~~
+>   CHANGE 2L trigger flag to true (~L281)
+>   >    DO2LMETTRIGGER = true
+~~~
 vim source/CxAODTools/Root/TriggerTool.cxx
 ~~~
->   COMMENT OUT the old data15 trigger for the while analysis (L102)
+>   COMMENT IN/OUT the old data15 trigger for the while analysis depending on what you want to test (L102)
 >   >    //ADD_TRIG(HLT_xe70,             any, data15, data15);
 >   >    //ADD_TRIG(HLT_xe90_mht_L1XE50,  any, data16A, data16BD3);
 
@@ -581,32 +586,68 @@ cmake ../source
 make -j10
 source x86_64-centos7-gcc8-opt/setup.sh
 cd ../run
+~~~
+There are 4 tests to run
 
-
+- TEST 1
+Replacing the xe70 trigger with xe90 one in 1L and comparing it to the 1L standard new implimentation
+~~~
 ../source/CxAODOperations_VHbb/scripts/submitReader.sh /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/VH/CxAOD_r32-15 FullBoosted_newestTrigger_xe90 1L a VHbb CUT D1 32-15 none none 1
 
+cd /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_august2019/
+setupATLAS && lsetup git && lsetup "root 6.14.04-x86_64-slc6-gcc62-opt" 
 cd /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_august2019/run/FullBoosted_newestTrigger_xe90
 python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_august2019/source/CxAODOperations_VHbb/scripts/checkReaderFails.py Reader_1L_32-15_a_CUT_D1
 
 source /afs/cern.ch/work/d/dspiteri/VHbb/VHbbHaddAll1LaCUT.sh
 
+root -b -l -q '../TriggerStudyPlots.cxx("/afs/cern.ch/work/d/dspiteri/VHbb/", "CxAODFramework_master_august2019/","FullBoosted","newest","newest","2LEPALL.root","1L","32-15","a","CUT","D1","SR","","_xe90")'
+mv run/FullBoosted-newestandnewest_TriggerPlots run/FullBoosted-xe90vsxe70_1L_a_TriggerPlots
 
-../source/CxAODOperations_VHbb/scripts/submitReader.sh /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/VH/CxAOD_r32-15 FullBoosted_newestTrigger_xe90xe70 1L,2L a VHbb CUT D1 32-15 none none 1
+~~~
+- TEST 2
+Adding the xe90 trigger to the xe70 trigger in 1L ...
+
+- TEST 3
+... and 2L and comparing it to the standard new implimentation
+~~~
+../source/CxAODOperations_VHbb/scripts/submitReader.sh /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/VH/CxAOD_r32-15 FullBoosted_newestTrigger_xe70xe90 1L,2L a VHbb CUT D1 32-15 none none 1
 
 cd /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_august2019/run/FullBoosted_newestTrigger_xe90xe70
 python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_august2019/source/CxAODOperations_VHbb/scripts/checkReaderFails.py Reader_1L_32-15_a_CUT_D1
+
+source /afs/cern.ch/work/d/dspiteri/VHbb/VHbbHaddAll1LaCUT.sh
+
+root -b -l -q '../TriggerStudyPlots.cxx("/afs/cern.ch/work/d/dspiteri/VHbb/", "CxAODFramework_master_august2019/","FullBoosted","newest","newest","2LEPALL.root","1L","32-15","a","CUT","D1","SR","","_xe70xe90")'
+mv run/FullBoosted-newestandnewest_TriggerPlots run/FullBoosted-xe70vsxe70xe90_1L_a_TriggerPlots
+
 python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_august2019/source/CxAODOperations_VHbb/scripts/checkReaderFails.py Reader_2L_32-15_a_CUT_D1
+
+cd Reader_2L_32-15_a_CUT_D1/fetch
+source /afs/cern.ch/work/d/dspiteri/VHbb/VHbbHaddAll.sh
+
+root -b -l -q '../TriggerStudyPlots.cxx("/afs/cern.ch/work/d/dspiteri/VHbb/", "CxAODFramework_master_august2019/","FullBoosted","newest","newest","2LEPALL.root","2L","32-15","a","CUT","D1","SR","","_xe70xe90")'
+mv run/FullBoosted-newestandnewest_TriggerPlots run/FullBoosted-xe70vsxe70xe90_2L_a_TriggerPlots
+
 ~~~
-And then for the 2L data case. 
+- TEST 4
+And then for the 2L data case, because I don't keep the data for the master I will need to re-run it. 
 ~~~
 ../source/CxAODOperations_VHbb/scripts/submitReader.sh /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/VH/CxAOD_r32-15 FullBoosted_newestTrigger_xe70 2L a VHbb CUT D1 32-15 data15 data15 1
 
 cd FullBoosted_newestTrigger_xe70
 python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_august2019/source/CxAODOperations_VHbb/scripts/checkReaderFails.py Reader_2L_32-15_a_CUT_D1
 
+cd Reader_2L_32-15_a_CUT_D1/fetch
+hadd DATA15.root hist-data15* 
+cd ../../../..
 
-../source/CxAODOperations_VHbb/scripts/submitReader.sh /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/VH/CxAOD_r32-15 FullBoosted_oldTrigger_xe70 2L a VHbb CUT D1 32-15 data15 data15 1
-
-cd FullBoosted_oldTrigger_xe70
-python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_august2019/source/CxAODOperations_VHbb/scripts/checkReaderFails.py Reader_2L_32-15_a_CUT_D1
+vim  ../TriggerPlots.cxx
+~~~
+>   ADD new samples to run over (~L112)
+>   >  {"data15"}; //data15 only   
+>   COMMENT out running over all samples (~L113)
+~~~
+root -b -l -q '../TriggerStudyPlots.cxx("/afs/cern.ch/work/d/dspiteri/VHbb/", "CxAODFramework_master_august2019/","FullBoosted","newest","newest","DATA15.root","2L","32-15","a","CUT","D1","SR","","_xe70xe90")'
+mv run/FullBoosted-newestandnewest_TriggerPlots run/FullBoosted-xe70vsxe70xe90_2L_data_a_TriggerPlots
 ~~~
