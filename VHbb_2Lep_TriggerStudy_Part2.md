@@ -645,9 +645,9 @@ cd ../../../..
 vim  ../TriggerPlots.cxx
 ~~~
 >   ADD new samples to run over (~L112)
->   >  {"data15"}; //data15 only   
+>   >  {"data"}; //data only   
 >   COMMENT out running over all samples (~L113)
 ~~~
-root -b -l -q '../TriggerStudyPlots.cxx("/afs/cern.ch/work/d/dspiteri/VHbb/", "CxAODFramework_master_august2019/","FullBoosted","newest","newest","DATA15.root","2L","32-15","a","CUT","D1","SR","","_xe70xe90")'
+root -b -l -q '../TriggerStudyPlots.cxx("/afs/cern.ch/work/d/dspiteri/VHbb/", "CxAODFramework_master_august2019/","FullBoosted","newest","newest","DATA15.root","2L","32-15","a","CUT","D1","SR","_xe70","_xe70xe90")'
 mv run/FullBoosted-newestandnewest_TriggerPlots run/FullBoosted-xe70vsxe70xe90_2L_data_a_TriggerPlots
 ~~~
