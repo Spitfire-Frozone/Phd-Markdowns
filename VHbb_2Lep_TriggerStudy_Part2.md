@@ -2,7 +2,7 @@
 
 ## VHbb 2 Lepton Trigger Study Part 2 ##
 
-Last Edited: 30-08-2019
+Last Edited: 22-09-2019
 -------------------------------------------------------------------------------
 
 # Setup Script
@@ -683,3 +683,17 @@ setupATLAS && lsetup git && lsetup "root 6.14.04-x86_64-slc6-gcc62-opt"
 cd run/FullBoosted_newestTrigger
 source /afs/cern.ch/work/d/dspiteri/VHbb/VHbbHaddBoosted2LInputs.sh
 ~~~
+Now lets get a fresh copy of the WSMaker
+~~~
+cd /afs/cern.ch/work/d/dspiteri/VHbb
+setupATLAS && lsetup git 
+git clone --recursive ssh://git@gitlab.cern.ch:7999/atlas-physics/higgs/hbb/WSMaker_VHbb.git
+cd WSMaker_VHbb
+source setup.sh
+mkdir inputs
+cd build
+cmake ..
+make -j8
+cd ..
+~~~
+The next step is to split the new standard inputs. To do this we need to create a new file. Referencing files from /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/FullRunII2019/statArea/inputs/TwoLep/r32-15_customCDI_20190814/v3. To perform the first 4 tasks, we need all So ade
