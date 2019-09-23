@@ -333,11 +333,11 @@ vim scripts/launch_default_jobs.py
 >    CHANGE Global run conditions (~L13-L15)
 >   >  version = "milestone1_STXS"                                                                                    
 >   >  GlobalRun = True            
->   >  doPostFit = True                                                                                                
+>   >  doPostFit = False                                                                                                
 
 >    CHANGE all do cutbase block to 'false' (~L17-L23)
 >   >  doCutBase = False        (~L17)
->   >  do_mbb_plot = True       (~L23)                                                                                     
+>   >  do_mbb_plot = False      (~L23)                                                                                     
 
 >    CHANGE the STXS block suck that we can run the 1 POI scheme (~L27-L32)
 >   >  doSTXS = True                                                                                            
@@ -370,19 +370,33 @@ vim scripts/launch_default_jobs.py
 
 Then once you are ready you can run
 ~~~
+cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb
 source setup.sh
 cd build && cmake ..
 make -j10
 cd ..
 
-python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline
+python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-MVA
+~~~
+Now you need to run the MVA analysis with  
+~~~
+vim scripts/launch_default_jobs.py 
+~~~
+>    CHANGE postfit flag to get the mBB plots (~L17)
+>   >  doPostFit = True  
+~~~
+python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-MVA-mBB
 ~~~
 Then all you need to do to run over the CB analysis is to change two lines in launch_default_jobs.py 
 ~~~
 vim scripts/launch_default_jobs.py 
 ~~~
 >    CHANGE cutbase block to 'true' (~L17)
->   >  doCutBase = True       
+>   >  doCutBase = True   
+>   >  doPostFit = false  
 ~~~
 python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-CBA
 ~~~
+The output from lxbatch jobs is stored in:
+/afs/cern.ch/work/${USER:0:1}/${USER}/analysis/statistics/batch/
+/afs/cern.ch/work/d/dspiteri/analysis/statistics/batch/
