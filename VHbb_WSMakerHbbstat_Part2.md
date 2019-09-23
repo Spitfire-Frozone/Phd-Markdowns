@@ -299,7 +299,7 @@ tail -n 10 140ifb-0L-ade-baseline2122/logs/output_getSig_125.log
 ~~~
 
 # Running Official 0L Plots 
-Once we understand the fit we can produce the official plots for public consumption. 
+Once we understand the fit we can produce the official plots for public consumption. Essentially we want to update the 0L standalone plots in here Appendix B of https://cds.cern.ch/record/2317111/files/ATL-COM-PHYS-2018-512.pdf . Hence will need to run the WSMaker twice. Once on MV analysis and once on the CB analysis
 ~~~
 cd /afs/cern.ch/work/d/dspiteri/VHbb
 setupATLAS && lsetup git 
@@ -311,4 +311,67 @@ cd build
 cmake ..
 make -j8
 cd ..
+~~~
+The inputs have already been split, and these are special ones that will require 
+
+>  /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/FullRunII2019/statArea/inputs/AfterWSMakerSplit/2019-08-20/milestone1_STXS
+~~~
+cd inputs
+cp -r /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/FullRunII2019/statArea/inputs/AfterWSMakerSplit/2019-08-20/milestone1_STXS .
+cd ..
+~~~
+Then you will want to run the mva analysis on launch_default_jobs.py with the following configuration. If it's not specified underneath, it should be run as 'false'
+~~~
+vim scripts/launch_default_jobs.py 
+~~~
+>    CHANGE Global run conditions (~L13-L15)
+>   >  version = "milestone1_STXS"                                                                                    
+>   >  GlobalRun = True            
+>   >  doPostFit = True                                                                                                
+
+>    CHANGE all do cutbase block to 'false' (~L17-L23)
+>   >  doCutBase = False (~L17)                                                                                       
+
+>    CHANGE the STXS block suck that we can run the 1 POI scheme (~L27-L32)
+>   >  doSTXS = True                                                                                            
+>   >  FitSTXS_Scheme = 1 #3 corresponds to 5 POI                                                                   
+>   >  doSTXSQCD = True                                                                                         
+>   >  doSTXSPDF = True                                                                               
+>   >  doSTXSDropTheoryAcc= True                                                  
+>   >  doXSWS = False # switch to true for 3/5 POIs                                                                        
+
+>    CHANGE variable such that you run over the new CR's (~L34)
+>   >  doNewRegions = True 
+
+>    CHANGE variables so you are running the observed 0L standalone fit (~L46-L57)
+>   >  channels = ["0"]         (~L48)                                                                                        
+>   >  MCTypes = ["mc16ade"]    (~L50)                                                                                     
+>   >  syst_type = ["Systs"]    (~L53)
+>   >  doExp = "0"              (~L57)                                                                                         
+
+>    CHANGE variables to run on the batch as this will be hefty job (~L60)
+>   >  run_on_batch = True                                                                                             
+
+>    CHANGE what you want to run in the 0L standalone fit (~L62-L69)
+>   >  createSimpleWorkspace = True                                                                                
+>   >  runPulls = True                                                                                                         
+>   >  runBreakdown = True                                                                                              
+>   >  runRanks = True                                                                                                
+>   >  runLimits = False                                                                                                      
+>   >  runP0 = True                                                                                                        
+>   >  runToyStudy = False                                                                                                 
+
+Then once you are ready you can run
+~~~
+python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline
+~~~
+Then all you need to do to run over the CB analysis is to change two lines in launch_default_jobs.py 
+~~~
+vim scripts/launch_default_jobs.py 
+~~~
+>    CHANGE all do cutbase block to 'false' (~L17-L23)
+>   >  doCutBase = True       
+>   >  do_mbb_plot = True
+~~~
+python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-CBA
 ~~~
