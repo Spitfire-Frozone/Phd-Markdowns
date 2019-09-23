@@ -320,7 +320,12 @@ cd inputs
 cp -r /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/FullRunII2019/statArea/inputs/AfterWSMakerSplit/2019-08-20/milestone1_STXS .
 mv milestone1_STXS SMVHVZ_2019_MVA_mc16ade_milestone1_STXS
 cd ..
+
+vim setup.sh
 ~~~
+>    CHANGE the analysis to be unblinded
+>   >  export IS_BLINDED = 1 -> export IS_BLINDED = 0
+
 Then you will want to run the mva analysis on launch_default_jobs.py with the following configuration. If it's not specified underneath, it should be run as 'false'
 ~~~
 vim scripts/launch_default_jobs.py 
@@ -328,7 +333,7 @@ vim scripts/launch_default_jobs.py
 >    CHANGE Global run conditions (~L13-L15)
 >   >  version = "milestone1_STXS"                                                                                    
 >   >  GlobalRun = True            
->   >  doPostFit = False                                                                                                
+>   >  doPostFit = True                                                                                                
 
 >    CHANGE all do cutbase block to 'false' (~L17-L23)
 >   >  doCutBase = False        (~L17)
@@ -365,15 +370,19 @@ vim scripts/launch_default_jobs.py
 
 Then once you are ready you can run
 ~~~
+source setup.sh
+cd build && cmake ..
+make -j10
+cd ..
+
 python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline
 ~~~
 Then all you need to do to run over the CB analysis is to change two lines in launch_default_jobs.py 
 ~~~
 vim scripts/launch_default_jobs.py 
 ~~~
->    CHANGE all do cutbase block to 'false' (~L17-L23)
+>    CHANGE cutbase block to 'true' (~L17)
 >   >  doCutBase = True       
->   >  do_mbb_plot = True
 ~~~
 python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-CBA
 ~~~
