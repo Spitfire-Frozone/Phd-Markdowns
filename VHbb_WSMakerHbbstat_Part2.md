@@ -318,6 +318,7 @@ The inputs have already been split, and these are special ones that will require
 ~~~
 cd inputs
 cp -r /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/FullRunII2019/statArea/inputs/AfterWSMakerSplit/2019-08-20/milestone1_STXS .
+mv milestone1_STXS SMVHVZ_2019_MVA_mc16ade_milestone1_STXS
 cd ..
 ~~~
 Then you will want to run the mva analysis on launch_default_jobs.py with the following configuration. If it's not specified underneath, it should be run as 'false'
@@ -327,10 +328,11 @@ vim scripts/launch_default_jobs.py
 >    CHANGE Global run conditions (~L13-L15)
 >   >  version = "milestone1_STXS"                                                                                    
 >   >  GlobalRun = True            
->   >  doPostFit = True                                                                                                
+>   >  doPostFit = False                                                                                                
 
 >    CHANGE all do cutbase block to 'false' (~L17-L23)
->   >  doCutBase = False (~L17)                                                                                       
+>   >  doCutBase = False        (~L17)
+>   >  do_mbb_plot = True       (~L23)                                                                                     
 
 >    CHANGE the STXS block suck that we can run the 1 POI scheme (~L27-L32)
 >   >  doSTXS = True                                                                                            
