@@ -416,7 +416,7 @@ vim scripts/launch_default_jobs.py
 
 >    CHANGE flags to get expected pulls (~L57-L70)                                      
 >   >  doExp=0                                                                                                          
->   >  runPulls = true                                                                                                     
+>   >  runPulls = True                                                                                                     
 >   >  runBreakdown = False                                                                                              
 >   >  runRanks = False                                                                                                
 >   >  runP0 = False                                                                                                
