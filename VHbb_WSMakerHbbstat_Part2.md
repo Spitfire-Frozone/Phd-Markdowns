@@ -411,13 +411,13 @@ python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-MVA
 vim scripts/launch_default_jobs.py 
 ~~~
 >    CHANGE postfit flag to get the mBB plots (~L17)
->   >  doPostFit = True  
+>   >  doPostFit = True                                                                                                    
 >    CHANGE flags to get expected pulls (~L57-L70) 
->   >  doExp=0 
->   >  runPulls = true
+>   >  doExp=0                                                                                                          
+>   >  runPulls = true                                                                                                     
 >   >  runBreakdown = False                                                                                              
 >   >  runRanks = False                                                                                                
->   >  runP0 = False    
+>   >  runP0 = False                                                                                                
 ~~~
 python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-MVA-mBBpull
 ~~~
@@ -428,8 +428,8 @@ Then all you need to do to run over the CB analysis is to change two lines in la
 vim scripts/launch_default_jobs.py 
 ~~~
 >    CHANGE cutbase block to 'true' (~L17)
->   >  doCutBase = True   
->   >  doPostFit = false  
+>   >  doCutBase = True                                                                                                 
+>   >  doPostFit = false                                                             
 ~~~
 python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-CBA-mBBpull
 ~~~
@@ -440,11 +440,11 @@ We do not need  doPostFit = True here as we are only interested in mBB and mBB c
 vim scripts/launch_default_jobs.py 
 ~~~
 >    CHANGE flags to get Rankings, Breakdowns and Significances (~L57-L70) 
->   >  doExp=1
->   >  runPulls = False
+>   >  doExp=1                                                                                                             
+>   >  runPulls = False                                                                                                   
 >   >  runBreakdown = True                                                                                              
 >   >  runRanks = True                                                                                                
->   >  runP0 = True   
+>   >  runP0 = True                                                                                                       
 ~~~
 python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-CBA
 ~~~        
