@@ -411,8 +411,9 @@ python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-MVA
 vim scripts/launch_default_jobs.py 
 ~~~
 >    CHANGE postfit flag to get the mBB plots (~L17)
->   >  doPostFit = True                                                                                                    
->    CHANGE flags to get expected pulls (~L57-L70) 
+>   >  doPostFit = True    
+
+>    CHANGE flags to get expected pulls (~L57-L70)                                      
 >   >  doExp=0                                                                                                          
 >   >  runPulls = true                                                                                                     
 >   >  runBreakdown = False                                                                                              
