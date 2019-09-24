@@ -2,8 +2,11 @@
 
 ## VHbb WSMaker and Hbb Stat Part 2 ##
 
-## Last Edited: 30-08-2019
+## Last Edited: 24-09-2019
 --------------------------------------------------------------------------
+- Useful Links
+https://nmorange.web.cern.ch/nmorange/WSMaker/html/HowTo.html
+https://gitlab.cern.ch/atlas-physics/higgs/hbb/WSMaker/blob/master/HowTo.md
 
 # Initial Setup and Running
 Once a basic familiarity with WSMaker has been established, and a newer set of inputs has been created. These will need to be tested.  
@@ -299,7 +302,22 @@ tail -n 10 140ifb-0L-ade-baseline2122/logs/output_getSig_125.log
 ~~~
 
 # Running Official 0L Plots 
-Once we understand the fit we can produce the official plots for public consumption. Essentially we want to update the 0L standalone plots in here Appendix B of https://cds.cern.ch/record/2317111/files/ATL-COM-PHYS-2018-512.pdf . Hence will need to run the WSMaker twice. Once on MV analysis and once on the CB analysis
+Once we understand the fit we can produce the official plots for public consumption. Essentially we want to update the 0L standalone plots in here Appendix B of https://cds.cern.ch/record/2317111/files/ATL-COM-PHYS-2018-512.pdf . Hence will need to run the WSMaker four times. twice on MV analysis and twice on the CB analysis.
+Here are the plots that we require
+
+a -> MVA Asimov VS Data
+b -> MVA ranking and breakdown
+c -> MVA post-fit plots for mBB and PtV
+
+d -> CBA VS mva Or/And cba Asimov VS Data
+e -> CBA ranking and breakdown
+f -> CBA post-fit plots for mBB and PtV
+
+1) MVA Ranking, Breakdown, P0 = true         | b,d
+2) MVA Postfit=true, Pulls = true, doExp=0   | a,c
+
+3) CBA Ranking, Breakdown, P0 = true         | b,e
+4) CBA Pulls = true, doExp=0                 | d,f 
 ~~~
 cd /afs/cern.ch/work/d/dspiteri/VHbb
 setupATLAS && lsetup git 
@@ -323,8 +341,8 @@ cd ..
 
 vim setup.sh
 ~~~
->    CHANGE the analysis to be unblinded
->   >  export IS_BLINDED = 1 -> export IS_BLINDED = 0
+>    CHANGE the analysis to be blinded
+>   >  export IS_BLINDED = 0 -> export IS_BLINDED = 1
 
 Then you will want to run the mva analysis on launch_default_jobs.py with the following configuration. If it's not specified underneath, it should be run as 'false'
 ~~~
@@ -354,7 +372,8 @@ vim scripts/launch_default_jobs.py
 >   >  channels = ["0"]         (~L48)                                                                                        
 >   >  MCTypes = ["mc16ade"]    (~L50)                                                                                     
 >   >  syst_type = ["Systs"]    (~L53)
->   >  doExp = "0"              (~L57)                                                                                         
+>    CHANGE to run over the Asimov Dataset    
+>   >  doExp = "1"              (~L57)                                                                                     
 
 >    CHANGE variables to run on the batch as this will be hefty job (~L60)
 >   >  run_on_batch = True                                                                                             
@@ -399,4 +418,18 @@ python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-CBA
 ~~~
 The output from lxbatch jobs is stored in:
 /afs/cern.ch/work/${USER:0:1}/${USER}/analysis/statistics/batch/
-/afs/cern.ch/work/d/dspiteri/analysis/statistics/batch/
+> /afs/cern.ch/work/d/dspiteri/analysis/statistics/batch/ for example
+
+and can be gathered using getResults.py
+> python scripts/getResults.py list --plots --tables --NPs --fccs --restrict-to fullRes $version
+with more examples in gather)default_results.sh
+~~~
+cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb
+source setup.sh
+
+python WSMakerCore/scripts/getResults.py list --plots --tables --NPs --fccs --workspaces --ranking --breakdown --restrict-to fullRes /afs/cern.ch/work/d/dspiteri/analysis/statistics/batch/SMVHVZ_2019_MVA_mc16ade_milestone1_STXS.140ifb-0L-ade-STXS-baseline-MVA.140ifb-0L-ade-STXS-baseline-MVA
+
+SMVHVZ_2019_MVA_mc16ade_milestone1_STXS.140ifb-0L-ade-STXS-baseline-CBA  
+SMVHVZ_2019_MVA_mc16ade_milestone1_STXS.140ifb-0L-ade-STXS-baseline-MVA-mBB
+
+~~~
