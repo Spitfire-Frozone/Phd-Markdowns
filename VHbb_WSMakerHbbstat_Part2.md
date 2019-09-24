@@ -406,7 +406,7 @@ Then once you are ready you can run
 python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-MVA
 ~~~
 
-# 2)  Run the MV analysis over the post-fit variables and with the EXPECTED pulls  
+## 2)  Run the MV analysis over the post-fit variables and with the EXPECTED pulls  
 ~~~
 vim scripts/launch_default_jobs.py 
 ~~~
@@ -422,7 +422,7 @@ vim scripts/launch_default_jobs.py
 python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-MVA-mBBpull
 ~~~
 
-# 4) Run the CB analysis over the post-fit variables and with the EXPECTED pulls     
+## 4) Run the CB analysis over the post-fit variables and with the EXPECTED pulls     
 Then all you need to do to run over the CB analysis is to change two lines in launch_default_jobs.py 
 ~~~
 vim scripts/launch_default_jobs.py 
@@ -434,7 +434,7 @@ vim scripts/launch_default_jobs.py
 python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-CBA-mBBpull
 ~~~
 
-# 3) Run the CB analysis with Rankings, Breakdowns and Significances  
+## 3) Run the CB analysis with Rankings, Breakdowns and Significances  
 We do not need  doPostFit = True here as we are only interested in mBB and mBB comes for free in the CBA  
 ~~~
 vim scripts/launch_default_jobs.py 
