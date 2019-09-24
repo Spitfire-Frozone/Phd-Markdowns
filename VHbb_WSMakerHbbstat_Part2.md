@@ -268,7 +268,7 @@ vim src/binning_vhbbrun2.cpp
 ~~~
 vim scripts/launch_default_jobs.py
 ~~~
->    CHANGE runp0 so that one can compare significances.
+>    CHANGE runP0 so that one can compare significances.
 >   >  runP0 = True            (~L68)
 ~~~
 setupATLAS && lsetup git 
@@ -303,21 +303,26 @@ tail -n 10 140ifb-0L-ade-baseline2122/logs/output_getSig_125.log
 
 # Running Official 0L Plots 
 Once we understand the fit we can produce the official plots for public consumption. Essentially we want to update the 0L standalone plots in here Appendix B of https://cds.cern.ch/record/2317111/files/ATL-COM-PHYS-2018-512.pdf . Hence will need to run the WSMaker four times. twice on MV analysis and twice on the CB analysis.
-Here are the plots that we require
 
-a -> MVA Asimov VS Data
-b -> MVA ranking and breakdown
-c -> MVA post-fit plots for mBB and PtV
+1) Run the MV analysis with Rankings, Breakdowns and Significances       
+2) Run the MV analysis over the post-fit variables and with the EXPECTED pulls  
 
-d -> CBA VS mva Or/And cba Asimov VS Data
-e -> CBA ranking and breakdown
-f -> CBA post-fit plots for mBB and PtV
+3) Run the CB analysis with Rankings, Breakdowns and Significances          
+4) Run the CB analysis over the post-fit variables and with the EXPECTED pulls             
 
-1) MVA Ranking, Breakdown, P0 = true         | b,d
-2) MVA Postfit=true, Pulls = true, doExp=0   | a,c
+Here is a summary of the plots that we require
 
-3) CBA Ranking, Breakdown, P0 = true         | b,e
-4) CBA Pulls = true, doExp=0                 | d,f 
+| Designation |      Plots                           |  Runs  |
+|:-----------:|:-------------------------------------|:------:|
+| a           | MVA Asimov VS Data                   |  (2)   |
+| b           | MVA ranking and breakdown            | (1,3)  |
+| c           | MVA post-fit plots for mBB and PtV   |  (2)   |
+| d           | CBA VS mva Or/And cba Asimov VS Data | (1,4)  |
+| e           | CBA ranking and breakdown            |  (3)   |
+| f           | CBA post-fit plots for mBB and PtV   |  (4)   |
+
+
+
 ~~~
 cd /afs/cern.ch/work/d/dspiteri/VHbb
 setupATLAS && lsetup git 
@@ -343,14 +348,23 @@ vim setup.sh
 ~~~
 >    CHANGE the analysis to be blinded
 >   >  export IS_BLINDED = 0 -> export IS_BLINDED = 1
+~~~
+cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb
+source setup.sh
+cd build && cmake ..
+make -j10
+cd ..
+~~~
 
-Then you will want to run the mva analysis on launch_default_jobs.py with the following configuration. If it's not specified underneath, it should be run as 'false'
+## 1) Run the MV analysis with Rankings, Breakdowns and Significances       
+
+Then you will want to run the mva analysis on launch_default_jobs.py with the following configuration. If it's not specified underneath, it should be run as 'false'            
 ~~~
 vim scripts/launch_default_jobs.py 
 ~~~
 >    CHANGE Global run conditions (~L13-L15)
 >   >  version = "milestone1_STXS"                                                                                    
->   >  GlobalRun = True            
+>   >  GlobalRun = False            
 >   >  doPostFit = False                                                                                                
 
 >    CHANGE all do cutbase block to 'false' (~L17-L23)
@@ -380,7 +394,7 @@ vim scripts/launch_default_jobs.py
 
 >    CHANGE what you want to run in the 0L standalone fit (~L62-L69)
 >   >  createSimpleWorkspace = True                                                                                
->   >  runPulls = True                                                                                                         
+>   >  runPulls = False                                                                                                       
 >   >  runBreakdown = True                                                                                              
 >   >  runRanks = True                                                                                                
 >   >  runLimits = False                                                                                                      
@@ -389,23 +403,26 @@ vim scripts/launch_default_jobs.py
 
 Then once you are ready you can run
 ~~~
-cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb
-source setup.sh
-cd build && cmake ..
-make -j10
-cd ..
-
 python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-MVA
 ~~~
-Now you need to run the MVA analysis with  
+
+# 2)  Run the MV analysis over the post-fit variables and with the EXPECTED pulls  
 ~~~
 vim scripts/launch_default_jobs.py 
 ~~~
 >    CHANGE postfit flag to get the mBB plots (~L17)
 >   >  doPostFit = True  
+>    CHANGE flags to get expected pulls (~L57-L70) 
+>   >  doExp=0 
+>   >  runPulls = true
+>   >  runBreakdown = False                                                                                              
+>   >  runRanks = False                                                                                                
+>   >  runP0 = False    
 ~~~
-python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-MVA-mBB
+python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-MVA-mBBpull
 ~~~
+
+# 4) Run the CB analysis over the post-fit variables and with the EXPECTED pulls     
 Then all you need to do to run over the CB analysis is to change two lines in launch_default_jobs.py 
 ~~~
 vim scripts/launch_default_jobs.py 
@@ -414,22 +431,35 @@ vim scripts/launch_default_jobs.py
 >   >  doCutBase = True   
 >   >  doPostFit = false  
 ~~~
-python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-CBA
+python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-CBA-mBBpull
 ~~~
-The output from lxbatch jobs is stored in:
+
+# 3) Run the CB analysis with Rankings, Breakdowns and Significances  
+We do not need  doPostFit = True here as we are only interested in mBB and mBB comes for free in the CBA  
+~~~
+vim scripts/launch_default_jobs.py 
+~~~
+>    CHANGE flags to get Rankings, Breakdowns and Significances (~L57-L70) 
+>   >  doExp=1
+>   >  runPulls = False
+>   >  runBreakdown = True                                                                                              
+>   >  runRanks = True                                                                                                
+>   >  runP0 = True   
+~~~
+python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-CBA
+~~~        
+
+If you ran your jobs on the grid then the output from lxbatch jobs is stored in:
 /afs/cern.ch/work/${USER:0:1}/${USER}/analysis/statistics/batch/
 > /afs/cern.ch/work/d/dspiteri/analysis/statistics/batch/ for example
 
 and can be gathered using getResults.py
-> python scripts/getResults.py list --plots --tables --NPs --fccs --restrict-to fullRes $version
-with more examples in gather)default_results.sh
+> python scripts/getResults.py list python WSMakerCore/scripts/getResults.py list --plots --tables --NPs --fccs --workspaces --ranking --breakdown --restrict-to fullRes $version
+with more examples in gather_default_results.sh
 ~~~
 cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb
 source setup.sh
 
 python WSMakerCore/scripts/getResults.py list --plots --tables --NPs --fccs --workspaces --ranking --breakdown --restrict-to fullRes /afs/cern.ch/work/d/dspiteri/analysis/statistics/batch/SMVHVZ_2019_MVA_mc16ade_milestone1_STXS.140ifb-0L-ade-STXS-baseline-MVA.140ifb-0L-ade-STXS-baseline-MVA
-
-SMVHVZ_2019_MVA_mc16ade_milestone1_STXS.140ifb-0L-ade-STXS-baseline-CBA  
-SMVHVZ_2019_MVA_mc16ade_milestone1_STXS.140ifb-0L-ade-STXS-baseline-MVA-mBB
 
 ~~~
