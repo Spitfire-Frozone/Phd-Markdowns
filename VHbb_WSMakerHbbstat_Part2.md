@@ -316,10 +316,10 @@ Here is a summary of the plots that we require
 |:-----------:|:-------------------------------------|:------:|
 | a           | MVA Asimov VS Data                   |  (2)   |
 | b           | MVA ranking and breakdown            | (1,3)  |
-| c           | MVA post-fit plots for mBB and PtV   |  (2)   |
+| c           | MVA post-fit plots for mBB (and PtV?)|  (2)   |
 | d           | CBA VS mva Or/And cba Asimov VS Data | (1,4)  |
 | e           | CBA ranking and breakdown            |  (3)   |
-| f           | CBA post-fit plots for mBB and PtV   |  (4)   |
+| f           | CBA post-fit plots for mBB (and PtV?)|  (4)   |
 
 
 
@@ -465,4 +465,16 @@ source setup.sh
 python WSMakerCore/scripts/getResults.py list --plots --tables --NPs --fccs --workspaces --ranking --breakdown --restrict-to fullRes /afs/cern.ch/work/d/dspiteri/analysis/statistics/batch/SMVHVZ_2019_MVA_mc16ade_milestone1_STXS.140ifb-0L-ade-STXS-baseline-MVA.140ifb-0L-ade-STXS-baseline-MVA
 
 ~~~
-If not then
+If not then add these together
+~~~
+cd output 
+
+mv SMVHVZ_2019_MVA_mc16ade_milestone1_STXS.140ifb-0L-ade-STXS-baseline-CBA_fullRes_VHbb_140ifb-0L-ade-STXS-baseline-CBA_0_mc16ade_Systs_mBB_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated 140ifb-0L-ade-STXS-baseline-CBA
+mv SMVHVZ_2019_MVA_mc16ade_milestone1_STXS.140ifb-0L-ade-STXS-baseline-CBA-mBBpull_fullRes_VHbb_140ifb-0L-ade-STXS-baseline-CBA-mBBpull_0_mc16ade_Systs_mBB_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated 140ifb-0L-ade-STXS-baseline-CBA-mBBpull
+mv SMVHVZ_2019_MVA_mc16ade_milestone1_STXS.140ifb-0L-ade-STXS-baseline-MVA_fullRes_VHbb_140ifb-0L-ade-STXS-baseline-MVA_0_mc16ade_Systs_mva_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated 140ifb-0L-ade-STXS-baseline-MVA
+mv SMVHVZ_2019_MVA_mc16ade_milestone1_STXS.140ifb-0L-ade-STXS-baseline-MVA-mBBpull_fullRes_VHbb_140ifb-0L-ade-STXS-baseline-MVA-mBBpull_0_mc16ade_Systs_mBB_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated 140ifb-0L-ade-STXS-baseline-MVA-mBBpull
+mv SMVHVZ_2019_MVA_mc16ade_milestone1_STXS.140ifb-0L-ade-STXS-baseline-MVA-mBBpull_fullRes_VHbb_140ifb-0L-ade-STXS-baseline-MVA-mBBpull_0_mc16ade_Systs_MET_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated 140ifb-0L-ade-STXS-baseline-MVA-METpull
+rm -rf SMVHVZ_2019_MVA_mc16ade_milestone1_STXS*
+~~~
+The last thing that needs to be prepared then are the two sets of pull plots.
+
