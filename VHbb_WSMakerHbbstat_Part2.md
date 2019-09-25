@@ -2,10 +2,12 @@
 
 ## VHbb WSMaker and Hbb Stat Part 2 ##
 
-## Last Edited: 24-09-2019
+## Last Edited: 25-09-2019
 --------------------------------------------------------------------------
 - Useful Links
+
 https://nmorange.web.cern.ch/nmorange/WSMaker/html/HowTo.html
+
 https://gitlab.cern.ch/atlas-physics/higgs/hbb/WSMaker/blob/master/HowTo.md
 
 # Initial Setup and Running
