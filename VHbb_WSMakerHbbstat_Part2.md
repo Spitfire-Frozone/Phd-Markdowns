@@ -465,7 +465,7 @@ with more examples in gather_default_results.sh
 cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb
 source setup.sh
 
-python WSMakerCore/scripts/getResults.py list --plots --tables --NPs --fccs --workspaces --ranking --breakdown --restrict-to fullRes /afs/cern.ch/work/d/dspiteri/analysis/statistics/batch/SMVHVZ_2019_MVA_mc16ade_milestone1_STXS.140ifb-0L-ade-STXS-baseline-MVA.140ifb-0L-ade-STXS-baseline-MVA
+python WSMakerCore/scripts/getResults.py get --plots --tables --NPs --fccs --workspaces --ranking --breakdown --restrict-to fullRes SMVHVZ_2019_MVA_mc16ade_milestone1_STXS.140ifb-0L-ade-STXS-baseline-MVA
 
 ~~~
 If not go to the usual output folder and move some of the ungainly folders around. 
@@ -480,4 +480,9 @@ mv SMVHVZ_2019_MVA_mc16ade_milestone1_STXS.140ifb-0L-ade-STXS-baseline-MVA-mBBpu
 rm -rf SMVHVZ_2019_MVA_mc16ade_milestone1_STXS*
 ~~~
 The last thing that needs to be prepared then are the two sets of pull plots.
+~~~
+python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA -n -a 5 
+mv output/pullComparisons output/pullComparisons_MVA
 
+python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA  140ifb-0L-ade-STXS-baseline-CBA -n -a 5 -l MVA CBA
+~~~
