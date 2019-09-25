@@ -1,7 +1,7 @@
 # This is aimed at the main analysis of my PhD: Associated Production of Higgs with a Vector boson (most likely Z) where the Higgs decays to a pair of bottom quarks. This document is about learning how the VHbb CxAOD's Framework operates. #
 
 ## "VHbb 2 Lepton Reader" ##
-===============================================================================
+
 Last Edited: 25-09-2018
 -------------------------------------------------------------------------------
 ### Up to the subheading 'Running' the instructions here are exactly identical to those found in VHbb_CxAOD_production.md
@@ -45,24 +45,24 @@ To launch the script that checks out the packages run
 source ./FrameworkSub/bootstrap/setup.sh origin/master branch
 ~~~
 Now we need to:
-- Choose the analysis base,
-- > Found in FrameworkSub/bootstrap/release.txt and can be changed
-> cd ../build
-> setupATLAS
-> lsetup asetup
-> For branch or tag
-> release=`cat ../source/FrameworkSub/bootstrap/release.txt`
-> echo "release=$release"
-> asetup AnalysisBase,$release,here
-> cp CMakeLists.txt ../source
+- Choose the analysis base which can be found in FrameworkSub/bootstrap/release.txt and can be changed
+
+> cd ../build                                                                                                     
+> setupATLAS                                                                                                       
+> lsetup asetup                                                                                                         
+> For branch or tag                                                                                        
+> release=`cat ../source/FrameworkSub/bootstrap/release.txt`                                                          
+> echo "release=$release"                                                                                              
+> asetup AnalysisBase,$release,here                                                                                          
+> cp CMakeLists.txt ../source                                                                                                
 
 - Get access to numpy (if you don't already have it)
-> lsetup 'lcgenv -p LCG_91 x86_64-slc6-gcc62-opt numpy'
+> lsetup 'lcgenv -p LCG_91 x86_64-slc6-gcc62-opt numpy'      
 
 - Compile the repository to create the  "hsg5framework" executable
-> cmake ../source
-> cmake --build
->   > make -j4   [ if you change the package but DO NOT add a new file. ]
+> cmake ../source                                                                                       
+> cmake --build                                                                                                  
+>   > make -j4   [ if you change the package but DO NOT add a new file. ]                                                 
 
 - Set up the compiled environment.
 > source x86_64-slc6-gcc62-opt/setup.sh
@@ -74,9 +74,10 @@ cd /afs/cern.ch/work/d/dspiteri/VHbb
 setupATLAS && lsetup git
 cp /afs/cern.ch/user/a/abuzatu/work/public/BuzatuAll/BuzatuATLAS/CxAODFramework/getMaster.sh .
 source getMaster.sh origin/master CxAODFramework_branch_21.2.23 1 1
-> source getMaster.sh r30-02 CxAODFramework_tag_r30-02 1 1 [for a tag]
-> source getMaster.sh r31-07 CxAODFramework_tag_r31-07 1 1 [for a tag]
 ~~~
+> source getMaster.sh r30-02 CxAODFramework_tag_r30-02 1 1 [for a tag]                                               
+> source getMaster.sh r31-07 CxAODFramework_tag_r31-07 1 1 [for a tag]                                                    
+
 Then you can test the checkout with the submission of some trial jobs by doing
 ~~~
 source ../source/FrameworkExe/scripts/testLocallyAsInCIPipeline.sh
@@ -147,20 +148,25 @@ First thing is to edit the configuration file such that it will work for a 2 lep
 ~~~
 vim ../source/FrameworkExe/data/framework-read.cfg
 ~~~
->   EDIT the analysisType string
+>   CHANGE the analysisType string
 >   > string analysisType           = 0lep -> 2lep.
+
 > CHANGE the directory you point to in search of a dataset.
->   > string dataset_dir = /eos/atlas/atlascerngroupdisk/phys-exotics/CxAOD/CxAOD_30/HIGG5D1_13TeV/CxAOD_00-30-02_a ->
->   > string dataset_dir = /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/VH/180116_r30-02/HIGG2D4_13TeV/CxAOD_00-30-02_c
-This directory is 416.556 GB in size so moving is rather expensive in terms of space. The directory structure inside, where each subdirectory is either 'data' or a specific MC sample  is what the code looks for to run over. For 2 lepton, HIGG2D4 is the input directory where CxAOD's are stored.
-The letter on the end indicates the period of MC run over.
+>   > string dataset_dir = /eos/atlas/atlascerngroupdisk/phys-exotics/CxAOD/CxAOD_30/HIGG5D1_13TeV/CxAOD_00-30-02_a -> string dataset_dir = /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/VH/180116_r30-02/HIGG2D4_13TeV/CxAOD_00-30-02_c
+~~~
+This directory is 416.556 GB in size so moving is rather expensive in terms of space. The directory structure inside, where each subdirectory is either 'data' or a specific MC sample  is what the code looks for to run over. For 2 lepton, HIGG2D4 is the input directory where CxAOD's are stored. The letter on the end indicates the period of MC run over.
+~~~
 > CHANGE the luminosity which is dependent on the MC type used
 >   > float luminosity = 33.26 (MC16c only)
+
 >   CHANGE the number of files you run over per job and the MC period.
->   > int nFilesPerJob              = -1 -> 20
->   > string mcPeriod = mc16c
+>   > int nFilesPerJob              = -1 -> 20                                                                         
+>   > string mcPeriod = mc16c                                                                                      
+
 >   CHECK you have the right GRL
+
 >   COMMENT in the right Syst List & Corrs and Syst List if applicable
+
 >   COMMENT in the samples strings (the test is only ttbar_nonallhad)
 
 ## Running
@@ -181,12 +187,12 @@ To calibrate this though, you need to look over the file submitReader.sh.
 vim source/FrameworkExe/scripts/submitReasher.sh
 ~~~
 The top of the file tells you how to use the file and what inputs you need to insert, and the 6 arguments go like this:
-> INPUT_FOLDER=$1
-> OUTPUT_FOLDER=$2
-> CHANNELs=$3
-> MCTYPEs=$4
-> VTAGs=$5
-> DO_EXECUTE=$6
+> INPUT_FOLDER=$1                                                                                                   
+> OUTPUT_FOLDER=$2                                                                                                   
+> CHANNELs=$3                                                                                                   
+> MCTYPEs=$4                                                                                                   
+> VTAGs=$5                                                                                                   
+> DO_EXECUTE=$6                                                                                                   
 
 Lets, for example, run the framework on the latest tag with only the 2017 data and compare it to MC16c. The up to date framework-read.cfg in FrameworkExe/data has the repositories so you just have to select the correct one. Alternatively you can check here (https://twiki.cern.ch/twiki/bin/viewauth/AtlasProtected/HiggsbbCxAODproduction) and this should be up to date
 
@@ -196,6 +202,7 @@ In this example dataset directory, the repository path names after "VH" contains
 
 > COMMENT OUT
 >   > SAMPLES="data15 data16 data17 qqZvvHbbJ_PwPy8MINLO ggZvvHbb_PwPy8   qqZllHbbJ_PwPy8MINLO ggZllHbb_PwPy8 qqWlvHbbJ_PwPy8MINLO WZ_Sh221 ttbar_nonallhad_PwPy8"
+
 > ADD IN
 >   > SAMPLES="data17 ggZH125"
 
@@ -207,17 +214,17 @@ vim source/FrameworkExe/data/framework-read-automatic.cfg
 ~~~
 The next thing to do is to edit the vector<string> TMVATrainingTool.InputVarNames to match those used in the 2 Lepton analysis and I will re-arrange the order so that they appear in the same order they are listed as variables in the makePlots.cxx file. You can make your own but they have to edit the makePlots2Lepton.cxx accordingly.
 
->   CHANGE (~L80)
->   > dEtaWH -> dEtaVBB
->   > dPhiVBB -> dPhiVBB
->   > dPhiLBmin -> mLL
->   > Mtop -> mBBJ
+>   CHANGE (~L80)                                                                                                            
+>   > dEtaWH -> dEtaVBB                                                                                                   
+>   > dPhiVBB -> dPhiVBB                                                                                                   
+>   > dPhiLBmin -> mLL                                                                                                   
+>   > Mtop -> mBBJ                                                                                                   
 >   > pTV mBB pTB1 pTB2 mTW MET dRBB dPhiVBB mLL MBBJ dEtaVBB -> pTV mLL MET dRBB mBB pTB1 pTB2 pTJ3 mBBJ dPhiVBB dEtaVBB
 
 > COMMENT IN + CHANGE
->   > string bQueue              = 1nh-> 8nh #for LSF driver ~L91
-> CHANGE  CxAODReader settings
->   > bool fillCr = true -> false L139
+>   > string bQueue              = 1nh-> 8nh #for LSF driver ~L91                                                         
+> CHANGE  CxAODReader settings                                                                                                
+>   > bool fillCr = true -> false L139                                                                                         
 >   >
 
 Next ensure that the variables that point to relative paths in the directory ${WorkDir_DIR} and ${CONFIG_INITIAL_STEM} are pointing to the right place/exists at all.
@@ -234,18 +241,18 @@ So we need the following histograms filled:  pTV mLL MET dRBB mBB pTB1 pTB2 pTJ3
 
 Now you need to know some physics because you have to estimate the fine-ness of your binning and acceptable ranges for these variables. (makePlots2Lepton.cxx can help with the ranges.)
 
->   ADD ~(L1053) more histograms to plot INSIDE if(m_histNameSvc->get_description() != ""){}.
->   > m_histSvc->BookFillHist("pTV", 20, 0, 500, m_MVAInputs2l->pTV, m_weight);
->   > m_histSvc->BookFillHist("mLL", 20, 80, 100, m_MVAInputs2l->mLL, m_weight);
->   > m_histSvc->BookFillHist("MET", 25,0, 500, m_MVAInputs2l->MET, m_weight);
->   > m_histSvc->BookFillHist("dRBB", 20, 0, 5, m_MVAInputs2l->dRBB, m_weight);
->   > m_histSvc->BookFillHist("mBB", 25, 0., 500., m_MVAInputs2l->mBB, m_weight);
->   > m_histSvc->BookFillHist("pTB1", 50, 0., 500., m_MVAInputs2l->pTB1, m_weight);
->   > m_histSvc->BookFillHist("pTB2", 50, 0., 500., m_MVAInputs2l->pTB2, m_weight);
->   > m_histSvc->BookFillHist("pTJ3", 50, 0., 500., m_MVAInputs2l->pTJ3, m_weight);
->   > m_histSvc->BookFillHist("mBBJ", 15, 0, 750, m_MVAInputs2l->mBBJ, m_weight);
->   > m_histSvc->BookFillHist("dPhiVBB", 15, 1.5, 3.15, m_MVAInputs2l->dPhiVBB, m_weight);
->   > m_histSvc->BookFillHist("dEtaVBB", 20, 0, 5, m_MVAInputs2l->dEtaVBB, m_weight);
+>   ADD ~(L1053) more histograms to plot INSIDE if(m_histNameSvc->get_description() != ""){}.                                 
+>   > m_histSvc->BookFillHist("pTV", 20, 0, 500, m_MVAInputs2l->pTV, m_weight);                                   
+>   > m_histSvc->BookFillHist("mLL", 20, 80, 100, m_MVAInputs2l->mLL, m_weight);                                  
+>   > m_histSvc->BookFillHist("MET", 25,0, 500, m_MVAInputs2l->MET, m_weight);                                  
+>   > m_histSvc->BookFillHist("dRBB", 20, 0, 5, m_MVAInputs2l->dRBB, m_weight);                                  
+>   > m_histSvc->BookFillHist("mBB", 25, 0., 500., m_MVAInputs2l->mBB, m_weight);                                  
+>   > m_histSvc->BookFillHist("pTB1", 50, 0., 500., m_MVAInputs2l->pTB1, m_weight);                                         
+>   > m_histSvc->BookFillHist("pTB2", 50, 0., 500., m_MVAInputs2l->pTB2, m_weight);                                 
+>   > m_histSvc->BookFillHist("pTJ3", 50, 0., 500., m_MVAInputs2l->pTJ3, m_weight);                                 
+>   > m_histSvc->BookFillHist("mBBJ", 15, 0, 750, m_MVAInputs2l->mBBJ, m_weight);                               
+>   > m_histSvc->BookFillHist("dPhiVBB", 15, 1.5, 3.15, m_MVAInputs2l->dPhiVBB, m_weight);                                    
+>   > m_histSvc->BookFillHist("dEtaVBB", 20, 0, 5, m_MVAInputs2l->dEtaVBB, m_weight);                                     
 
 Every time you edit this reader file you have to go into your build directory and re-make the framework
 ~~~
@@ -287,8 +294,8 @@ If this works then you are ready to run the reader over everything
 vim /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_branch_21.2.23/source/FrameworkExe/data/submitReader.sh
 ~~~
 > CHANGE
->   > NUMBEROFEVENTS="-1"
->   > DRIVER="LSF" ~L52
+>   > NUMBEROFEVENTS="-1"                                                                                                  
+>   > DRIVER="LSF" ~L52                                                                                             
 >   > SAMPLES="data17 ggZvvHbb_PwPy8 ggZllHbb_PwPy8 ggWW_Sh222 ggZZ_Sh222 qqZvvHbbJ_PwPy8MINLO qqZllHbbJ_PwPy8MINLO qqWlvHbbJ_PwPy8MINLO stops_PwPy stopWt_PwPy ttbar_nonallhad_PwPy8 WenuB_Sh221 WenuC_Sh221 WenuL_Sh221 Wenu_Sh221 WmunuB_Sh221 WmunuC_Sh221 WmunuL_Sh221 Wmunu_Sh221 WtaunuB_Sh221WtaunuC_Sh221 WtaunuL_Sh221 Wtaunu_Sh221 WW_Sh221 WZ_Sh221 ZZ_Sh221 ZmumuB_Sh221 ZmumuC_Sh221 ZmumuL_Sh221 Zmumu_Sh221 ZnunuB_Sh221 ZnunuC_Sh221 ZnunuL_Sh221 Znunu_Sh221 ZtautauB_Sh221 ZtautauC_Sh221 ZtautauL_Sh221 Ztautau_Sh221" ~L69
 
 Then assuming that you are all set up, you run
@@ -367,18 +374,18 @@ The plotting tool works with some scripts already present within the framework. 
 vim runCxAODPlots.cxx
 ~~~
 > ADD
->   >  TString libdir="core/"; (L17)
->   > TString LocalAreaPath="/afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_branch_21.2.23/run"; (L20)
+>   >  TString libdir="core/"; (L17)                                                                              
+>   > TString LocalAreaPath="/afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_branch_21.2.23/run"; (L20)             
 
 > CHANGE
->   > InputPath = LocalAreaPath+"run/TEST/Reader_2L_MVA_00-30-02_c/fetch"; (L20)
->   > InputFileName = "hist-ggZH125-0.root"; (L21)
->   > Output -> Input (L40 & L42)
->   > ...Framework/macros/makePlots0Lepton.cxx.... -> ...makePlots2Lepton.cxx... (L41)
+>   > InputPath = LocalAreaPath+"run/TEST/Reader_2L_MVA_00-30-02_c/fetch"; (L20)               
+>   > InputFileName = "hist-ggZH125-0.root"; (L21)                                                                        
+>   > Output -> Input (L40 & L42)                                                                                       
+>   > ...Framework/macros/makePlots0Lepton.cxx.... -> ...makePlots2Lepton.cxx... (L41)                                        
 
 
 > COMMENT OUT
->   > if(do_hadd) loop (L36-38)
+>   > if(do_hadd) loop (L36-38)                                                                                             
 
 So this script would usually hadd the root files within a target directory and then put this through makePlots2Lepton.cxx, but we have temporarily disabled the feature to see if we can get the tool to run.
 
@@ -399,32 +406,34 @@ vim makePlots2Lepton.cxx
 So the first 60 or so lines are the code, are general configuration and at the moment doesn't need to be changed. So the main things in this file that need to be edited are the samples, variables and regions that get run over to create histograms.
 
 > CHANGE
->   > "PlottingTool/Config.h" -> "core/Config.h" (L1)
->   > "PlottingTool/PlotMaker.h" -> "core/PlotMaker.h" (L2)
+>   > "PlottingTool/Config.h" -> "core/Config.h" (L1)                                                                       
+>   > "PlottingTool/PlotMaker.h" -> "core/PlotMaker.h" (L2)                                                
 > ADD signal sample to
->   > config.addSignalSample("ggZvvH125",  "VH 125", kRed); (L71)
->   > config.addSignalSample("ggZllH125",  "VH 125", kRed); (L72)
+>   > config.addSignalSample("ggZvvH125",  "VH 125", kRed); (L71)                                                         
+>   > config.addSignalSample("ggZllH125",  "VH 125", kRed); (L72)                                                           
 
 > CHANGE jet,tag and pTV details (to what you saw in the ROOT file)
->   > ("4jet","4 jet")) -> ("4pjet","4+ jet")); (L201)
->   >   jetBins.push_back(make_pair("5pjet","5+ jet")); -> DELETE (L202)
->   >   jetBins.push_back(make_pair("0pjet", "0+ jet")); -> ADD (L199)
->   > "_0_150ptv_" -> "_0_75ptv_" (L211)
->   > "_150_200ptv_" -> "_75_150ptv_" (L212)
->   > "_200_500ptv_" -> "_150ptv_" (L213)
->   > pTVBins.push_back("_500ptv_"); -> DELETE (L214)
+>   > ("4jet","4 jet")) -> ("4pjet","4+ jet")); (L201)                                                           
+>   >   jetBins.push_back(make_pair("5pjet","5+ jet")); -> DELETE (L202)                                                      
+>   >   jetBins.push_back(make_pair("0pjet", "0+ jet")); -> ADD (L199)                                                       
+>   > "_0_150ptv_" -> "_0_75ptv_" (L211)                                                                                    
+>   > "_150_200ptv_" -> "_75_150ptv_" (L212)                                                                               
+>   > "_200_500ptv_" -> "_150ptv_" (L213)                                                                                  
+>   > pTVBins.push_back("_500ptv_"); -> DELETE (L214)            
+
 CHANGE titles of merged PtV bins
->   > string pTVBinName -> string pTVBinNameIncl (L216)
->   > string pTVBinTitle -> string pTVBinTitleIncl (L217)
+>   > string pTVBinName -> string pTVBinNameIncl (L216)                                                                    
+>   > string pTVBinTitle -> string pTVBinTitleIncl (L217)                                                                  
 > CHANGE pTVBinName -> pTVBinNameIncl & pTVBinTitle -> pTVBinTitleIncl
->   > (L243 , L246, L248, L260)
+>   > (L243 , L246, L248, L260)                                                                                     
 
 > COMMENT OUT/IN
->   > all the background samples and the data sample (for now)
+>   > all the background samples and the data sample (for now)                                                           
 >   > all the BDTInput Variables that do not feature in the vector<string> TMVATrainingTool.InputVarNames found in the framework-reader(-automatic).cfg (~L125-L185)
+    
 >   CHANGE for dPhiVBB and dEtaVBB
->   > dPhiVH -> dPhiVBB  (L160 - all instances of H -> BB)
->   > dEtaVH -> dEtaVBB (L161 - all instances of H -> BB)
+>   > dPhiVH -> dPhiVBB  (L160 - all instances of H -> BB)                                                           
+>   > dEtaVH -> dEtaVBB (L161 - all instances of H -> BB)                                                                  
 
 Since you may want to delete and reinstall the PlottingTool and TransformTool packages, you may want make these changes into the files of the same names in the 'macros' folder and then copy them into the tool such that they replace the ones in the package.
 
@@ -441,15 +450,15 @@ The first thing to do is to open up the ROOT file and check that, the name of th
 
 e.g.1 One of the first errors that I has was the region part of the plots were missing. I went to the region section of the reader, but a few cout statements and found that the DiLeptonCuts::Trigger in the common cuts were failing, which meant that no regions were being labelled. ASked around, and it turned out this was a problem with the 00-30-02 tag that I was using.
 
->   > if ( passSpecificCuts(eventFlag, cuts_common_resolved) ) std::cout<<"COMMON CUTS PASSED"<<endl;
->   > else std::cout<<"COMMON CUTS FAILED"<<endl;
->   > if ( !passSpecificCuts(eventFlag, cuts_common_resolved) ) {
->   > if (passSpecificCuts(eventFlag, {DiLeptonCuts::LeadLepPt27}) ) { std::cout<<"CUT 1/6 PASSED"<<endl; }
->   > if (passSpecificCuts(eventFlag, {DiLeptonCuts::Trigger}) ) { std::cout<<"CUT 2/6 PASSED"<<endl; }
->   > if (passSpecificCuts(eventFlag, {DiLeptonCuts::OSLeptons}) ) { std::cout<<"CUT 3/6 PASSED"<<endl; }
->   > if (passSpecificCuts(eventFlag, {DiLeptonCuts::AtLeast2Jets}) ) { std::cout<<"CUT 4/6 PASSED"<<endl; }
->   > if (passSpecificCuts(eventFlag, {DiLeptonCuts::AtLeast2SigJets}) ) { std::cout<<"CUT 5/6 PASSED"<<endl; }
->   > if (passSpecificCuts(eventFlag, {DiLeptonCuts::PtB145}) ) { std::cout<<"CUT 6/6 PASSED"<<endl; }
+>   > if ( passSpecificCuts(eventFlag, cuts_common_resolved) ) std::cout<<"COMMON CUTS PASSED"<<endl;                         
+>   > else std::cout<<"COMMON CUTS FAILED"<<endl;                                                                           
+>   > if ( !passSpecificCuts(eventFlag, cuts_common_resolved) ) {                                                           
+>   > if (passSpecificCuts(eventFlag, {DiLeptonCuts::LeadLepPt27}) ) { std::cout<<"CUT 1/6 PASSED"<<endl; }               
+>   > if (passSpecificCuts(eventFlag, {DiLeptonCuts::Trigger}) ) { std::cout<<"CUT 2/6 PASSED"<<endl; }                     
+>   > if (passSpecificCuts(eventFlag, {DiLeptonCuts::OSLeptons}) ) { std::cout<<"CUT 3/6 PASSED"<<endl; }                   
+>   > if (passSpecificCuts(eventFlag, {DiLeptonCuts::AtLeast2Jets}) ) { std::cout<<"CUT 4/6 PASSED"<<endl; }                
+>   > if (passSpecificCuts(eventFlag, {DiLeptonCuts::AtLeast2SigJets}) ) { std::cout<<"CUT 5/6 PASSED"<<endl; }              
+>   > if (passSpecificCuts(eventFlag, {DiLeptonCuts::PtB145}) ) { std::cout<<"CUT 6/6 PASSED"<<endl; }                      
 >   > }
 
 “ if (passSpecificCuts(eventFlag, {DiLeptonCuts::Trigger}) )” returning false includes both the trigger firing AND trigger matching. This calls AnalysisReader_VHbb2Lep::pass2LepTrigger, which calls TriggerTool::getDecisionAndScaleFactor, which calls TriggerTool::getPassedTriggers which contains the trigger matching. This is a general error so the file that needs to be looked at is in general tools
@@ -496,17 +505,17 @@ The DynPlottingTool is then run using one command but it takes a series of input
 ~~~
 ./PlotMaker -h (for help)
 ~~~
->   -x systematics on or off
->   -l listoffiles
->   -w wsmaker format (obselete)
->   -f signal scale factor (normalise cross section to 1pb because you don't know if it's real - this f is the cross section of the process as predicted by the standard model.)
->   -a/-q (obselete)
->   -s signal (currently can only put 1 sample)
->   -e signal(s) present in file but you don't want to plot
->   -o output directory
->   -v variable, can give comma seperated list.
->    > "/" after it is a re-binning factor
->    > "-" changes the x-axis range
+>   -x systematics on or off                                                                                        
+>   -l listoffiles                                                                                                   
+>   -w wsmaker format (obselete)                                                                                      
+>   -f signal scale factor (normalise cross section to 1pb because you don't know if it's real - this f is the cross section of the process as predicted by the standard model.)                                                                 
+>   -a/-q (obselete)                                                                                                     
+>   -s signal (currently can only put 1 sample)                                                                      
+>   -e signal(s) present in file but you don't want to plot                                                         
+>   -o output directory                                                                                           
+>   -v variable, can give comma seperated list.                                                                  
+>    > "/" after it is a re-binning factor                                                                                 
+>    > "-" changes the x-axis range                                                                                        
 
 
 Here is an example running command.
@@ -571,11 +580,11 @@ Edit the file that steers the Reader
 ~~~
 vim /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_branch_21.2.23/source/FrameworkExe/data/submitReader.sh
 ~~~
-> CHANGE variables
->   > NUMBEROFEVENTS="-1" ~L48
->   > DRIVER="LSF" ~L52
->   > NRFILESPERJOB="50" ~L56
->   > SAMPLES="data16 ZH125J_MINLO" ~L68
+> CHANGE variables                                                                                                       
+>   > NUMBEROFEVENTS="-1" ~L48                                                                                       
+>   > DRIVER="LSF" ~L52                                                                                                     
+>   > NRFILESPERJOB="50" ~L56                                                                              
+>   > SAMPLES="data16 ZH125J_MINLO" ~L68                                                                                   
 
 Some metadata for the analysis. It is performed on MC16a, using the tag 30-02. Now running the below commands should successfully run the cutflow over the grid.
 ~~~
