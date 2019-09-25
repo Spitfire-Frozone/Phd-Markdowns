@@ -358,7 +358,7 @@ make -j10
 cd ..
 ~~~
 
-## 1) Run the MV analysis with Rankings, Breakdowns and Significances       
+### 1) Run the MV analysis with Rankings, Breakdowns and Significances       
 
 Then you will want to run the mva analysis on launch_default_jobs.py with the following configuration. If it's not specified underneath, it should be run as 'false'            
 ~~~
@@ -409,7 +409,7 @@ Then once you are ready you can run
 python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-MVA
 ~~~
 
-## 2)  Run the MV analysis over the post-fit variables and with the EXPECTED pulls  
+### 2)  Run the MV analysis over the post-fit variables and with the EXPECTED pulls  
 ~~~
 vim scripts/launch_default_jobs.py 
 ~~~
@@ -426,7 +426,7 @@ vim scripts/launch_default_jobs.py
 python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-MVA-mBBpull
 ~~~
 
-## 4) Run the CB analysis over the post-fit variables and with the EXPECTED pulls     
+### 4) Run the CB analysis over the post-fit variables and with the EXPECTED pulls     
 Then all you need to do to run over the CB analysis is to change two lines in launch_default_jobs.py 
 ~~~
 vim scripts/launch_default_jobs.py 
@@ -438,7 +438,7 @@ vim scripts/launch_default_jobs.py
 python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-CBA-mBBpull
 ~~~
 
-## 3) Run the CB analysis with Rankings, Breakdowns and Significances  
+### 3) Run the CB analysis with Rankings, Breakdowns and Significances  
 We do not need  doPostFit = True here as we are only interested in mBB and mBB comes for free in the CBA  
 ~~~
 vim scripts/launch_default_jobs.py 
@@ -452,6 +452,7 @@ vim scripts/launch_default_jobs.py
 ~~~
 python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-CBA
 ~~~        
+## Organising directories for plots.
 
 If you ran your jobs on the grid then the output from lxbatch jobs is stored in:
 /afs/cern.ch/work/${USER:0:1}/${USER}/analysis/statistics/batch/
@@ -467,7 +468,7 @@ source setup.sh
 python WSMakerCore/scripts/getResults.py list --plots --tables --NPs --fccs --workspaces --ranking --breakdown --restrict-to fullRes /afs/cern.ch/work/d/dspiteri/analysis/statistics/batch/SMVHVZ_2019_MVA_mc16ade_milestone1_STXS.140ifb-0L-ade-STXS-baseline-MVA.140ifb-0L-ade-STXS-baseline-MVA
 
 ~~~
-If not then add these together
+If not go to the usual output folder and move some of the ungainly folders around. 
 ~~~
 cd output 
 
