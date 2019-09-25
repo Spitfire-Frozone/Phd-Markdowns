@@ -3,8 +3,16 @@
 ## Adding Plots to the Internal Note ##
 
 ## Last Edited: 25-09-2019
--------------------------------------------------------------------------------
-Once a basic familiarity with WSMaker has been established, (see VHbb_2Lep_Reader_Inputs.md ) a task, which gets more and more priority is to test reducing the number of bins in the inputs.
 
+-------------------------------------------------------------------------------
+There will come a time where you will have produced plots and want to put them in a paper. The best way to make that paper
+is in a Late$\chi$ environment, but if several people will want to add and edit things then the best thing to do is to create
+a git repo such that changes and edits can be stored. You download the repo, add your stuff, build to make sure your changes don't break things and upload. 
+~~~
 cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb
-setupATLAS && lsetup git && lsetup "root 6.14.04-x86_64-slc6-gcc62-opt"
+setupATLAS && lsetup git
+
+git clone --recursive ssh://git@gitlab.cern.ch:7999/atlas-physics-office/HIGG/ANA-HIGG-2018-51/ANA-HIGG-2018-51-INT1.git
+cd ANA-HIGG-2018-51-INT1
+
+~~~
