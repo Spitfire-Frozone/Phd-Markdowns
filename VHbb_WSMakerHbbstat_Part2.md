@@ -444,14 +444,22 @@ We do not need  doPostFit = True here as we are only interested in mBB and mBB c
 vim scripts/launch_default_jobs.py 
 ~~~
 >    CHANGE flags to get Rankings, Breakdowns and Significances (~L57-L70) 
->   >  doExp=1                                                                                                             
+>   >  doExp = 1                                                                                                             
 >   >  runPulls = False                                                                                                   
 >   >  runBreakdown = True                                                                                              
 >   >  runRanks = True                                                                                                
 >   >  runP0 = True                                                                                                       
 ~~~
 python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-CBA
-~~~        
+~~~
+## Troubleshooting.
+ - Server responded with an error: [XXXX] Unable to open file /eos/atlas/{...}/{xxxxx}.root; Networ is unreachable
+The code is getting files on networked file systems if you're running the jobs as another user which is what happens when the code calls stuff like "subprocess" in python then that user needs a special token that carries with it the permissions your user would have. Kinit sets that token up.
+~~~
+klist
+kinit -5 {youremail}@CERN.CH 
+~~~
+
 ## Organising directories for plots.
 
 If you ran your jobs on the grid then the output from lxbatch jobs is stored in:
