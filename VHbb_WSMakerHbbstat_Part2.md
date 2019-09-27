@@ -425,6 +425,7 @@ vim scripts/launch_default_jobs.py
 ~~~
 python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-MVA-mBBpull
 ~~~
+If this doesn't work then you might have to run the flags runPulls = True  and doPostFit = True seperately.
 
 ### 4) Run the CB analysis over the post-fit variables and with the EXPECTED pulls     
 Then all you need to do to run over the CB analysis is to change two lines in launch_default_jobs.py 
@@ -489,8 +490,8 @@ rm -rf SMVHVZ_2019_MVA_mc16ade_milestone1_STXS*
 ~~~
 The last thing that needs to be prepared then are the two sets of pull plots.
 ~~~
-python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA -n -a 5 
+python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA-pull -n -a 5 
 mv output/pullComparisons output/pullComparisons_MVA
 
-python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA  140ifb-0L-ade-STXS-baseline-CBA -n -a 5 -l MVA CBA
+python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA-pull  140ifb-0L-ade-STXS-baseline-CBA-mBBpull -n -a 5 -l MVA CBA
 ~~~
