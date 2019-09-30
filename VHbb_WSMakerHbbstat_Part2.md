@@ -488,10 +488,28 @@ mv SMVHVZ_2019_MVA_mc16ade_milestone1_STXS.140ifb-0L-ade-STXS-baseline-MVA-mBBpu
 mv SMVHVZ_2019_MVA_mc16ade_milestone1_STXS.140ifb-0L-ade-STXS-baseline-MVA-mBBpull_fullRes_VHbb_140ifb-0L-ade-STXS-baseline-MVA-mBBpull_0_mc16ade_Systs_MET_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated 140ifb-0L-ade-STXS-baseline-MVA-METpull
 rm -rf SMVHVZ_2019_MVA_mc16ade_milestone1_STXS*
 ~~~
+The first set of plots to be created are the breakdown plots.
+~~~
+python WSMakerCore/scripts/mergeBreakdown.py 140ifb-0L-ade-STXS-baseline-MVA
+imgcat output/140ifb-0L-ade-STXS-baseline-MVA/pdf-files/pulls_SigXsecOverSM_125.pdf
+
+python WSMakerCore/scripts/makeNPrankPlots.py 140ifb-0L-ade-STXS-baseline-CBA
+imgcat output/140ifb-0L-ade-STXS-baseline-CBA/pdf-files/pulls_SigXsecOverSM_125.pdf
+~~~
+The next thing that needs to be prepared then are the two sets of ranking plots.
+~~~
+python WSMakerCore/scripts/makeNPrankPlots.py 140ifb-0L-ade-STXS-baseline-MVA
+imgcat output/140ifb-0L-ade-STXS-baseline-MVA/pdf-files/pulls_SigXsecOverSM_125.pdf
+
+python WSMakerCore/scripts/makeNPrankPlots.py 140ifb-0L-ade-STXS-baseline-CBA
+imgcat output/140ifb-0L-ade-STXS-baseline-CBA/pdf-files/pulls_SigXsecOverSM_125.pdf
+~~~
 The last thing that needs to be prepared then are the two sets of pull plots.
 ~~~
 python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA-pull -n -a 5 
 mv output/pullComparisons output/pullComparisons_MVA
 
 python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA-pull  140ifb-0L-ade-STXS-baseline-CBA-mBBpull -n -a 5 -l MVA CBA
+mv output/pullComparisons output/pullComparisons_MVACBA
+
 ~~~
