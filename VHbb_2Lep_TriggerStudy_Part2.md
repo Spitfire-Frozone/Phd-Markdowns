@@ -668,7 +668,6 @@ The HLT_xe90_mht_L1XE50 trigger was only partially available for the 2015 data p
 ~~~
 cd /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_august2019/
 setupATLAS && lsetup git && lsetup "root 6.14.04-x86_64-slc6-gcc62-opt" 
-~~~
 vim source/xAODOperations_VHbb/scripts/submitReader.sh
 ~~~
 >   CHANGE 2L trigger flag to true (~L281)
@@ -682,7 +681,7 @@ vim source/CxAODTools/Root/TriggerTool.cxx
 
 >   CHANGE the data16A-B MET trigger to include the data15 period (L104)
 >   >    ADD_TRIG(HLT_xe80_mht_L1XE50,  any, data15, data15); // Trial MET trigger configuration
-
+~~~
 release=`cat source/CxAODBootstrap_VHbb/bootstrap/release.txt` && echo "release=$release"
 asetup $release,AnalysisBase
 cd build && rm -rf *
