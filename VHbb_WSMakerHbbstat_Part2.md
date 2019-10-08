@@ -410,6 +410,14 @@ python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-MVA
 ~~~
 
 ### 2)  Run the MV analysis over the post-fit variables and with the EXPECTED pulls  
+First we are having trouble with the new control region plots not going to zero in the y axis which is confusing, and therefore an issue that needs fixing.
+~~~
+vim scripts/analysisPlottingConfig.py
+~~~
+> ADD hard-coding of setting miny for new control regions to 0. 
+>   >     if prop["dist"] == "MET":
+>   >         if (prop["D"] == "CRLow"): miny = 0
+>   >         if (prop["D"] == "CRHigh"): miny = 0
 ~~~
 vim scripts/launch_default_jobs.py 
 ~~~
