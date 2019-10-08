@@ -692,7 +692,34 @@ cd ../run
 
 ../source/CxAODOperations_VHbb/scripts/submitReader.sh /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/VH/CxAOD_r32-15 FullBoosted_newestTrigger_xe80 1L,2L a VHbb CUT D1 32-15 2lsignal data15 1
 
-root -b -l -q '../TriggerStudyPlots.cxx("/afs/cern.ch/work/d/dspiteri/VHbb/", "CxAODFramework_master_august2019/","FullBoosted","newest","newest","2LEPALL.root","1L","32-15","a","CUT","D1","SR","","_xe80")'
+cd FullBoosted_newestTrigger_xe80
+python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_august2019/source/CxAODOperations_VHbb/scripts/checkReaderFails.py Reader_2L_32-15_a_CUT_D1
+python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_august2019/source/CxAODOperations_VHbb/scripts/checkReaderFails.py Reader_1L_32-15_a_CUT_D1
+
+cd Reader_1L_32-15_a_CUT_D1/fetch/
+hadd DATA.root hist-data*
+hadd GGZH.root hist-ggZ*
+hadd GGZZ.root hist-ggZqq*
+hadd QQWH.root hist-qqW*
+hadd QQZH.root hist-qqZ*
+hadd SIGNAL.root GGZH.root GGZZ.root QQWH.root QQZH.root
+rm GGZH.root GGZZ.root QQWH.root QQZH.root
+
+cd ../../Reader_2L_32-15_a_CUT_D1/fetch/
+hadd DATA.root hist-data*
+hadd GGZH.root hist-ggZ*
+hadd GGZZ.root hist-ggZqq*
+hadd QQWH.root hist-qqW*
+hadd QQZH.root hist-qqZ*
+hadd SIGNAL.root GGZH.root GGZZ.root QQWH.root QQZH.root
+rm GGZH.root GGZZ.root QQWH.root QQZH.root
+
+cd ../../../..
+root -b -l -q '../TriggerStudyPlots.cxx("/afs/cern.ch/work/d/dspiteri/VHbb/", "CxAODFramework_master_august2019/","FullBoosted","newest","newest","DATA.root","2L","32-15","a","CUT","D1","SR","","_xe80")'
+
+
+root -b -l -q '../TriggerStudyPlots.cxx("/afs/cern.ch/work/d/dspiteri/VHbb/", "CxAODFramework_master_august2019/","FullBoosted","newest","newest","SIGNAL.root","2L","32-15","a","CUT","D1","SR","","_xe80")'
+root -b -l -q '../TriggerStudyPlots.cxx("/afs/cern.ch/work/d/dspiteri/VHbb/", "CxAODFramework_master_august2019/","FullBoosted","newest","newest","SIGNAL.root","1L","32-15","a","CUT","D1","SR","","_xe80")'
 
 ~~~
 # Running WSMaker
