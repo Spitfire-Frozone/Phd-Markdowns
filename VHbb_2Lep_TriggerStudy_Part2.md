@@ -716,10 +716,23 @@ rm GGZH.root GGZZ.root QQWH.root QQZH.root
 
 cd ../../../..
 root -b -l -q '../TriggerStudyPlots.cxx("/afs/cern.ch/work/d/dspiteri/VHbb/", "CxAODFramework_master_august2019/","FullBoosted","newest","newest","DATA.root","2L","32-15","a","CUT","D1","SR","","_xe80")'
+mv run/FullBoosted-newestandnewest_TriggerPlots run/DataBoosted-xe70vsxe80_2L_a_TriggerPlots
 
+vim  ../TriggerStudyPlots.cxx
+~~~
+>   COMMENT IN new samples to run over (~L112)
+>   > {"ggZllH125", "qqZllH125", "qqWlvH125"}; // 2L Signal 
+>   > //= {"data"} //data only
 
+>    CHANGE legend sub-titles (~L516, ~L525, ~L566)                                                                        
+>   >   Form("Data (%) Gain ..." -> Form("Signal (%) Gain ..."  
+>   >   #it{#sqrt{s}} = 13 TeV, Data15" -> #it{#sqrt{s}} = 13 TeV, MC16a"
+~~~
 root -b -l -q '../TriggerStudyPlots.cxx("/afs/cern.ch/work/d/dspiteri/VHbb/", "CxAODFramework_master_august2019/","FullBoosted","newest","newest","SIGNAL.root","2L","32-15","a","CUT","D1","SR","","_xe80")'
+mv run/FullBoosted-newestandnewest_TriggerPlots run/SignalBoosted-xe70vsxe80_2L_a_TriggerPlots
+
 root -b -l -q '../TriggerStudyPlots.cxx("/afs/cern.ch/work/d/dspiteri/VHbb/", "CxAODFramework_master_august2019/","FullBoosted","newest","newest","SIGNAL.root","1L","32-15","a","CUT","D1","SR","","_xe80")'
+mv run/FullBoosted-newestandnewest_TriggerPlots run/SignalBoosted-xe70vsxe80_1L_a_TriggerPlots
 
 ~~~
 # Running WSMaker
