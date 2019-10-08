@@ -2,7 +2,7 @@
 
 ## VHbb 2 Lepton Trigger Study Part 2 ##
 
-Last Edited: 22-09-2019
+Last Edited: 09-10-2019
 -------------------------------------------------------------------------------
 
 # Setup Script
@@ -652,12 +652,12 @@ cd ../../../..
 
 vim  ../TriggerStudyPlots.cxx
 ~~~
->   ADD new samples to run over (~L112)
->   >  {"data"}; //data only   
->   COMMENT out running over all samples (~L113)
->    CHANGE legend sub-titles (~L516, ~L525, ~L566)                                                                        
->   >   Form("S+B (%) Gain ..." -> Form("data (%) Gain ..."  
->   >   #it{#sqrt{s}} = 13 TeV, MC16a" -> #it{#sqrt{s}} = 13 TeV, Data15"
+>   ADD new samples to run over (~L112)                                                                                 
+>   >  {"data"}; //data only                                                                                                  
+>   COMMENT out running over all samples (~L113)                                                                               
+>    CHANGE legend sub-titles (~L516, ~L525, ~L566)                                                                          
+>   >   Form("S+B (%) Gain ..." -> Form("data (%) Gain ..."                                                                 
+>   >   #it{#sqrt{s}} = 13 TeV, MC16a" -> #it{#sqrt{s}} = 13 TeV, Data15"                                               
 ~~~
 root -b -l -q '../TriggerStudyPlots.cxx("/afs/cern.ch/work/d/dspiteri/VHbb/", "CxAODFramework_master_august2019/","FullBoosted","newest","newest","DATA15.root","2L","32-15","a","CUT","D1","SR","","_xe70xe90")'
 mv run/FullBoosted-newestandnewest_TriggerPlots run/FullBoosted-xe70vsxe70xe90_2L_data_a_TriggerPlots
@@ -676,11 +676,11 @@ vim source/xAODOperations_VHbb/scripts/submitReader.sh
 vim source/CxAODTools/Root/TriggerTool.cxx
 ~~~
 >   COMMENT IN/OUT the old data15 trigger for the while analysis depending on what you want to test (L102)
->   >    //ADD_TRIG(HLT_xe70,             any, data15, data15);
->   >    //ADD_TRIG(HLT_xe90_mht_L1XE50,  any, data16A, data16BD3);
+>   >    //ADD_TRIG(HLT_xe70,             any, data15, data15);                                                           
+>   >    //ADD_TRIG(HLT_xe90_mht_L1XE50,  any, data16A, data16BD3);                                                 
 
->   CHANGE the data16A-B MET trigger to include the data15 period (L104)
->   >    ADD_TRIG(HLT_xe80_mht_L1XE50,  any, data15, data15); // Trial MET trigger configuration
+>   CHANGE the data16A-B MET trigger to include the data15 period (L104)                                     
+>   >    ADD_TRIG(HLT_xe80_mht_L1XE50,  any, data15, data15); // Trial MET trigger configuration                             
 ~~~
 release=`cat source/CxAODBootstrap_VHbb/bootstrap/release.txt` && echo "release=$release"
 asetup $release,AnalysisBase
@@ -720,13 +720,13 @@ mv run/FullBoosted-newestandnewest_TriggerPlots run/DataBoosted-xe70vsxe80_2L_a_
 
 vim  ../TriggerStudyPlots.cxx
 ~~~
->   COMMENT IN new samples to run over (~L112)
->   > {"ggZllH125", "qqZllH125", "qqWlvH125"}; // 2L Signal 
->   > //= {"data"} //data only
+>   COMMENT IN new samples to run over (~L112)                                                                      
+>   > {"ggZllH125", "qqZllH125", "qqWlvH125"}; // 2L Signal                                                
+>   > //= {"data"} //data only                                                                                          
 
->    CHANGE legend sub-titles (~L516, ~L525, ~L566)                                                                        
->   >   Form("Data (%) Gain ..." -> Form("Signal (%) Gain ..."  
->   >   #it{#sqrt{s}} = 13 TeV, Data15" -> #it{#sqrt{s}} = 13 TeV, MC16a"
+>    CHANGE legend sub-titles (~L516, ~L525, ~L566)                                                                    
+>   >   Form("Data (%) Gain ..." -> Form("Signal (%) Gain ..."                                                 
+>   >   #it{#sqrt{s}} = 13 TeV, Data15" -> #it{#sqrt{s}} = 13 TeV, MC16a"                                                 
 ~~~
 root -b -l -q '../TriggerStudyPlots.cxx("/afs/cern.ch/work/d/dspiteri/VHbb/", "CxAODFramework_master_august2019/","FullBoosted","newest","newest","SIGNAL.root","2L","32-15","a","CUT","D1","SR","","_xe80")'
 mv run/FullBoosted-newestandnewest_TriggerPlots run/SignalBoosted-xe70vsxe80_2L_a_TriggerPlots
