@@ -677,7 +677,7 @@ vim source/CxAODTools/Root/TriggerTool.cxx
 ~~~
 >   COMMENT IN/OUT the old data15 trigger for the while analysis depending on what you want to test (L102)
 >   >    //ADD_TRIG(HLT_xe70,             any, data15, data15);                                                           
->   >    //ADD_TRIG(HLT_xe90_mht_L1XE50,  any, data16A, data16BD3);                                                 
+>   >    ADD_TRIG(HLT_xe90_mht_L1XE50,  any, data16A, data16BD3);                                                 
 
 >   CHANGE the data16A-B MET trigger to include the data15 period (L104)                                     
 >   >    ADD_TRIG(HLT_xe80_mht_L1XE50,  any, data15, data15); // Trial MET trigger configuration                             
@@ -733,6 +733,41 @@ mv run/FullBoosted-newestandnewest_TriggerPlots run/SignalBoosted-xe70vsxe80_2L_
 
 root -b -l -q '../TriggerStudyPlots.cxx("/afs/cern.ch/work/d/dspiteri/VHbb/", "CxAODFramework_master_august2019/","FullBoosted","newest","newest","SIGNAL.root","1L","32-15","a","CUT","D1","SR","","_xe80")'
 mv run/FullBoosted-newestandnewest_TriggerPlots run/SignalBoosted-xe70vsxe80_1L_a_TriggerPlots
+~~~
+Now we just need to test the addition of both the xe70 and the xe80 triggers at the same time. 
+~~~
+vim source/CxAODTools/Root/TriggerTool.cxx
+~~~
+>   COMMENT IN/OUT the old data15 trigger for the while analysis depending on what you want to test (L102)
+>   >    ADD_TRIG(HLT_xe70,             any, data15, data15);                                                         
+>   >    ADD_TRIG(HLT_xe80_mht_L1XE50,  any, data15, data15); // Trial MET trigger configuration                             
+~~~
+cd /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_august2019/
+setupATLAS && lsetup git && lsetup "root 6.14.04-x86_64-slc6-gcc62-opt" 
+release=`cat source/CxAODBootstrap_VHbb/bootstrap/release.txt` && echo "release=$release"
+asetup $release,AnalysisBase
+cd build && rm -rf *
+cmake ../source
+make -j10
+source x86_64-centos7-gcc8-opt/setup.sh
+cd ../run
+
+../source/CxAODOperations_VHbb/scripts/submitReader.sh /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/VH/CxAOD_r32-15 FullBoosted_newestTrigger_xe70xe80 1L a VHbb CUT D1 32-15 2lsignal none 1
+
+cd FullBoosted_newestTrigger_xe70xe80
+python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_august2019/source/CxAODOperations_VHbb/scripts/checkReaderFails.py Reader_1L_32-15_a_CUT_D1
+
+cd Reader_1L_32-15_a_CUT_D1/fetch/
+hadd GGZH.root hist-ggZ*
+hadd GGZZ.root hist-ggZqq*
+hadd QQWH.root hist-qqW*
+hadd QQZH.root hist-qqZ*
+hadd SIGNAL.root GGZH.root GGZZ.root QQWH.root QQZH.root
+rm GGZH.root GGZZ.root QQWH.root QQZH.root
+
+cd ../../../..
+root -b -l -q '../TriggerStudyPlots.cxx("/afs/cern.ch/work/d/dspiteri/VHbb/", "CxAODFramework_master_august2019/","FullBoosted","newest","newest","SIGNAL.root","1L","32-15","a","CUT","D1","SR","","_xe70xe80")'
+mv run/FullBoosted-newestandnewest_TriggerPlots run/SignalBoosted-xe70vsxe70xe80_1L_a_TriggerPlots
 
 ~~~
 # Running WSMaker
@@ -768,5 +803,6 @@ cmake ..
 make -j8
 cd ..
 ~~~
-The next step is to split the new standard inputs. To do this we need to create a new file. Referencing files from /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/FullRunII2019/statArea/inputs/TwoLep/r32-15_customCDI_20190814/v3. To perform the first 4 tasks, we need all So ade
+We will need to run and split tht new milestone inputs for 2L and compare them against the ones where the trigger regime has changed. Luckily for us the former has already been done and run and the split inputs can be found here:
+> /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/FullRunII2019/statArea/inputs/AfterWSMakerSplit/2019-08-20/milestone1/ 
 
