@@ -2,7 +2,7 @@
 
 ## "VHbb 2 Lepton Reader" ##
 
-Last Edited: 25-09-2018
+Last Edited: 09-10-2018
 -------------------------------------------------------------------------------
 ### Up to the subheading 'Running' the instructions here are exactly identical to those found in VHbb_CxAOD_production.md
 ###
