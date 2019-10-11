@@ -517,12 +517,14 @@ The next thing to run is the MVA mBB distribution.
 >  python scripts/doPlotFromWS.py -s [for sum plots] -m <mass> -p <plotmode> -f <fitresultsName> <workspaceName>
 python WSMakerCore/scripts/doPlotFromWS.py -p 2 -f 140ifb-0L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-baseline-MVA-mBB
 ~~~
-The last thing that needs to be prepared then are the two sets of pull plots.
+The last thing that needs to be prepared then are the three sets of pull plots.
 ~~~
 python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA-pull -n -a 5 
 mv output/pullComparisons output/pullComparisons_MVA
 
+python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-CBA-mBBpull -n -a 5 
+mv output/pullComparisons output/pullComparisons_CBA
+
 python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA-pull  140ifb-0L-ade-STXS-baseline-CBA-mBBpull -n -a 5 -l MVA CBA
 mv output/pullComparisons output/pullComparisons_MVACBA
-
 ~~~
