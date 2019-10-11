@@ -32,8 +32,10 @@ mkdir fcc/AsimovFit_conditionnal_mu1  fcc/GlobalFit_conditionnal_mu1
 mkdir 2jet  3jet
 mkdir 2jet/CRLow 2jet/CRHigh 2jet/SR 3jet/CRLow 3jet/CRHigh 3jet/SR
 ~~~
-For the MVA fit. These copies represent most of the plots you would want, minus the mBB MVA plots which are not present at the moment. The CBA plots to be targetted will therefore be largely the same, though the names may differ slightly. The breakdowns are copied over by hand from it's text format.
+For the MVA fit. These copies represent most of the plots you would want, minus the mBB MVA plots which are not present at the moment. The breakdowns are copied over by hand from it's text format.
 ~~~
+cd 0lep-stxs-mva-fit
+
 cp /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb/output/pullComparisons_MVA/NP_Norm.pdf data-vs-asimov/
 cp /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb/output/pullComparisons_MVA/NP_FloatNorm.pdf data-vs-asimov/
 cp /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb/output/pullComparisons_MVA/NP_Zjets.pdf data-vs-asimov/
@@ -46,11 +48,12 @@ cp /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb/output/pullComparisons_MVA/NP_
 cp /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb/output/pullComparisons_MVA/NP_Jet.pdf data-vs-asimov/
 cp /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb/output/pullComparisons_MVA/NP_Lepton.pdf data-vs-asimov/
 
-cp /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb/output/140ifb-0L-ade-STXS-baseline-MVA-pull/plots/fcc/AsimovFit_conditionnal_mu1/NP_VH.pdf AsimovFit_conditionnal_mu1/
-cp /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb/output/140ifb-0L-ade-STXS-baseline-MVA-pull/plots/fcc/GlobalFit_conditionnal_mu1/corr_HighCorr.pdf GlobalFit_conditionnal_mu1/
+cp /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb/output/140ifb-0L-ade-STXS-baseline-MVA-pull/plots/fcc/AsimovFit_conditionnal_mu1/NP_VH.pdf fcc/AsimovFit_conditionnal_mu1/
+cp /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb/output/140ifb-0L-ade-STXS-baseline-MVA-pull/plots/fcc/GlobalFit_conditionnal_mu1/corr_HighCorr.pdf fcc/GlobalFit_conditionnal_mu1/
 
 cp /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb/output/140ifb-0L-ade-STXS-baseline-MVA/pdf-files/pulls_SigXsecOverSM_125.pdf ranking/
 
+cd postfit
 cp /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb/output/140ifb-0L-ade-STXS-baseline-MVA-pull_2/plots/postfit/Region_BMax250_BMin150_Y6051_DSR_T2_L0_distmva_J2_GlobalFit_conditionnal_mu1log.pdf 2jet/SR
 cp /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb/output/140ifb-0L-ade-STXS-baseline-MVA-pull_2/plots/postfit/Region_BMin250_Y6051_DSR_T2_L0_distmva_J2_GlobalFit_conditionnal_mu1log.pdf 2jet/SR
 cp /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb/output/140ifb-0L-ade-STXS-baseline-MVA-pull_2/plots/postfit/Region_BMax250_BMin150_Y6051_DSR_T2_L0_distmva_J3_GlobalFit_conditionnal_mu1log.pdf 3jet/SR
@@ -65,3 +68,41 @@ cp /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb/output/140ifb-0L-ade-STXS-base
 cp /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb/output/140ifb-0L-ade-STXS-baseline-MVA-pull_2/plots/postfit/Region_BMin250_Y6051_DCRHigh_T2_L0_distMET_J2_GlobalFit_conditionnal_mu1.pdf 2jet/CRHigh
 cp /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb/output/140ifb-0L-ade-STXS-baseline-MVA-pull_2/plots/postfit/Region_BMax250_BMin150_Y6051_DCRHigh_T2_L0_distMET_J3_GlobalFit_conditionnal_mu1.pdf 3jet/CRHigh
 cp /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb/output/140ifb-0L-ade-STXS-baseline-MVA-pull_2/plots/postfit/Region_BMin250_Y6051_DCRHigh_T2_L0_distMET_J3_GlobalFit_conditionnal_mu1.pdf 3jet/CRHigh
+~~~
+The CBA plots to be targetted will therefore be largely the same, though the names may differ slightly.
+~~~
+cd ../../0lep-stxs-cba-fit
+
+cp /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb/output/pullComparisons_CBA/NP_Norm.pdf data-vs-asimov/
+cp /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb/output/pullComparisons_CBA/NP_FloatNorm.pdf data-vs-asimov/
+cp /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb/output/pullComparisons_CBA/NP_Zjets.pdf data-vs-asimov/
+cp /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb/output/pullComparisons_CBA/NP_Wjets.pdf data-vs-asimov/
+cp /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb/output/pullComparisons_CBA/NP_Top.pdf data-vs-asimov/
+cp /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb/output/pullComparisons_CBA/NP_Diboson.pdf data-vs-asimov/
+cp /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb/output/pullComparisons_CBA/NP_LUMI.pdf data-vs-asimov/
+cp /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb/output/pullComparisons_CBA/NP_MET.pdf data-vs-asimov/
+cp /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb/output/pullComparisons_CBA/NP_BTag.pdf data-vs-asimov/
+cp /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb/output/pullComparisons_CBA/NP_NJet.pdf data-vs-asimov/
+cp /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb/output/pullComparisons_CBA/NP_Jet.pdf data-vs-asimov/
+cp /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb/output/pullComparisons_CBA/NP_Lepton.pdf data-vs-asimov/
+
+cp /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb/output/140ifb-0L-ade-STXS-baseline-CBA-mBBpull/plots/fcc/AsimovFit_conditionnal_mu1/NP_VH.pdf fcc/AsimovFit_conditionnal_mu1/
+cp /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb/output/140ifb-0L-ade-STXS-baseline-CBA-mBBpull/plots/fcc/GlobalFit_conditionnal_mu1/corr_HighCorr.pdf fcc/GlobalFit_conditionnal_mu1/
+
+cp /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb/output/140ifb-0L-ade-STXS-baseline-CBA/pdf-files/pulls_SigXsecOverSM_125.pdf ranking/
+
+cd postfit
+cp /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb/output/140ifb-0L-ade-STXS-baseline-CBA-mBBpull/plots/postfit/Region_BMax250_BMin150_Y6051_DSR_T2_L0_distmBB_J2_GlobalFit_conditionnal_mu1.pdf 2jet/SR
+cp /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb/output/140ifb-0L-ade-STXS-baseline-CBA-mBBpull/plots/postfit/Region_BMax250_BMin150_Y6051_DSR_T2_L0_distmBB_J3_GlobalFit_conditionnal_mu1.pdf 3jet/SR
+cp /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb/output/140ifb-0L-ade-STXS-baseline-CBA-mBBpull/plots/postfit/Region_BMin250_Y6051_DSR_T2_L0_distmBB_J2_GlobalFit_conditionnal_mu1.pdf 2jet/SR
+cp /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb/output/140ifb-0L-ade-STXS-baseline-CBA-mBBpull/plots/postfit/Region_BMin250_Y6051_DSR_T2_L0_distmBB_J3_GlobalFit_conditionnal_mu1.pdf 3jet/SR
+
+cp /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb/output/140ifb-0L-ade-STXS-baseline-CBA-mBBpull/plots/postfit/Region_BMax250_BMin150_Y6051_DCRLow_T2_L0_distMET_J2_GlobalFit_conditionnal_mu1.pdf 2jet/CRLow
+cp /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb/output/140ifb-0L-ade-STXS-baseline-CBA-mBBpull/plots/postfit/Region_BMin250_Y6051_DCRLow_T2_L0_distMET_J2_GlobalFit_conditionnal_mu1.pdf 2jet/CRLow
+cp /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb/output/140ifb-0L-ade-STXS-baseline-CBA-mBBpull/plots/postfit/Region_BMax250_BMin150_Y6051_DCRLow_T2_L0_distMET_J3_GlobalFit_conditionnal_mu1.pdf 3jet/CRLow
+cp /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb/output/140ifb-0L-ade-STXS-baseline-CBA-mBBpull/plots/postfit/Region_BMin250_Y6051_DCRLow_T2_L0_distMET_J3_GlobalFit_conditionnal_mu1.pdf 3jet/CRLow
+
+cp /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb/output/140ifb-0L-ade-STXS-baseline-CBA-mBBpull/plots/postfit/Region_BMax250_BMin150_Y6051_DCRHigh_T2_L0_distMET_J2_GlobalFit_conditionnal_mu1.pdf 2jet/CRHigh
+cp /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb/output/140ifb-0L-ade-STXS-baseline-CBA-mBBpull/plots/postfit/Region_BMin250_Y6051_DCRHigh_T2_L0_distMET_J2_GlobalFit_conditionnal_mu1.pdf 2jet/CRHigh
+cp /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb/output/140ifb-0L-ade-STXS-baseline-CBA-mBBpull/plots/postfit/Region_BMax250_BMin150_Y6051_DCRHigh_T2_L0_distMET_J3_GlobalFit_conditionnal_mu1.pdf 3jet/CRHigh
+cp /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb/output/140ifb-0L-ade-STXS-baseline-CBA-mBBpull/plots/postfit/Region_BMin250_Y6051_DCRHigh_T2_L0_distMET_J3_GlobalFit_conditionnal_mu1.pdf 3jet/CRHigh
