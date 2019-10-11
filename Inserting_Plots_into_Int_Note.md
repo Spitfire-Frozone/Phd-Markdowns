@@ -25,12 +25,12 @@ cd 0lep-stxs-mva-fit
 mkdir data-vs-asimov  fcc  postfit  ranking
 mkdir fcc/AsimovFit_conditionnal_mu1  fcc/GlobalFit_conditionnal_mu1
 mkdir 2jet  3jet
-mkdir 2jet/CRLow 2jet/CRHigh 2jet/SR 3jet/CRLow 3jet/CRHigh 3jet/SR
+mkdir 2jet/CRLow/ 2jet/CRHigh/ 2jet/SR/ 3jet/CRLow/ 3jet/CRHigh/ 3jet/SR/
 cd ../0lep-stxs-cba-fit
 mkdir data-vs-asimov  fcc  postfit  ranking
 mkdir fcc/AsimovFit_conditionnal_mu1  fcc/GlobalFit_conditionnal_mu1
 mkdir 2jet  3jet
-mkdir 2jet/CRLow 2jet/CRHigh 2jet/SR 3jet/CRLow 3jet/CRHigh 3jet/SR
+mkdir 2jet/CRLow/ 2jet/CRHigh/ 2jet/SR/ 3jet/CRLow/ 3jet/CRHigh/ 3jet/SR/
 ~~~
 For the MVA fit. These copies represent most of the plots you would want, minus the mBB MVA plots which are not present at the moment. The breakdowns are copied over by hand from it's text format.
 ~~~
@@ -47,6 +47,8 @@ cp /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb/output/pullComparisons_MVA/NP_
 cp /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb/output/pullComparisons_MVA/NP_BTag.pdf data-vs-asimov/
 cp /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb/output/pullComparisons_MVA/NP_Jet.pdf data-vs-asimov/
 cp /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb/output/pullComparisons_MVA/NP_Lepton.pdf data-vs-asimov/
+cp /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb/output/pullComparisons_MVA/NP_MJ.pdf data-vs-asimov/
+
 
 cp /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb/output/140ifb-0L-ade-STXS-baseline-MVA-pull/plots/fcc/AsimovFit_conditionnal_mu1/NP_VH.pdf fcc/AsimovFit_conditionnal_mu1/
 cp /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb/output/140ifb-0L-ade-STXS-baseline-MVA-pull/plots/fcc/GlobalFit_conditionnal_mu1/corr_HighCorr.pdf fcc/GlobalFit_conditionnal_mu1/
@@ -85,6 +87,7 @@ cp /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb/output/pullComparisons_CBA/NP_
 cp /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb/output/pullComparisons_CBA/NP_NJet.pdf data-vs-asimov/
 cp /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb/output/pullComparisons_CBA/NP_Jet.pdf data-vs-asimov/
 cp /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb/output/pullComparisons_CBA/NP_Lepton.pdf data-vs-asimov/
+cp /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb/output/pullComparisons_CBA/NP_MJ.pdf data-vs-asimov/
 
 cp /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb/output/140ifb-0L-ade-STXS-baseline-CBA-mBBpull/plots/fcc/AsimovFit_conditionnal_mu1/NP_VH.pdf fcc/AsimovFit_conditionnal_mu1/
 cp /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb/output/140ifb-0L-ade-STXS-baseline-CBA-mBBpull/plots/fcc/GlobalFit_conditionnal_mu1/corr_HighCorr.pdf fcc/GlobalFit_conditionnal_mu1/
