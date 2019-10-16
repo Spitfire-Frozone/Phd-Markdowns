@@ -2,7 +2,7 @@
 
 ## VHbb 2 Lepton Trigger Study Part 2 ##
 
-Last Edited: 09-10-2019
+Last Edited: 16-10-2019
 -------------------------------------------------------------------------------
 
 # Setup Script
@@ -664,14 +664,51 @@ mv run/FullBoosted-newestandnewest_TriggerPlots run/FullBoosted-xe70vsxe70xe90_2
 ~~~
 
 ### Turns out that was the wrong trigger.
-The HLT_xe90_mht_L1XE50 trigger was only partially available for the 2015 data period. After checking the next unprescaed trigger that is present for the whole period is the HLT_xe80_mht_L1XE50 but since you have already the master for comparison, you can just run the new triggers. 
+The HLT_xe90_mht_L1XE50 trigger was only partially available for the 2015 data period. After checking the next unprescaed trigger that is present for the whole period is the HLT_xe80_mht_L1XE50 but since you have already the master for comparison, you can just run the new triggers. Obviously the analysis was out of date and a new one needed to be checked out.
 ~~~
-cd /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_august2019/
-setupATLAS && lsetup git && lsetup "root 6.14.04-x86_64-slc6-gcc62-opt" 
-vim source/xAODOperations_VHbb/scripts/submitReader.sh
+
+cd /afs/cern.ch/work/d/dspiteri/VHbb
+setupATLAS && lsetup git
+cp /afs/cern.ch/user/v/vhbbframework/public/CxAODBootstrap_VHbb/scripts/getMaster.sh .
+source getMaster.sh origin/master CxAODFramework_master_october2019 1 1
+
+cd CxAODFramework_master_october2019/
+~~~
+Now we want to pull in the branches we were working on earlier. 
+~~~
+cd source/CxAODReader_VHbb
+git checkout --track origin/master-dspiteri-2L-METTriggerStudy
+cd ../../source/CxAODOperations_VHbb
+git checkout --track origin/master-dspiteri-2L-METTriggerStudy
+~~~
+Just have to make sure that this flag is turned on, but this should be the default on the branch we are on.
+~~~
+vim source/CxAODOperations_VHbb/scripts/submitReader.sh
 ~~~
 >   CHANGE 2L trigger flag to true (~L281)
 >   >    DO2LMETTRIGGER = true
+
+For the first run, nothing else should need to change
+~~~
+cd /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_october2019/
+setupATLAS && lsetup git && lsetup "root 6.14.04-x86_64-slc6-gcc62-opt" 
+release=`cat source/CxAODBootstrap_VHbb/bootstrap/release.txt` && echo "release=$release"
+asetup $release,AnalysisBase
+cd build
+cmake ../source
+make -j10
+source x86_64-centos7-gcc8-opt/setup.sh
+cd ../run
+
+../source/CxAODOperations_VHbb/scripts/submitReader.sh /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/VH/CxAOD_r32-15 FullBoosted_newestTrigger 1L,2L a VHbb CUT D1 32-15 2lsignal none 1
+
+../source/CxAODOperations_VHbb/scripts/submitReader.sh /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/VH/CxAOD_r32-15 FullBoosted_newestTrigger 2L a VHbb CUT D1 32-15 data15 none 1
+
+
+
+
+
+
 ~~~
 vim source/CxAODTools/Root/TriggerTool.cxx
 ~~~
@@ -682,6 +719,8 @@ vim source/CxAODTools/Root/TriggerTool.cxx
 >   CHANGE the data16A-B MET trigger to include the data15 period (L104)                                     
 >   >    ADD_TRIG(HLT_xe80_mht_L1XE50,  any, data15, data15); // Trial MET trigger configuration                             
 ~~~
+cd /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_october2019/
+setupATLAS && lsetup git && lsetup "root 6.14.04-x86_64-slc6-gcc62-opt" 
 release=`cat source/CxAODBootstrap_VHbb/bootstrap/release.txt` && echo "release=$release"
 asetup $release,AnalysisBase
 cd build && rm -rf *
