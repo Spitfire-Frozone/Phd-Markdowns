@@ -701,14 +701,12 @@ source x86_64-centos7-gcc8-opt/setup.sh
 cd ../run
 
 ../source/CxAODOperations_VHbb/scripts/submitReader.sh /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/VH/CxAOD_r32-15 FullBoosted_newestTrigger 1L,2L a VHbb CUT D1 32-15 2lsignal none 1
+mv FullBoosted_newestTrigger SignalBoosted_newestTrigger
 
 ../source/CxAODOperations_VHbb/scripts/submitReader.sh /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/VH/CxAOD_r32-15 FullBoosted_newestTrigger 2L a VHbb CUT D1 32-15 data15 none 1
-
-
-
-
-
-
+mv FullBoosted_newestTrigger DataBoosted_newestTrigger
+~~~
+Now we need to change the trigger to run over. 
 ~~~
 vim source/CxAODTools/Root/TriggerTool.cxx
 ~~~
@@ -729,14 +727,37 @@ make -j10
 source x86_64-centos7-gcc8-opt/setup.sh
 cd ../run
 
-../source/CxAODOperations_VHbb/scripts/submitReader.sh /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/VH/CxAOD_r32-15 FullBoosted_newestTrigger_xe80 1L,2L a VHbb CUT D1 32-15 2lsignal data15 1
-
-cd FullBoosted_newestTrigger_xe80
+../source/CxAODOperations_VHbb/scripts/submitReader.sh /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/VH/CxAOD_r32-15 FullBoosted_newestTrigger_xe80 1L,2L a VHbb CUT D1 32-15 2lsignal none 1
+mv FullBoosted_newestTrigger_xe80 SignalBoosted_newestTrigger_xe80
+../source/CxAODOperations_VHbb/scripts/submitReader.sh /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/VH/CxAOD_r32-15 FullBoosted_newestTrigger_xe80 2L a VHbb CUT D1 32-15 data15 none 1
+mv FullBoosted_newestTrigger_xe80 DataBoosted_newestTrigger_xe80
+~~~
+Then you need to check that all of the jobs were sucessfully submitted.
+~~~
+cd ../SignalBoosted_newestTrigger
 python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_august2019/source/CxAODOperations_VHbb/scripts/checkReaderFails.py Reader_2L_32-15_a_CUT_D1
 python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_august2019/source/CxAODOperations_VHbb/scripts/checkReaderFails.py Reader_1L_32-15_a_CUT_D1
 
-cd Reader_1L_32-15_a_CUT_D1/fetch/
-hadd DATA.root hist-data*
+cd SignalBoosted_newestTrigger_xe80
+python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_august2019/source/CxAODOperations_VHbb/scripts/checkReaderFails.py Reader_2L_32-15_a_CUT_D1
+python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_august2019/source/CxAODOperations_VHbb/scripts/checkReaderFails.py Reader_1L_32-15_a_CUT_D1
+
+cd ../DataBoosted_newestTrigger
+python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_august2019/source/CxAODOperations_VHbb/scripts/checkReaderFails.py Reader_2L_32-15_a_CUT_D1
+
+cd ../DataBoosted_newestTrigger_xe80
+python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_august2019/source/CxAODOperations_VHbb/scripts/checkReaderFails.py Reader_2L_32-15_a_CUT_D1
+~~~
+Once all of the jobs are present then you can hadd the outputs to produce the things we run over.  
+~~~
+cd SignalBoosted_newestTrigger/Reader_1L_32-15_a_CUT_D1/fetch/
+hadd GGZH.root hist-ggZ*
+hadd GGZZ.root hist-ggZqq*
+hadd QQWH.root hist-qqW*
+hadd QQZH.root hist-qqZ*
+hadd SIGNAL.root GGZH.root GGZZ.root QQWH.root QQZH.root
+rm GGZH.root GGZZ.root QQWH.root QQZH.root
+cd ../../Reader_2L_32-15_a_CUT_D1/fetch/
 hadd GGZH.root hist-ggZ*
 hadd GGZZ.root hist-ggZqq*
 hadd QQWH.root hist-qqW*
@@ -744,14 +765,25 @@ hadd QQZH.root hist-qqZ*
 hadd SIGNAL.root GGZH.root GGZZ.root QQWH.root QQZH.root
 rm GGZH.root GGZZ.root QQWH.root QQZH.root
 
-cd ../../Reader_2L_32-15_a_CUT_D1/fetch/
-hadd DATA.root hist-data*
+cd SignalBoosted_newestTrigger_xe80/Reader_1L_32-15_a_CUT_D1/fetch/
 hadd GGZH.root hist-ggZ*
 hadd GGZZ.root hist-ggZqq*
 hadd QQWH.root hist-qqW*
 hadd QQZH.root hist-qqZ*
 hadd SIGNAL.root GGZH.root GGZZ.root QQWH.root QQZH.root
 rm GGZH.root GGZZ.root QQWH.root QQZH.root
+cd ../../Reader_2L_32-15_a_CUT_D1/fetch/
+hadd GGZH.root hist-ggZ*
+hadd GGZZ.root hist-ggZqq*
+hadd QQWH.root hist-qqW*
+hadd QQZH.root hist-qqZ*
+hadd SIGNAL.root GGZH.root GGZZ.root QQWH.root QQZH.root
+rm GGZH.root GGZZ.root QQWH.root QQZH.root
+
+cd DataBoosted_newestTrigger/Reader_2L_32-15_a_CUT_D1/fetch/
+hadd DATA15.root hist-data*
+cd DataBoosted_newestTrigger_xe80/Reader_2L_32-15_a_CUT_D1/fetch/
+hadd DATA15.root hist-data*
 
 cd ../../../..
 root -b -l -q '../TriggerStudyPlots.cxx("/afs/cern.ch/work/d/dspiteri/VHbb/", "CxAODFramework_master_august2019/","FullBoosted","newest","newest","DATA.root","2L","32-15","a","CUT","D1","SR","","_xe80")'
