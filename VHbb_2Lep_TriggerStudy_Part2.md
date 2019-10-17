@@ -728,17 +728,20 @@ source x86_64-centos7-gcc8-opt/setup.sh
 cd ../run
 
 ../source/CxAODOperations_VHbb/scripts/submitReader.sh /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/VH/CxAOD_r32-15 FullBoosted_newestTrigger_xe80 1L,2L a VHbb CUT D1 32-15 2lsignal none 1
+
 mv FullBoosted_newestTrigger_xe80 SignalBoosted_newestTrigger_xe80
+
 ../source/CxAODOperations_VHbb/scripts/submitReader.sh /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/VH/CxAOD_r32-15 FullBoosted_newestTrigger_xe80 2L a VHbb CUT D1 32-15 data15 none 1
+
 mv FullBoosted_newestTrigger_xe80 DataBoosted_newestTrigger_xe80
 ~~~
 Then you need to check that all of the jobs were sucessfully submitted.
 ~~~
-cd ../SignalBoosted_newestTrigger
+cd SignalBoosted_newestTrigger
 python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_august2019/source/CxAODOperations_VHbb/scripts/checkReaderFails.py Reader_2L_32-15_a_CUT_D1
 python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_august2019/source/CxAODOperations_VHbb/scripts/checkReaderFails.py Reader_1L_32-15_a_CUT_D1
 
-cd SignalBoosted_newestTrigger_xe80
+cd ../SignalBoosted_newestTrigger_xe80
 python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_august2019/source/CxAODOperations_VHbb/scripts/checkReaderFails.py Reader_2L_32-15_a_CUT_D1
 python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_august2019/source/CxAODOperations_VHbb/scripts/checkReaderFails.py Reader_1L_32-15_a_CUT_D1
 
@@ -765,7 +768,7 @@ hadd QQZH.root hist-qqZ*
 hadd SIGNAL.root GGZH.root GGZZ.root QQWH.root QQZH.root
 rm GGZH.root GGZZ.root QQWH.root QQZH.root
 
-cd SignalBoosted_newestTrigger_xe80/Reader_1L_32-15_a_CUT_D1/fetch/
+cd ../../../SignalBoosted_newestTrigger_xe80/Reader_1L_32-15_a_CUT_D1/fetch/
 hadd GGZH.root hist-ggZ*
 hadd GGZZ.root hist-ggZqq*
 hadd QQWH.root hist-qqW*
@@ -780,14 +783,14 @@ hadd QQZH.root hist-qqZ*
 hadd SIGNAL.root GGZH.root GGZZ.root QQWH.root QQZH.root
 rm GGZH.root GGZZ.root QQWH.root QQZH.root
 
-cd DataBoosted_newestTrigger/Reader_2L_32-15_a_CUT_D1/fetch/
+cd ../../../DataBoosted_newestTrigger/Reader_2L_32-15_a_CUT_D1/fetch/
 hadd DATA15.root hist-data*
-cd DataBoosted_newestTrigger_xe80/Reader_2L_32-15_a_CUT_D1/fetch/
+cd ../../../DataBoosted_newestTrigger_xe80/Reader_2L_32-15_a_CUT_D1/fetch/
 hadd DATA15.root hist-data*
 
 cd ../../../..
-root -b -l -q '../TriggerStudyPlots.cxx("/afs/cern.ch/work/d/dspiteri/VHbb/", "CxAODFramework_master_august2019/","FullBoosted","newest","newest","DATA.root","2L","32-15","a","CUT","D1","SR","","_xe80")'
-mv run/FullBoosted-newestandnewest_TriggerPlots run/DataBoosted-xe70vsxe80_2L_a_TriggerPlots
+root -b -l -q '../TriggerStudyPlots.cxx("/afs/cern.ch/work/d/dspiteri/VHbb/", "CxAODFramework_master_october2019/","DataBoosted","newest","newest","DATA15.root","2L","32-15","a","CUT","D1","SR","","_xe80")'
+mv run/DataBoosted-newestandnewest_TriggerPlots run/DataBoosted-xe70vsxe80_2L_a_TriggerPlots
 
 vim  ../TriggerStudyPlots.cxx
 ~~~
@@ -799,11 +802,11 @@ vim  ../TriggerStudyPlots.cxx
 >   >   Form("Data (%) Gain ..." -> Form("Signal (%) Gain ..."                                                 
 >   >   #it{#sqrt{s}} = 13 TeV, Data15" -> #it{#sqrt{s}} = 13 TeV, MC16a"                                                 
 ~~~
-root -b -l -q '../TriggerStudyPlots.cxx("/afs/cern.ch/work/d/dspiteri/VHbb/", "CxAODFramework_master_august2019/","FullBoosted","newest","newest","SIGNAL.root","2L","32-15","a","CUT","D1","SR","","_xe80")'
-mv run/FullBoosted-newestandnewest_TriggerPlots run/SignalBoosted-xe70vsxe80_2L_a_TriggerPlots
+root -b -l -q '../TriggerStudyPlots.cxx("/afs/cern.ch/work/d/dspiteri/VHbb/", "CxAODFramework_master_october2019/","SignalBoosted","newest","newest","SIGNAL.root","2L","32-15","a","CUT","D1","SR","","_xe80")'
+mv run/SignalBoosted-newestandnewest_TriggerPlots run/SignalBoosted-xe70vsxe80_2L_a_TriggerPlots
 
-root -b -l -q '../TriggerStudyPlots.cxx("/afs/cern.ch/work/d/dspiteri/VHbb/", "CxAODFramework_master_august2019/","FullBoosted","newest","newest","SIGNAL.root","1L","32-15","a","CUT","D1","SR","","_xe80")'
-mv run/FullBoosted-newestandnewest_TriggerPlots run/SignalBoosted-xe70vsxe80_1L_a_TriggerPlots
+root -b -l -q '../TriggerStudyPlots.cxx("/afs/cern.ch/work/d/dspiteri/VHbb/", "CxAODFramework_master_october2019/","SignalBoosted","newest","newest","SIGNAL.root","1L","32-15","a","CUT","D1","SR","","_xe80")'
+mv run/SignalBoosted-newestandnewest_TriggerPlots run/SignalBoosted-xe70vsxe80_1L_a_TriggerPlots
 ~~~
 Now we just need to test the addition of both the xe70 and the xe80 triggers at the same time. 
 ~~~
@@ -813,7 +816,7 @@ vim source/CxAODTools/Root/TriggerTool.cxx
 >   >    ADD_TRIG(HLT_xe70,             any, data15, data15);                                                         
 >   >    ADD_TRIG(HLT_xe80_mht_L1XE50,  any, data15, data15); // Trial MET trigger configuration                             
 ~~~
-cd /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_august2019/
+cd /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_october2019/
 setupATLAS && lsetup git && lsetup "root 6.14.04-x86_64-slc6-gcc62-opt" 
 release=`cat source/CxAODBootstrap_VHbb/bootstrap/release.txt` && echo "release=$release"
 asetup $release,AnalysisBase
@@ -837,8 +840,8 @@ hadd SIGNAL.root GGZH.root GGZZ.root QQWH.root QQZH.root
 rm GGZH.root GGZZ.root QQWH.root QQZH.root
 
 cd ../../../..
-root -b -l -q '../TriggerStudyPlots.cxx("/afs/cern.ch/work/d/dspiteri/VHbb/", "CxAODFramework_master_august2019/","FullBoosted","newest","newest","SIGNAL.root","1L","32-15","a","CUT","D1","SR","","_xe70xe80")'
-mv run/FullBoosted-newestandnewest_TriggerPlots run/SignalBoosted-xe70vsxe70xe80_1L_a_TriggerPlots
+root -b -l -q '../TriggerStudyPlots.cxx("/afs/cern.ch/work/d/dspiteri/VHbb/", "CxAODFramework_master_october2019/","SignalBoosted","newest","newest","SIGNAL.root","1L","32-15","a","CUT","D1","SR","","_xe70xe80")'
+mv run/SignalBoosted-newestandnewest_TriggerPlots run/SignalBoosted-xe70vsxe70xe80_1L_a_TriggerPlots
 
 ~~~
 # Running WSMaker
