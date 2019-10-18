@@ -840,9 +840,9 @@ make -j10
 source x86_64-centos7-gcc8-opt/setup.sh
 cd ../run
 
-../source/CxAODOperations_VHbb/scripts/submitReader.sh /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/VH/CxAOD_r32-15 FullBoosted_newestTrigger_xe70xe80 1L a VHbb CUT D1 32-15 2lsignal none 1
+../source/CxAODOperations_VHbb/scripts/submitReader.sh /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/VH/CxAOD_r32-15 SignalBoosted_newestTrigger_xe70xe80 1L a VHbb CUT D1 32-15 2lsignal none 1
 
-cd FullBoosted_newestTrigger_xe70xe80
+cd SignalBoosted_newestTrigger_xe70xe80
 python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_august2019/source/CxAODOperations_VHbb/scripts/checkReaderFails.py Reader_1L_32-15_a_CUT_D1
 
 cd Reader_1L_32-15_a_CUT_D1/fetch/
