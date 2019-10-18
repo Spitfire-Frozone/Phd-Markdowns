@@ -716,6 +716,20 @@ vim source/CxAODTools/Root/TriggerTool.cxx
 
 >   CHANGE the data16A-B MET trigger to include the data15 period (L104)                                     
 >   >    ADD_TRIG(HLT_xe80_mht_L1XE50,  any, data15, data15); // Trial MET trigger configuration                             
+
+Since this trigger is not yet in the analysis, one needs to ensure that it's added to the CommonProperties of the analysis. 
+~~~
+vim source/CxAODTools/Root/CommonProperties.cxx
+~~~
+>    LOOK for the line and if not present, add it in. (~L580)
+>   >    PROPERTY_INST( Props , int , passHLT_xe80_mht_L1XE50     )
+~~~
+vim source/CxAODTools/Root/CommonProperties.cxx
+~~~
+>    LOOK for the line and if not present, add it in. (~L684)
+>   >    PROPERTY_DECL( Props , int , passHLT_xe80_mht_L1XE50     )
+
+Then run as normal.
 ~~~
 cd /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_october2019/
 setupATLAS && lsetup git && lsetup "root 6.14.04-x86_64-slc6-gcc62-opt" 
