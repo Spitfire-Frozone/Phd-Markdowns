@@ -2,7 +2,7 @@
 
 ## VHbb WSMaker and Hbb Stat ##
 
-## Last Edited: 30-08-2019
+## Last Edited: 24-10-2019
 -------------------------------------------------------------------------------
 
 Once a basic familiarity with WSMaker has been established, (see VHbb_2Lep_Reader_Inputs.md ) a task, which gets more and more priority is to test reducing the number of bins in the inputs.
