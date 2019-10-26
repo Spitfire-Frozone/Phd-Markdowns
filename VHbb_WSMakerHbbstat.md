@@ -2,10 +2,10 @@
 
 ## VHbb WSMaker and Hbb Stat ##
 
-## Last Edited: 24-10-2019
+## Last Edited: 26-10-2019
 -------------------------------------------------------------------------------
 
-Once a basic familiarity with WSMaker has been established, (see VHbb_2Lep_Reader_Inputs.md ) a task, which gets more and more priority is to test reducing the number of bins in the inputs.
+Once a basic familiarity with WSMaker has been established, (see VHbb_2Lep_Reader_Inputs.md ) a task, which gets more and more priority is to test reducing the number of bins in the inputs. You need to have cloned a copy of WSMaker locally. You can see instructions on doing this [here](https://github.com/Spitfire-Frozone/Phd-Markdowns/blob/master/VHbb_WSMakerHbbstat_Part2.md) and {here](https://github.com/Spitfire-Frozone/Phd-Markdowns/blob/master/VHbb_WSMakerHbbstat_Part3.md)
 
 ~~~
 cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb
