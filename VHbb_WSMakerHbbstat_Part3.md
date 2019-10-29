@@ -96,7 +96,9 @@ After this is ready, we will want to run many fits for all of the b-tagging syst
 - B_0                                                                                                  
 - B_1                                       
 - C_0                                  
-- L_0                                                                                     
+- Light_0
+
+### Light_0
 ~~~
 vim src/systematiclistsbuilder_vhbbrun2.cpp
 ~~~
@@ -116,21 +118,105 @@ cd build
 cmake ..
 make -j8
 cd ..
-python scripts/launch_default_jobs.py Light_0_nJetDeco
-mv output/SMVHVZ_2019_MVA_mc16ade_milestone1_v02_STXS.Light_0_nJetDeco_fullRes_VHbb_Light_0_nJetDeco_0_mc16ade_Systs_mva_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/Light_0_nJetDeco
-
->    python scripts/launch_default_jobs.py Light_0_PtVDeco
->    mv output/SMVHVZ_2019_MVA_mc16ade_milestone1_v02_STXS.Light_0_PtVDeco_fullRes_VHbb_Light_0_PtVDeco_0_mc16ade_Systs_mva_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/Light_0_PtVDeco
-
->    python scripts/launch_default_jobs.py Light_0_nJetPtVDeco
->    mv output/SMVHVZ_2019_MVA_mc16ade_milestone1_v02_STXS.Light_0_nJetPtVDeco_fullRes_VHbb_Light_0_nJetPtVDeco_0_mc16ade_Systs_mva_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/Light_0_nJetPtVDeco
-
+python scripts/launch_default_jobs.py Light_0_nJetPtVDeco
+mv output/SMVHVZ_2019_MVA_mc16ade_milestone1_v02_STXS.Light_0_nJetPtVDeco_fullRes_VHbb_Light_0_nJetPtVDeco_0_mc16ade_Systs_mva_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/Light_0_nJetPtVDeco
 
 python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA Light_0_nJetPtVDeco -n -a 5 -l Nominal L0_nJPtVDecorr 
 mv output/pullComparisons output/Nominal_vs_Light_0ptVnJ
 
-python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA Light_0_nJetDeco -n -a 5 -l Nominal L0_nJPtVDecorr 
-mv output/pullComparisons output/Nominal_vs_Light_0nJ
+~~~
+>    python scripts/launch_default_jobs.py Light_0_nJetDeco
+>    mv output/SMVHVZ_2019_MVA_mc16ade_milestone1_v02_STXS.Light_0_nJetDeco_fullRes_VHbb_Light_0_nJetDeco_0_mc16ade_Systs_mva_STXS_Fit>    Scheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/Light_0_nJetDeco
 
-python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA Light_0_PtVDeco -n -a 5 -l Nominal L0_nJPtVDecorr 
-mv output/pullComparisons output/Nominal_vs_Light_0ptV
+>    python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA Light_0_nJetDeco -n -a 5 -l Nominal L0_nJDecorr 
+>    mv output/pullComparisons output/Nominal_vs_Light_0nJ
+
+
+>    python scripts/launch_default_jobs.py Light_0_PtVDeco
+>    mv output/SMVHVZ_2019_MVA_mc16ade_milestone1_v02_STXS.Light_0_PtVDeco_fullRes_VHbb_Light_0_PtVDeco_0_mc16ade_Systs_mva_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/Light_0_PtVDeco
+
+>    python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA Light_0_PtVDeco -n -a 5 -l Nominal L0_PtVDecorr 
+>    mv output/pullComparisons output/Nominal_vs_Light_0PtV
+
+### C_0
+~~~
+cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Btagging
+source setup.sh
+cd build
+cmake ..
+make -j8
+cd ..
+
+python scripts/launch_default_jobs.py C_0_nJetDeco
+mv output/SMVHVZ_2019_MVA_mc16ade_milestone1_v02_STXS.C_0_nJetDeco_fullRes_VHbb_C_0_nJetDeco_0_mc16ade_Systs_mva_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/C_0_nJetDeco
+
+python scripts/launch_default_jobs.py C_0_PtVDeco
+mv output/SMVHVZ_2019_MVA_mc16ade_milestone1_v02_STXS.C_0_PtVDeco_fullRes_VHbb_C_0_PtVDeco_0_mc16ade_Systs_mva_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/C_0_PtVDeco
+
+python scripts/launch_default_jobs.py C_0_nJetPtVDeco
+mv output/SMVHVZ_2019_MVA_mc16ade_milestone1_v02_STXS.C_0_nJetPtVDeco_fullRes_VHbb_C_0_nJetPtVDeco_0_mc16ade_Systs_mva_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/C_0_nJetPtVDeco
+
+
+python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA C_0_nJetPtVDeco -n -a 5 -l Nominal C0_nJPtVDecorr 
+mv output/pullComparisons output/Nominal_vs_C_0ptVnJ
+
+python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA C_0_PtVDeco -n -a 5 -l Nominal C0_PtVDecorr 
+mv output/pullComparisons output/Nominal_vs_C_0ptV
+python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA C_0_nJetDeco -n -a 5 -l Nominal C0_nJDecorr 
+mv output/pullComparisons output/Nominal_vs_C_0nJ
+~~~
+### B_0
+~~~
+cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Btagging
+source setup.sh
+cd build
+cmake ..
+make -j8
+cd ..
+
+python scripts/launch_default_jobs.py B_0_nJetDeco
+mv output/SMVHVZ_2019_MVA_mc16ade_milestone1_v02_STXS.B_0_nJetDeco_fullRes_VHbb_B_0_nJetDeco_0_mc16ade_Systs_mva_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/B_0_nJetDeco
+
+python scripts/launch_default_jobs.py B_0_PtVDeco
+mv output/SMVHVZ_2019_MVA_mc16ade_milestone1_v02_STXS.B_0_PtVDeco_fullRes_VHbb_B_0_PtVDeco_0_mc16ade_Systs_mva_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/B_0_PtVDeco
+
+python scripts/launch_default_jobs.py B_0_nJetPtVDeco
+mv output/SMVHVZ_2019_MVA_mc16ade_milestone1_v02_STXS.B_0_nJetPtVDeco_fullRes_VHbb_B_0_nJetPtVDeco_0_mc16ade_Systs_mva_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/B_0_nJetPtVDeco
+
+
+
+python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA B_0_nJetPtVDeco -n -a 5 -l Nominal B0_nJPtVDecorr 
+mv output/pullComparisons output/Nominal_vs_B_0ptVnJ
+
+python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA B_0_PtVDeco -n -a 5 -l Nominal B0_PtVDecorr 
+mv output/pullComparisons output/Nominal_vs_B_0ptV
+python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA B_0_nJetDeco -n -a 5 -l Nominal B0_nJDecorr 
+mv output/pullComparisons output/Nominal_vs_B_0nJ
+~~~
+### B_1
+~~~
+cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Btagging
+source setup.sh
+cd build
+cmake ..
+make -j8
+cd ..
+
+python scripts/launch_default_jobs.py B_1_nJetDeco
+mv output/SMVHVZ_2019_MVA_mc16ade_milestone1_v02_STXS.B_1_nJetDeco_fullRes_VHbb_B_1_nJetDeco_0_mc16ade_Systs_mva_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/B_1_nJetDeco
+
+python scripts/launch_default_jobs.py B_1_PtVDeco
+mv output/SMVHVZ_2019_MVA_mc16ade_milestone1_v02_STXS.B_1_PtVDeco_fullRes_VHbb_B_1_PtVDeco_0_mc16ade_Systs_mva_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/B_1_PtVDeco
+
+python scripts/launch_default_jobs.py B_1_nJetPtVDeco
+mv output/SMVHVZ_2019_MVA_mc16ade_milestone1_v02_STXS.B_1_nJetPtVDeco_fullRes_VHbb_B_1_nJetPtVDeco_0_mc16ade_Systs_mva_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/B_1_nJetPtVDeco
+
+
+
+python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA B_1_nJetPtVDeco -n -a 5 -l Nominal B1_nJPtVDecorr 
+mv output/pullComparisons output/Nominal_vs_B_1ptVnJ
+
+python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA B_1_PtVDeco -n -a 5 -l Nominal B1_PtVDecorr 
+mv output/pullComparisons output/Nominal_vs_B_1ptV
+python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA B_1_nJetDeco -n -a 5 -l Nominal B1_nJDecorr 
+mv output/pullComparisons output/Nominal_vs_B_1nJ
