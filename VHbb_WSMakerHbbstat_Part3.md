@@ -5,18 +5,18 @@
 ## Last Edited: 26-10-2019
 -------------------------------------------------------------------------------
 # Investingating B-tagging
-Last time we played with the fit, some of the b-tagging systematics were being pulled in wierd ways. We will now perform many variations of the 0L fit in an attempt to better understand it, and to see what the issue is with the b-tagging parts of the fit. 
+Last time we played with the fit, some of the b-tagging systematics were being pulled in wierd ways. We will now perform many variations of the 0L fit in an attempt to better understand it, and to see what the issue is with the b-tagging parts of the fit. This also helps understand the fit problems with psuedo-continuous b-tagging (PCBT) as they are expected to be related.
 To do this we will perform decorrelations in the b-tagging systematic variables in the number of jets, in ptV and in both at the same time. 
 
 
 In addition to this we will also do some general fits
-- CROnly Fit
-- 1-bin-in-all-SR Fit 
-- Only 2jet catagroy Fit 
 - Merged ptV Fit
+- CR+SR merged Fit
+- 1-bin-in-all-SR Fit 
+- Only 2jet catagory Fit 
 - ad vs e
 
-## Investingating B-tagging Systematics
+## Investingating B-tagging Fixed Cut Systematics
 First we will want to get a fresh copy of the fit.
 ~~~
 cd /afs/cern.ch/work/d/dspiteri/VHbb/
@@ -220,3 +220,67 @@ python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA B_
 mv output/pullComparisons output/Nominal_vs_B_1ptV
 python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA B_1_nJetDeco -n -a 5 -l Nominal B1_nJDecorr 
 mv output/pullComparisons output/Nominal_vs_B_1nJ
+~~~
+## Generic Fit Variations
+Another tool we can use to understand the 'erronious' pulls is to warp the fit in different ways and see how the pulls/shapes change. 
+
+### Merged PtV Fit
+This one is rather simple because there is a flag in the job launcher steering file, but you do have to change the inputs as well.
+~~~
+cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Btagging
+
+vim src/systematiclistsbuilder_vhbbrun2.cpp
+~~~
+>    REMOVE selective decorrelation for systematic of your choice (~L544)
+>   >  if (sysname == "Eigen_Light_0") m_histoSysts.insert( { "SysFT_EFF_"+sysname , SysConfig{T::shape, S::noSmooth, Sym::noSym}.decorr(P::nJet) });
+>   > else m_histoSysts.insert({ "SysFT_EFF_"+sysname , noSmoothConfig}); -> m_histoSysts.insert({ "SysFT_EFF_"+sysname , noSmoothConfig}); 
+
+Here T::shape defines the type of the uncertainty. T::shape="shape+norm" T::shapeOnly="shape"
+~~~
+vim scripts/launch_default_jobs.py 
+~~~
+>    CHANGE flag to run over merged ptV inputs (~13)
+>   >  version = "milestone1_v02_0L_STXS_MergedPtV"
+
+>    CHANGE flag to switch on merged PtV run (~21)
+>   >  mrgPtV = True 
+
+~~~
+cd inputs
+mkdir SMVHVZ_2019_MVA_mc16ade_milestone1_v02_0L_STXS_MergedPtV
+cp -r SMVHVZ_2019_MVA_mc16ade_milestone1_v02_STXS/13TeV_ZeroLepton* SMVHVZ_2019_MVA_mc16ade_milestone1_v02_0L_STXS_MergedPtV/
+cd SMVHVZ_2019_MVA_mc16ade_milestone1_v02_0L_STXS_MergedPtV/
+
+hadd 13TeV_ZeroLepton_2tag3jet_150ptv_CRHigh_mBB.root 13TeV_ZeroLepton_2tag3jet_*_CRHigh_mBB.root
+hadd 13TeV_ZeroLepton_2tag3jet_150ptv_CRHigh_MET.root 13TeV_ZeroLepton_2tag3jet_*_CRHigh_MET.root
+hadd 13TeV_ZeroLepton_2tag3jet_150ptv_CRHigh_mvadiboson.root 13TeV_ZeroLepton_2tag3jet_*_CRHigh_mvadiboson.root
+hadd 13TeV_ZeroLepton_2tag3jet_150ptv_CRHigh_mva.root 13TeV_ZeroLepton_2tag3jet_*_CRHigh_mva.root
+hadd 13TeV_ZeroLepton_2tag3jet_150ptv_CRLow_mBB.root 13TeV_ZeroLepton_2tag3jet_*_CRLow_mBB.root
+hadd 13TeV_ZeroLepton_2tag3jet_150ptv_CRLow_MET.root 13TeV_ZeroLepton_2tag3jet_*_CRLow_MET.root
+hadd 13TeV_ZeroLepton_2tag3jet_150ptv_CRLow_mvadiboson.root 13TeV_ZeroLepton_2tag3jet_*_CRLow_mvadiboson.root
+hadd 13TeV_ZeroLepton_2tag3jet_150ptv_CRLow_mva.root 13TeV_ZeroLepton_2tag3jet_*_CRLow_mva.root
+hadd 13TeV_ZeroLepton_2tag3jet_150ptv_SR_mBB.root 13TeV_ZeroLepton_2tag3jet_*_SR_mBB.root
+hadd 13TeV_ZeroLepton_2tag3jet_150ptv_SR_MET.root 13TeV_ZeroLepton_2tag3jet_*_SR_MET.root
+hadd 13TeV_ZeroLepton_2tag2jet_150ptv_CRHigh_mBB.root 13TeV_ZeroLepton_2tag2jet_*_CRHigh_mBB.root
+hadd 13TeV_ZeroLepton_2tag2jet_150ptv_CRHigh_MET.root 13TeV_ZeroLepton_2tag2jet_*_CRHigh_MET.root
+hadd 13TeV_ZeroLepton_2tag2jet_150ptv_CRHigh_mvadiboson.root 13TeV_ZeroLepton_2tag2jet_*_CRHigh_mvadiboson.root
+hadd 13TeV_ZeroLepton_2tag2jet_150ptv_CRHigh_mva.root 13TeV_ZeroLepton_2tag2jet_*_CRHigh_mva.root
+hadd 13TeV_ZeroLepton_2tag2jet_150ptv_CRLow_mBB.root 13TeV_ZeroLepton_2tag2jet_*_CRLow_mBB.root
+hadd 13TeV_ZeroLepton_2tag2jet_150ptv_CRLow_MET.root 13TeV_ZeroLepton_2tag2jet_*_CRLow_MET.root
+hadd 13TeV_ZeroLepton_2tag2jet_150ptv_CRLow_mvadiboson.root 13TeV_ZeroLepton_2tag2jet_*_CRLow_mvadiboson.root
+hadd 13TeV_ZeroLepton_2tag2jet_150ptv_CRLow_mva.root 13TeV_ZeroLepton_2tag2jet_*_CRLow_mva.root
+hadd 13TeV_ZeroLepton_2tag2jet_150ptv_SR_mBB.root 13TeV_ZeroLepton_2tag2jet_*_SR_mBB.root
+hadd 13TeV_ZeroLepton_2tag2jet_150ptv_SR_MET.root 13TeV_ZeroLepton_2tag2jet_*_SR_MET.root  
+rm *_150_250ptv_* *_250ptv_*
+cd ../..
+
+source setup.sh
+cd build
+cmake ..
+make -j8
+cd ..
+python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-MVA-ptVMerge
+
+mv output/SMVHVZ_2019_MVA_mc16ade_milestone1_v02_0L_STXS_MergedPtV.140ifb-0L-ade-STXS-baseline-MVA-ptVMerge_fullRes_VHbb_140ifb-0L-ade-STXS-baseline-MVA-ptVMerge_0_mc16ade_Systs_mva_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/140ifb-0L-ade-STXS-baseline-MVA-ptVMerge
+~~~
+
