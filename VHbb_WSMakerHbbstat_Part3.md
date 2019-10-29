@@ -16,6 +16,7 @@ In addition to this we will also do some general fits
 - Merged ptV Fit
 - ad vs e
 
+## Investingating B-tagging Systematics
 First we will want to get a fresh copy of the fit.
 ~~~
 cd /afs/cern.ch/work/d/dspiteri/VHbb/
@@ -32,11 +33,104 @@ cd ..
 ~~~
 The inputs have already been split, and these are special ones that we'll require
 >    /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/FullRunII2019/statArea/inputs/AfterWSMakerSplit/2019-10-03/ms1toms2/
-
+~~~
 cd inputs
-cp -r /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/FullRunII2019/statArea/inputs/AfterWSMakerSplit/2019-10-03/ms1toms2/
- .
+cp -r /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/FullRunII2019/statArea/inputs/AfterWSMakerSplit/2019-10-03/ms1toms2/ .
 mv ms1toms2/ SMVHVZ_2019_MVA_mc16ade_milestone1_v02_STXS
 cd ..
 
-vim setup.sh
+vim scripts/launch_default_jobs.py 
+~~~
+>    CHANGE Global run conditions (~L13-L15)
+>   >  version = "milestone1_v02_STXS"                                                                                    
+>   >  GlobalRun = False            
+>   >  doPostFit = False                                                                                                
+
+>    CHANGE all do cutbase block to 'false' (~L17-L23)
+>   >  doCutBase = False        (~L17)
+>   >  do_mbb_plot = False      (~L23)                                                                                     
+
+>    CHANGE the STXS block suck that we can run the 1 POI scheme (~L27-L32)
+>   >  doSTXS = True                                                                                            
+>   >  FitSTXS_Scheme = 1 #3 corresponds to 5 POI                                                                   
+>   >  doSTXSQCD = True                                                                                         
+>   >  doSTXSPDF = True                                                                               
+>   >  doSTXSDropTheoryAcc= True                                                  
+>   >  doXSWS = False # switch to true for 3/5 POIs                                                                        
+
+>    CHANGE variable such that you run over the new CR's (~L34)
+>   >  doNewRegions = True 
+
+>    CHANGE variables so you are running the observed 0L standalone fit (~L46-L57)
+>   >  channels = ["0"]         (~L48)                                                                                        
+>   >  MCTypes = ["mc16ade"]    (~L50)                                                                                     
+>   >  syst_type = ["Systs"]    (~L53)
+
+>    CHANGE to run over the Asimov Dataset    
+>   >  doExp = "1"              (~L57)                                                                                     
+
+>    CHANGE variables to run on the batch as this will be hefty job (~L60)
+>   >  run_on_batch = True                                                                                             
+
+>    CHANGE what you want to run in the 0L standalone fit (~L62-L69)
+>   >  createSimpleWorkspace = True                                                                                
+>   >  runPulls = False                                                                                                       
+>   >  runBreakdown = True                                                                                              
+>   >  runRanks = True                                                                                                
+>   >  runLimits = False                                                                                                      
+>   >  runP0 = True                                                                                                        
+>   >  runToyStudy = False                                                                                                 
+
+Then once you are ready you can run
+~~~
+cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Btagging
+source setup.sh
+cd build
+cmake ..
+make -j8
+cd ..
+python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-MVA
+mv output/SMVHVZ_2019_MVA_mc16ade_milestone1_v02_STXS.140ifb-0L-ade-STXS-baseline-MVA_fullRes_VHbb_140ifb-0L-ade-STXS-baseline-MVA_0_mc16ade_Systs_mva_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/140ifb-0L-ade-STXS-baseline-MVA
+~~~
+After this is ready, we will want to run many fits for all of the b-tagging systematics that have been pulled but we need to edit them one at a time. I will show how I do this for one set, though this will need to be repeated for each systematic to be investigated. 
+- B_0                                                                                                  
+- B_1                                       
+- C_0                                  
+- L_0                                                                                     
+~~~
+vim src/systematiclistsbuilder_vhbbrun2.cpp
+~~~
+>    ADD selective decorrelation for systematic of your choice (~L544)
+>   >  if (sysname == "Eigen_Light_0") m_histoSysts.insert( { "SysFT_EFF_"+sysname , SysConfig{T::shape, S::noSmooth, Sym::noSym}.decorr(P::nJet) });
+>   >  m_histoSysts.insert({ "SysFT_EFF_"+sysname , noSmoothConfig});  -> else m_histoSysts.insert({ "SysFT_EFF_"+sysname , noSmoothConfig});                                                                                        
+
+The other two options you need to run for this are then
+>    .decorr(P::binMin)                                                                                               
+>    .decorr({P::nJet, P::binMin})   
+
+Then you need to rebuild and re-run as normal
+~~~
+cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Btagging
+source setup.sh
+cd build
+cmake ..
+make -j8
+cd ..
+python scripts/launch_default_jobs.py Light_0_nJetDeco
+mv output/SMVHVZ_2019_MVA_mc16ade_milestone1_v02_STXS.Light_0_nJetDeco_fullRes_VHbb_Light_0_nJetDeco_0_mc16ade_Systs_mva_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/Light_0_nJetDeco
+
+>    python scripts/launch_default_jobs.py Light_0_PtVDeco
+>    mv output/SMVHVZ_2019_MVA_mc16ade_milestone1_v02_STXS.Light_0_PtVDeco_fullRes_VHbb_Light_0_PtVDeco_0_mc16ade_Systs_mva_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/Light_0_PtVDeco
+
+>    python scripts/launch_default_jobs.py Light_0_nJetPtVDeco
+>    mv output/SMVHVZ_2019_MVA_mc16ade_milestone1_v02_STXS.Light_0_nJetPtVDeco_fullRes_VHbb_Light_0_nJetPtVDeco_0_mc16ade_Systs_mva_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/Light_0_nJetPtVDeco
+
+
+python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA Light_0_nJetPtVDeco -n -a 5 -l Nominal L0_nJPtVDecorr 
+mv output/pullComparisons output/Nominal_vs_Light_0ptVnJ
+
+python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA Light_0_nJetDeco -n -a 5 -l Nominal L0_nJPtVDecorr 
+mv output/pullComparisons output/Nominal_vs_Light_0nJ
+
+python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA Light_0_PtVDeco -n -a 5 -l Nominal L0_nJPtVDecorr 
+mv output/pullComparisons output/Nominal_vs_Light_0ptV
