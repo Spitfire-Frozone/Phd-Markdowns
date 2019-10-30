@@ -106,6 +106,8 @@ vim src/systematiclistsbuilder_vhbbrun2.cpp
 >   >  if (sysname == "Eigen_Light_0") m_histoSysts.insert( { "SysFT_EFF_"+sysname , SysConfig{T::shape, S::noSmooth, Sym::noSym}.decorr(P::nJet) });
 >   >  m_histoSysts.insert({ "SysFT_EFF_"+sysname , noSmoothConfig});  -> else m_histoSysts.insert({ "SysFT_EFF_"+sysname , noSmoothConfig});                                                                                        
 
+Here T::shape defines the type of the uncertainty. T::shape="shape+norm" T::shapeOnly="shape"
+
 The other two options you need to run for this are then
 >    .decorr(P::binMin)                                                                                               
 >    .decorr({P::nJet, P::binMin})   
@@ -235,17 +237,16 @@ vim src/systematiclistsbuilder_vhbbrun2.cpp
 >   >  if (sysname == "Eigen_Light_0") m_histoSysts.insert( { "SysFT_EFF_"+sysname , SysConfig{T::shape, S::noSmooth, Sym::noSym}.decorr(P::nJet) });
 >   > else m_histoSysts.insert({ "SysFT_EFF_"+sysname , noSmoothConfig}); -> m_histoSysts.insert({ "SysFT_EFF_"+sysname , noSmoothConfig}); 
 
-Here T::shape defines the type of the uncertainty. T::shape="shape+norm" T::shapeOnly="shape"
 ~~~
 vim scripts/launch_default_jobs.py 
 ~~~
->    CHANGE flag to run over merged ptV inputs (~13)
+>    CHANGE flag to run over merged ptV inputs (~L13)
 >   >  version = "milestone1_v02_0L_STXS_MergedPtV"
 
->    CHANGE flag to switch on merged PtV run (~21)
+>    CHANGE flag to switch on merged PtV run (~L21)
 >   >  mrgPtV = True 
 
->    CHANGE flag to switch on merged PtV run (~21)
+>    CHANGE flag to switch on merged PtV run (~L68)
 >   >  runP0 = True
 ~~~
 cd inputs
@@ -289,5 +290,57 @@ cd ..
 python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-MVA-ptVMerge
 
 mv output/SMVHVZ_2019_MVA_mc16ade_milestone1_v02_0L_STXS_MergedPtV.140ifb-0L-ade-STXS-baseline-MVA-ptVMerge_fullRes_VHbb_140ifb-0L-ade-STXS-baseline-MVA-ptVMerge_0_mc16ade_Systs_mva_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/140ifb-0L-ade-STXS-baseline-MVA-ptVMerge
-~~~
 
+python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-baseline-MVA-ptVMerge -n -a 5 -l Nominal Merged_PtV
+mv output/pullComparisons output/Nominal_vs_MergedPtV
+~~~
+### Merged CR+SR Fit
+
+This one is rather simple as well because there is a flag in the job launcher steering file, but the inputs have to change as well.
+~~~
+cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Btagging
+
+vim scripts/launch_default_jobs.py 
+~~~
+>    CHANGE flag to run over merged ptV inputs (~L13)
+>   >  version = "milestone1_v02_0L_STXS_MergedSR"
+
+>    CHANGE flag to switch on merged PtV run (~L21)
+>   >  mrgPtV = False 
+
+>    CHANGE flag to switch off the new CR's (~L34)
+>   >  doNewRegions = False
+
+>    CHANGE flag to switch on merged PtV run (~L68)
+>   >  runP0 = True
+
+~~~
+cd inputs
+mkdir SMVHVZ_2019_MVA_mc16ade_milestone1_v02_0L_STXS_MergedSR
+cd SMVHVZ_2019_MVA_mc16ade_milestone1_v02_0L_STXS_MergedSR/
+
+hadd 13TeV_ZeroLepton_2tag2jet_150_250ptv_SR_mva.root ../SMVHVZ_2019_MVA_mc16ade_milestone1_v02_STXS/13TeV_ZeroLepton_2tag2jet_150_250ptv_*_mva.root  
+hadd 13TeV_ZeroLepton_2tag2jet_150_250ptv_SR_mvadiboson.root ../SMVHVZ_2019_MVA_mc16ade_milestone1_v02_STXS/13TeV_ZeroLepton_2tag2jet_150_250ptv_*_mvadiboson.root 
+hadd 13TeV_ZeroLepton_2tag2jet_150_250ptv_SR_mBB.root ../SMVHVZ_2019_MVA_mc16ade_milestone1_v02_STXS/13TeV_ZeroLepton_2tag2jet_150_250ptv_*_mBB.root 
+hadd 13TeV_ZeroLepton_2tag2jet_150_250ptv_SR_MET.root ../SMVHVZ_2019_MVA_mc16ade_milestone1_v02_STXS/13TeV_ZeroLepton_2tag2jet_150_250ptv_*_MET.root 
+hadd 13TeV_ZeroLepton_2tag2jet_250ptv_SR_mva.root ../SMVHVZ_2019_MVA_mc16ade_milestone1_v02_STXS/13TeV_ZeroLepton_2tag2jet_250ptv_*_mva.root
+hadd 13TeV_ZeroLepton_2tag2jet_250ptv_SR_mvadiboson.root ../SMVHVZ_2019_MVA_mc16ade_milestone1_v02_STXS/13TeV_ZeroLepton_2tag2jet_250ptv_*_mvadiboson.root
+hadd 13TeV_ZeroLepton_2tag2jet_250ptv_SR_mBB.root ../SMVHVZ_2019_MVA_mc16ade_milestone1_v02_STXS/13TeV_ZeroLepton_2tag2jet_250ptv_*_mBB.root 
+hadd 13TeV_ZeroLepton_2tag2jet_250ptv_SR_MET.root ../SMVHVZ_2019_MVA_mc16ade_milestone1_v02_STXS/13TeV_ZeroLepton_2tag2jet_250ptv_*_MET.root
+
+hadd 13TeV_ZeroLepton_2tag3jet_150_250ptv_SR_mva.root ../SMVHVZ_2019_MVA_mc16ade_milestone1_v02_STXS/13TeV_ZeroLepton_2tag3jet_150_250ptv_*_mva.root  
+hadd 13TeV_ZeroLepton_2tag3jet_150_250ptv_SR_mvadiboson.root ../SMVHVZ_2019_MVA_mc16ade_milestone1_v02_STXS/13TeV_ZeroLepton_2tag3jet_150_250ptv_*_mvadiboson.root 
+hadd 13TeV_ZeroLepton_2tag3jet_150_250ptv_SR_mBB.root ../SMVHVZ_2019_MVA_mc16ade_milestone1_v02_STXS/13TeV_ZeroLepton_2tag3jet_150_250ptv_*_mBB.root 
+hadd 13TeV_ZeroLepton_2tag3jet_150_250ptv_SR_MET.root ../SMVHVZ_2019_MVA_mc16ade_milestone1_v02_STXS/13TeV_ZeroLepton_2tag3jet_150_250ptv_*_MET.root 
+hadd 13TeV_ZeroLepton_2tag3jet_250ptv_SR_mva.root ../SMVHVZ_2019_MVA_mc16ade_milestone1_v02_STXS/13TeV_ZeroLepton_2tag3jet_250ptv_*_mva.root
+hadd 13TeV_ZeroLepton_2tag3jet_250ptv_SR_mvadiboson.root ../SMVHVZ_2019_MVA_mc16ade_milestone1_v02_STXS/13TeV_ZeroLepton_2tag3jet_250ptv_*_mvadiboson.root
+hadd 13TeV_ZeroLepton_2tag3jet_250ptv_SR_mBB.root ../SMVHVZ_2019_MVA_mc16ade_milestone1_v02_STXS/13TeV_ZeroLepton_2tag3jet_250ptv_*_mBB.root 
+hadd 13TeV_ZeroLepton_2tag3jet_250ptv_SR_MET.root ../SMVHVZ_2019_MVA_mc16ade_milestone1_v02_STXS/13TeV_ZeroLepton_2tag3jet_250ptv_*_MET.root
+
+cd ../..
+source setup.sh
+cd build
+cmake ..
+make -j8
+cd ..
+python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-MVA-MergeSR
