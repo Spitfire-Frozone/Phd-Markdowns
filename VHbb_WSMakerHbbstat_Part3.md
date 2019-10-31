@@ -366,18 +366,18 @@ vim src/systematiclistsbuilder_vhbbrun2.cpp
 ~~~
 >    ADD decorrelation for flavour tagging (~L534)
 >   >    SysConfig FTag_Process_Decorr_Config = noSmoothConfig;
->   >      FTag_Process_Decorr_Config.decorrFun([](const PropertiesSet& pset, const Sample& s) {
->   >                                     if( s.hasKW("Diboson") || s.hasKW("Higgs") ) return "_signal_VV";
->   >                                     else if( s.name() == "Zbb" || s.name() == "Wbb" ) return "_Vbb";
->   >                                     else if( s.name() == "Zbc" || s.name() == "Wbc" || s.name() == "Wcl" || s.name() == "Zcl" || s.name() == "Zcc" || s.name() == "Wcc" ) return "_Vc";
->   >                                     else if( s.name() == "Zbl" || s.name() == "Wbl" || s.name() == "Wl" || s.name() == "Zl" ) return "_Vl";
->   >                                     else if( s.name() == "ttbar" ) return "_ttbar";
->   >                                     else return "";
->   >                                     });            
+>   >      FTag_Process_Decorr_Config.decorrFun([](const PropertiesSet& pset, const Sample& s) {                 
+>   >                                     if( s.hasKW("Diboson") || s.hasKW("Higgs") ) return "_signal_VV";             
+>   >                                     else if( s.name() == "Zbb" || s.name() == "Wbb" ) return "_Vbb";                  
+>   >                                     else if( s.name() == "Zbc" || s.name() == "Wbc" || s.name() == "Wcl" || s.name() == "Zcl" || s.name() == "Zcc" || s.name() == "Wcc" ) return "_Vc";                             
+>   >                                     else if( s.name() == "Zbl" || s.name() == "Wbl" || s.name() == "Wl" || s.name() == "Zl" ) return "_Vl";                                                                     
+>   >                                     else if( s.name() == "ttbar" ) return "_ttbar";                      
+>   >                                     else return "";                                                        
+>   >                                     });                                                                                 
 
 >    ADD selective decorrelation for problematic flavour tagging pulls (~L544)
->   >    if (sysname == "Eigen_Light_0" || sysname == "Eigen_C_0" || sysname == "Eigen_B_0") m_histoSysts.insert({ "SysFT_EFF_"+sysname , FTag_Process_Decorr_Config});
->   >     m_histoSysts.insert({ "SysFT_EFF_"+sysname , noSmoothConfig});  -> else m_histoSysts.insert({ "SysFT_EFF_"+sysname , noSmoothConfig});   
+>   >    if (sysname == "Eigen_Light_0" || sysname == "Eigen_C_0" || sysname == "Eigen_B_0") m_histoSysts.insert({ "SysFT_EFF_"+sysname , FTag_Process_Decorr_Config});                                                                     
+>   >     m_histoSysts.insert({ "SysFT_EFF_"+sysname , noSmoothConfig});  -> else m_histoSysts.insert({ "SysFT_EFF_"+sysname , noSmoothConfig});                                                                                                           
 
 ~~~
 source setup.sh
