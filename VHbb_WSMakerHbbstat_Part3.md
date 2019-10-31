@@ -2,11 +2,15 @@
 
 ## VHbb WSMaker and Hbb Stat ##
 
-## Last Edited: 26-10-2019
+## Last Edited: 31-10-2019
 -------------------------------------------------------------------------------
-# Investingating B-tagging
+# Investigating B-tagging
 Last time we played with the fit, some of the b-tagging systematics were being pulled in wierd ways. We will now perform many variations of the 0L fit in an attempt to better understand it, and to see what the issue is with the b-tagging parts of the fit. This also helps understand the fit problems with psuedo-continuous b-tagging (PCBT) as they are expected to be related.
-To do this we will perform decorrelations in the b-tagging systematic variables in the number of jets, in ptV and in both at the same time. 
+To do this we will perform decorrelations in the b-tagging systematic variables in the:
+- number of jets, 
+- ptV region 
+- in both at the same time
+- processes (but this may come after some of the general fits)
 
 
 In addition to this we will also do some general fits
@@ -16,7 +20,7 @@ In addition to this we will also do some general fits
 - Only 2jet catagory Fit 
 - ad vs e
 
-## Investingating B-tagging Fixed Cut Systematics
+## Investigating B-tagging Fixed Cut Systematics
 First we will want to get a fresh copy of the fit.
 ~~~
 cd /afs/cern.ch/work/d/dspiteri/VHbb/
