@@ -64,10 +64,7 @@ vim scripts/launch_default_jobs.py
 >    CHANGE variables so you are running the observed 0L standalone fit (~L46-L57)
 >   >  channels = ["0"]         (~L48)                                                                                        
 >   >  MCTypes = ["mc16ade"]    (~L50)                                                                                     
->   >  syst_type = ["Systs"]    (~L53)
-
->    CHANGE to run over the Asimov Dataset    
->   >  doExp = "1"              (~L57)                                                                                     
+>   >  syst_type = ["Systs"]    (~L53)                                                                              
 
 >    CHANGE variables to run on the batch as this will be hefty job (~L60)
 >   >  run_on_batch = True                                                                                             
@@ -348,4 +345,48 @@ python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-MVA-MergeSR
 mv output/SMVHVZ_2019_MVA_mc16ade_milestone1_v02_0L_STXS_MergedSR.140ifb-0L-ade-STXS-baseline-MVA-MergeSR_fullRes_VHbb_140ifb-0L-ade-STXS-baseline-MVA-MergeSR_0_mc16ade_Systs_mva_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/140ifb-0L-ade-STXS-baseline-MVA-MergeSR
 
 python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-baseline-MVA-MergeSR -n -a 5 -l Nominal Merged_SR
-mv output/pullComparisons output/Nominal_vs_MergedSR
+mv output/pullC~omparisons output/Nominal_vs_MergedSR
+~~~
+
+### Splitting Fit by process. 
+The next test we want to do is to split the B-tagging systematics by process (i.e Zbb, Wbb, Zcl, Wcl, Zl, Wl, Zbl e.t.c) and see how the pulls are affected. Splitting them totally into each process might reduce the statistics too much so a better thing to do might be to split them into similar processes. Vbb (Zbb+Wbb), Vc (Zxx,Wxx where at least one of the x's is a c) and Vl (Zxx,Wxx where at least one of the x's is a l, but and the other is NOT a c).
+~~~
+cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Btagging
+
+vim scripts/launch_default_jobs.py 
+~~~
+>    CHANGE Global run conditions (~L13, L21, L34)
+>   >  version = "milestone1_v02_STXS"  
+
+>   >  mrgPtV = False    
+
+>   >  doNewRegions = True
+~~~
+vim src/systematiclistsbuilder_vhbbrun2.cpp
+~~~
+>    ADD decorrelation for flavour tagging (~L534)
+>   >    SysConfig FTag_Process_Decorr_Config = noSmoothConfig;
+>   >      FTag_Process_Decorr_Config.decorrFun([](const PropertiesSet& pset, const Sample& s) {
+>   >                                     if( s.hasKW("Diboson") || s.hasKW("Higgs") ) return "_signal_VV";
+>   >                                     else if( s.name() == "Zbb" || s.name() == "Wbb" ) return "_Vbb";
+>   >                                     else if( s.name() == "Zbc" || s.name() == "Wbc" || s.name() == "Wcl" || s.name() == "Zcl" || s.name() == "Zcc" || s.name() == "Wcc" ) return "_Vc";
+>   >                                     else if( s.name() == "Zbl" || s.name() == "Wbl" || s.name() == "Wl" || s.name() == "Zl" ) return "_Vl";
+>   >                                     else if( s.name() == "ttbar" ) return "_ttbar";
+>   >                                     else return "";
+>   >                                     });            
+
+>    ADD selective decorrelation for problematic flavour tagging pulls (~L544)
+>   >    if (sysname == "Eigen_Light_0" || sysname == "Eigen_C_0" || sysname == "Eigen_B_0") m_histoSysts.insert({ "SysFT_EFF_"+sysname , FTag_Process_Decorr_Config});
+>   >     m_histoSysts.insert({ "SysFT_EFF_"+sysname , noSmoothConfig});  -> else m_histoSysts.insert({ "SysFT_EFF_"+sysname , noSmoothConfig});   
+
+~~~
+source setup.sh
+cd build && rm -rf *
+cmake ..
+make -j8
+cd ..
+python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-MVA-ProcessDecorr
+mv output/SMVHVZ_2019_MVA_mc16ade_milestone1_v02_STXS.140ifb-0L-ade-STXS-baseline-MVA-ProcessDecorr_fullRes_VHbb_140ifb-0L-ade-STXS-baseline-MVA-ProcessDecorr_0_mc16ade_Systs_mva_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/140ifb-0L-ade-STXS-baseline-MVA-ProcessDecorr
+
+python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-baseline-MVA-ProcessDecorr -n -a 5 -l Nominal bcl_proc_decorr
+mv output/pullComparisons output/Nominal_vs_BCLProcDecorr
