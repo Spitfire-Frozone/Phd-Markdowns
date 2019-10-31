@@ -345,7 +345,7 @@ python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-MVA-MergeSR
 mv output/SMVHVZ_2019_MVA_mc16ade_milestone1_v02_0L_STXS_MergedSR.140ifb-0L-ade-STXS-baseline-MVA-MergeSR_fullRes_VHbb_140ifb-0L-ade-STXS-baseline-MVA-MergeSR_0_mc16ade_Systs_mva_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/140ifb-0L-ade-STXS-baseline-MVA-MergeSR
 
 python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-baseline-MVA-MergeSR -n -a 5 -l Nominal Merged_SR
-mv output/pullC~omparisons output/Nominal_vs_MergedSR
+mv output/pullComparisons output/Nominal_vs_MergedSR
 ~~~
 
 ### Splitting Fit by process. 
