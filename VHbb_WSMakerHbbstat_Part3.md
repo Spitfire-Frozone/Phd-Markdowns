@@ -82,6 +82,9 @@ vim scripts/launch_default_jobs.py
 >   >  runP0 = True                                                                                                        
 >   >  runToyStudy = False                                                                                                 
 
+>      ADD additional debug plots for shape plots(~L72)                                                                
+>   >  doplots = True                                                                                                        
+
 Then once you are ready you can run
 ~~~
 cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Btagging
