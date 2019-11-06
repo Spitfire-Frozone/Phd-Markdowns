@@ -2,7 +2,7 @@
 
 ## VHbb WSMaker and Hbb Stat ##
 
-## Last Edited: 31-10-2019
+## Last Edited: 06-11-2019
 -------------------------------------------------------------------------------
 # Investigating B-tagging
 Last time we played with the fit, some of the b-tagging systematics were being pulled in wierd ways. We will now perform many variations of the 0L fit in an attempt to better understand it, and to see what the issue is with the b-tagging parts of the fit. This also helps understand the fit problems with psuedo-continuous b-tagging (PCBT) as they are expected to be related.
@@ -82,7 +82,7 @@ vim scripts/launch_default_jobs.py
 >   >  runP0 = True                                                                                                        
 >   >  runToyStudy = False                                                                                                 
 
->      ADD additional debug plots for shape plots(~L72)                                                                
+>    ADD additional debug plots for shape plots(~L72)                                                                
 >   >  doplots = True                                                                                                        
 
 Then once you are ready you can run
