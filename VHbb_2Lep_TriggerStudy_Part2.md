@@ -940,64 +940,80 @@ vim inputConfigs/SMVHVZ_BoostedVHbb2019_CUT_mc16ade_v05.txt
 >   >  ZeroLepton ZeroLep/LimitHistograms.VH.vvbb.13TeV.mc16ade.PISA.v3.VR.root      mJ
 >   >  OneLepton  OneLep/LimitHistograms.VH.lvbb.13TeV.mc16ade.UCL.v2.VR.root        mJ
 >   >  TwoLepton  TwoLep/LimitHistograms.VH.llbb.13TeV.mc16ade.UIOWAUSTC.v07.VR.root mJ
-
-
+~~~
 cd build && cmake ..
 make -j10
 cd ..
-SplitInputs -r Run2 -v SMVHVZ_BoostedVHbb2019_CUT_mc16ade_v05
-
-
+SplitInputs -v SMVHVZ_BoostedVHbb2019_CUT_mc16ade_v05 -inDir /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/BoostedVHbb2019
+~~~
+Then you will want to edit the launcher. For the full fit you will want to run twice for each set of inputs. 
+~~~
 vim scripts/launch_default_jobs.py 
 ~~~
->    CHANGE Global run conditions (~L13-L15)
->   >  version = "milestone1_v02_STXS"                                                                                    
->   >  GlobalRun = False            
+>    CHANGE Global run conditions (~L11)
+>   >  version = "v05"                                                                                             
 >   >  doPostFit = False                                                                                                
 
->    CHANGE all do cutbase block to 'false' (~L17-L23)
->   >  doCutBase = False        (~L17)
->   >  do_mbb_plot = False      (~L23)                                                                                     
-
->    CHANGE the STXS block suck that we can run the 1 POI scheme (~L27-L32)
->   >  doSTXS = True                                                                                            
->   >  FitSTXS_Scheme = 1 #3 corresponds to 5 POI                                                                   
->   >  doSTXSQCD = True                                                                                         
->   >  doSTXSPDF = True                                                                               
->   >  doSTXSDropTheoryAcc= True                                                  
->   >  doXSWS = False # switch to true for 3/5 POIs                                                                        
-
+>    CHANGE all do cutbase block to 'true' (~L13)
+>   >  doCutBase = True         (~L17)                                                                                                                                                     
 >    CHANGE variable such that you run over the new CR's (~L34)
 >   >  doNewRegions = True 
 
->    CHANGE variables so you are running the observed 0L standalone fit (~L46-L57)
->   >  channels = ["2"]         (~L48)                                                                                        
->   >  MCTypes = ["mc16ade"]    (~L50)                                                                                     
->   >  syst_type = ["Systs"]    (~L53)                                                                              
+>    CHANGE variables so you are running the observed 0L standalone fit (~L31-L41)
+>   >  channels = ["2"]         (~L34)                                                                                        
+>   >  MCTypes = ["mc16ade"]    (~L37)                                                                                     
+>   >  syst_type = ["Systs"]    (~L41)                                                                              
 
->    CHANGE variables to run on the batch as this will be hefty job (~L60)
->   >  run_on_batch = True                                                                                             
+>    CHANGE variables to run on pre-fit Asimov (~L45)
+>   >  doExp = "1" # "0" to run observed, "1" to run expected only
+
+>    CHANGE variables to run on the batch as this will be hefty job (~L48)
+>   >  run_on_batch = False                                                                                             
 
 >    CHANGE what you want to run in the 0L standalone fit (~L62-L69)
 >   >  createSimpleWorkspace = True                                                                                
+>   >  runP0 = True   
 >   >  runPulls = True                                                                                                       
->   >  runBreakdown = False                                                                                              
->   >  runRanks = False                                                                                                
+>   >  runBreakdown = True                                                                                              
+>   >  runRanks = True                                                                                                
 >   >  runLimits = False                                                                                                      
->   >  runP0 = True                                                                                                        
 >   >  runToyStudy = False                                                                                                 
 
->    ADD additional debug plots for shape plots(~L72)                                                                
+>    ADD additional debug plots for shape plots (~L60)                                                                
 >   >  doplots = True  
-
 ~~~
-cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_METStudy
+cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_boostedVHbb
 source setup.sh
 cd build
 cmake ..
 make -j8
 cd ..
-python scripts/launch_default_jobs.py 140ifb-2L-ade-STXS-baseline-MVA
+python scripts/launch_default_jobs.py 140ifb-2L-ade-STXS-baseline-CUT-doExp1
+mv output/SMVHVZ_BoostedVHbb2019_CUT_mc16ade_v05.140ifb-2L-ade-STXS-baseline-CUT-doExp1_fullRes_boostedVHbb_140ifb-2L-ade-STXS-baseline-CUT-doExp1_2_mc16ade_Systs_mBB_VR output/140ifb-2L-ade-STXS-baseline-CUT-doExp1
+~~~
+To understand why this is being run twice one can consult VolIII of Dwayne PhD Research - p413-p414
+~~~
+vim scripts/launch_default_jobs.py 
+~~~
+>    CHANGE variables to run on post-fit Asimov (~L45)
+>   >  doExp = "0" # "0" to run observed, "1" to run expected only
 
-mv output/SMVHVZ_2019_MVA_mc16ade_milestone1_v02_STXS.140ifb-2L-ade-STXS-baseline-MVA_fullRes_VHbb_140ifb-2L-ade-STXS-baseline-MVA_0_mc16ade_Systs_mva_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/140ifb-2L-ade-STXS-baseline-MVA
+>    CHANGE what you want to run in the 0L standalone fit (~L62-L69)
+>   >  createSimpleWorkspace = True                                                                                
+>   >  runP0 = True   
+>   >  runPulls = True                                                                                                      
+>   >  runBreakdown = False                                                                                              
+>   >  runRanks = False                                                                                             
+>   >  runLimits = False                                                                                                                                                                                                  
+>    ADD additional debug plots for shape plots (~L60)                                                                
+>   >  doplots = False  
+~~~
+cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_boostedVHbb
+source setup.sh
+cd build
+cmake ..
+make -j8
+cd ..
+python scripts/launch_default_jobs.py 140ifb-2L-ade-STXS-baseline-CUT-doExp0
+mv output/SMVHVZ_BoostedVHbb2019_CUT_mc16ade_v05.140ifb-2L-ade-STXS-baseline-CUT-doExp0_fullRes_boostedVHbb_140ifb-2L-ade-STXS-baseline-CUT-doExp0_2_mc16ade_Systs_mBB_VR output/140ifb-2L-ade-STXS-baseline-CUT-doExp0
 ~~~
