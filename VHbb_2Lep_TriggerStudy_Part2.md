@@ -888,9 +888,12 @@ If nothing is wrong, then
 cd Reader_2L_32-15_a_CUT_D1/fetch/
 hadd DATA15.root hist-data15-*
 ~~~
-The last job then is to create a 2L boosted input with this change.
-
-For the first run, nothing else should need to change
+The last job then is to create a 2L boosted input with this change and to run with systematics
+~~~
+vim CxAODOperation_VHbb/scripts/submitReader.sh
+~~~
+>   CHANGE to run over systematics (~L205,L220)
+>   >    NOMINALONLY="false"
 ~~~
 cd /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_october2019/
 setupATLAS && lsetup git && lsetup "root 6.14.04-x86_64-slc6-gcc62-opt" 
@@ -902,11 +905,18 @@ make -j10
 source x86_64-centos7-gcc8-opt/setup.sh
 cd ../run
 
-../source/CxAODOperations_VHbb/scripts/submitReader.sh /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/VH/CxAOD_r32-15 FullBoosted_newestTrigger 2L a,d,e VHbb CUT D1 32-15 none none 1
-
+../source/CxAODOperations_VHbb/scripts/submitReader.sh /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/VH/CxAOD_r32-15 FullBoostedSysts_newestTrigger 2L a,d,e VHbb CUT D1 32-15 none none 1
+~~~
+After submission ensure that none of the jobs failed!
+~~~
 cd /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_october2019/
 setupATLAS && lsetup git && lsetup "root 6.14.04-x86_64-slc6-gcc62-opt" 
-cd run/FullBoosted_newestTrigger
+cd run/FullBoostedSysts_newestTrigger
+
+python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_august2019/source/CxAODOperations_VHbb/scripts/checkReaderFails.py Reader_2L_32-15_a_CUT_D1
+python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_august2019/source/CxAODOperations_VHbb/scripts/checkReaderFails.py Reader_2L_32-15_d_CUT_D1
+python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_august2019/source/CxAODOperations_VHbb/scripts/checkReaderFails.py Reader_2L_32-15_e_CUT_D1
+
 source ../../../VHbbHaddAll2LadeCUT.sh
 ~~~
 # Running Boosted WSMaker
@@ -927,12 +937,12 @@ We will need to run and split that new milestone inputs for 2L and compare them 
 > BOOSTED                                                                                                                    
 > /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/BoostedVHbb2019/TwoLep/LimitHistograms.VH.llbb.13TeV.mc16ade.UIOWAUSTC.v07.VR.root
 
-If you want more details you can check out [The]{https://github.com/Spitfire-Frozone/Phd-Markdowns/blob/master/VHbb_WSMakerHbbstat.md}  [input]{https://github.com/Spitfire-Frozone/Phd-Markdowns/blob/master/VHbb_WSMakerHbbstat_Part2.md} [markdowns]{https://github.com/Spitfire-Frozone/Phd-Markdowns/edit/master/VHbb_WSMakerHbbstat_Part3.md}
+If you want more details you can check out [The](https://github.com/Spitfire-Frozone/Phd-Markdowns/blob/master/VHbb_WSMakerHbbstat.md)  [input](https://github.com/Spitfire-Frozone/Phd-Markdowns/blob/master/VHbb_WSMakerHbbstat_Part2.md) [markdowns](https://github.com/Spitfire-Frozone/Phd-Markdowns/edit/master/VHbb_WSMakerHbbstat_Part3.md)
 ~~~
 cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_boostedVHbb
 source setup.sh
 ~~~
-First we need to create a file to split the inputs
+First we need to create a file to split the nominal inputs
 ~~~
 vim inputConfigs/SMVHVZ_BoostedVHbb2019_CUT_mc16ade_v05.txt
 ~~~
@@ -946,6 +956,30 @@ make -j10
 cd ..
 SplitInputs -v SMVHVZ_BoostedVHbb2019_CUT_mc16ade_v05 -inDir /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/BoostedVHbb2019
 ~~~
+Then we need to create a file to split the new inputs for new 2L. This is more complicated and made easier by moving the samples you want locally
+
+~~~
+cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_boostedVHbb
+mkdir 012Linputs
+cp /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_october2019/run/FullBoosted_newestTrigger/Reader_2L_32-15_ade_CUT_D1/fetch/2LEPINPUT.root  012Linputs/
+cp /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/BoostedVHbb2019/OneLep/LimitHistograms.VH.lvbb.13TeV.mc16ade.UCL.v2.VR.root 012Linputs/
+cp /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/BoostedVHbb2019/ZeroLep/LimitHistograms.VH.vvbb.13TeV.mc16ade.PISA.v3.VR.root 012Linputs/
+
+mv 012Linputs/2LEPINPUT.root 012Linputs/LimitHistograms.VH.llbb.13TeV.mc16ade.Glasgow.v1.VR.root
+
+vim inputConfigs/SMVHVZ_BoostedVHbb2019_CUT_mc16ade_v05_METTrigger.txt
+~~~
+>   ADD newly generated inputs
+>   >  ZeroLepton LimitHistograms.VH.vvbb.13TeV.mc16ade.PISA.v3.VR.root      mJ
+>   >  OneLepton  LimitHistograms.VH.lvbb.13TeV.mc16ade.UCL.v2.VR.root       mJ
+>   >  TwoLepton  LimitHistograms.VH.llbb.13TeV.mc16ade.Glasgow.v1.VR.root   mJ
+~~~
+cd build && cmake ..
+make -j10
+cd ..
+SplitInputs -v SMVHVZ_BoostedVHbb2019_CUT_mc16ade_v05_METTrigger -inDir /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_boostedVHbb/012Linputs/
+~~~
+
 Then you will want to edit the launcher. For the full fit you will want to run twice for each set of inputs. 
 ~~~
 vim scripts/launch_default_jobs.py 
@@ -1017,3 +1051,28 @@ cd ..
 python scripts/launch_default_jobs.py 140ifb-2L-ade-STXS-baseline-CUT-doExp0
 mv output/SMVHVZ_BoostedVHbb2019_CUT_mc16ade_v05.140ifb-2L-ade-STXS-baseline-CUT-doExp0_fullRes_boostedVHbb_140ifb-2L-ade-STXS-baseline-CUT-doExp0_2_mc16ade_Systs_mBB_VR output/140ifb-2L-ade-STXS-baseline-CUT-doExp0
 ~~~
+For the second set of inputs you do as before but changing the version name
+~~~
+vim scripts/launch_default_jobs.py 
+~~~
+>    CHANGE Global run conditions (~L11)
+>   >  version = "v05_METTrigger"     
+~~~
+cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_boostedVHbb
+source setup.sh
+cd build
+cmake ..
+make -j8
+cd ..
+python scripts/launch_default_jobs.py 140ifb-2L-ade-STXS-METTrig-CUT-doExp1
+mv output/SMVHVZ_BoostedVHbb2019_CUT_mc16ade_v05.140ifb-2L-ade-STXS-METTrig-CUT-doExp1_fullRes_boostedVHbb_140ifb-2L-ade-STXS-METTrig-CUT-doExp1_2_mc16ade_Systs_mBB_VR output/140ifb-2L-ade-STXS-METTrig-CUT-doExp1
+
+
+cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_boostedVHbb
+source setup.sh
+cd build
+cmake ..
+make -j8
+cd ..
+python scripts/launch_default_jobs.py 140ifb-2L-ade-STXS-METTrig-CUT-doExp0
+mv output/SMVHVZ_BoostedVHbb2019_CUT_mc16ade_v05_METTrigger.140ifb-2L-ade-STXS-METTrig-CUT-doExp0_fullRes_boostedVHbb_140ifb-2L-ade-STXS-METTrig-CUT-doExp0_2_mc16ade_Systs_mBB_VR output/140ifb-2L-ade-STXS-METTrig-CUT-doExp0
