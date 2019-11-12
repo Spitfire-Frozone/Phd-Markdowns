@@ -2,7 +2,7 @@
 
 ## VHbb WSMaker and Hbb Stat ##
 
-## Last Edited: 06-11-2019
+## Last Edited: 12-11-2019
 -------------------------------------------------------------------------------
 # Investigating B-tagging
 Last time we played with the fit, some of the b-tagging systematics were being pulled in wierd ways. We will now perform many variations of the 0L fit in an attempt to better understand it, and to see what the issue is with the b-tagging parts of the fit. This also helps understand the fit problems with psuedo-continuous b-tagging (PCBT) as they are expected to be related.
@@ -427,8 +427,31 @@ vim src/binning_vhbbrun2.cpp
 >   >        return oneBin(c);
 >   >      }
 ~~~
+source setup.sh
+cd build && rm -rf *
+cmake ..
+make -j8
+cd ..
 python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-MVA-OneBinAll
 mv output/SMVHVZ_2019_MVA_mc16ade_milestone1_v02_STXS.140ifb-0L-ade-STXS-baseline-MVA-OneBinAll_fullRes_VHbb_140ifb-0L-ade-STXS-baseline-MVA-OneBinAll_0_mc16ade_Systs_mva_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/140ifb-0L-ade-STXS-baseline-MVA-OneBinAll
 
 ~~~
 We also want to run this with the merged PtV. 
+~~~
+cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Btagging
+
+vim scripts/launch_default_jobs.py 
+~~~
+>    CHANGE flag to run over merged ptV inputs (~L13)
+>   >  version = "milestone1_v02_0L_STXS_MergedPtV"
+
+>    CHANGE Global run conditions (~L21)
+>   >  mrgPtV = True    
+~~~
+source setup.sh
+cd build && rm -rf *
+cmake ..
+make -j8
+cd ..
+python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-MVA-OneBinAll-ptVMerge
+mv output/SMVHVZ_2019_MVA_mc16ade_milestone1_v02_STXS.140ifb-0L-ade-STXS-baseline-MVA-OneBinAll-ptVMerge_fullRes_VHbb_140ifb-0L-ade-STXS-baseline-MVA-OneBinAll-ptVMerge_0_mc16ade_Systs_mva_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/140ifb-0L-ade-STXS-baseline-MVA-OneBinAll-ptVMerge
