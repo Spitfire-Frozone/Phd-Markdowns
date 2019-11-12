@@ -397,3 +397,38 @@ mv output/SMVHVZ_2019_MVA_mc16ade_milestone1_v02_STXS.140ifb-0L-ade-STXS-baselin
 
 python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-baseline-MVA-ProcessDecorr -n -a 5 -l Nominal bcl_proc_decorr
 mv output/pullComparisons output/Nominal_vs_BCLProcDecorr
+~~~
+### One Bin in all regions
+~~~
+cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Btagging
+
+
+vim scripts/launch_default_jobs.py 
+~~~
+>    CHANGE Global run conditions (~L13, L21, L34)
+>   >  version = "milestone1_v02_STXS"  
+
+>   >  mrgPtV = False    
+
+>   >  doNewRegions = True
+
+>    ADD shapes plots just in case they are needed (~L72)
+>   >  doplots = True
+~~~
+
+vim src/binning_vhbbrun2.cpp
+~~~
+>    CHANGE Binning to be 1 in SR and CRs
+>   >      //Testing Single bin in all regions
+>   >      if (doNewRegions && (c(Property::descr).Contains("CR")) ){
+>   >        return oneBin(c);
+>   >      }
+>   >      if (doNewRegions && (c(Property::descr).Contains("SR")) ){
+>   >        return oneBin(c);
+>   >      }
+~~~
+python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-MVA-OneBinAll
+mv output/SMVHVZ_2019_MVA_mc16ade_milestone1_v02_STXS.140ifb-0L-ade-STXS-baseline-MVA-OneBinAll_fullRes_VHbb_140ifb-0L-ade-STXS-baseline-MVA-OneBinAll_0_mc16ade_Systs_mva_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/140ifb-0L-ade-STXS-baseline-MVA-OneBinAll
+
+~~~
+We also want to run this with the merged PtV. 
