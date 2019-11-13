@@ -455,3 +455,12 @@ make -j8
 cd ..
 python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-MVA-OneBinAll-ptVMerge
 mv output/SMVHVZ_2019_MVA_mc16ade_milestone1_v02_0L_STXS_MergedPtV.140ifb-0L-ade-STXS-baseline-MVA-OneBinAll-ptVMerge_fullRes_VHbb_140ifb-0L-ade-STXS-baseline-MVA-OneBinAll-ptVMerge_0_mc16ade_Systs_mva_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/140ifb-0L-ade-STXS-baseline-MVA-OneBinAll-ptVMerge
+
+python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-baseline-MVA-OneBinAll 140ifb-0L-ade-STXS-baseline-MVA-OneBinAll-ptVMerge -n -a 5 -l Nominal OneBinAll OBAptVMerge
+mv output/pullComparisons output/Nominal_vs_OBA_vs_OBAptvMerge
+
+python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA-OneBinAll 140ifb-0L-ade-STXS-baseline-MVA-OneBinAll-ptVMerge -n -a 5 -l OneBinAll OBAptVMerge
+
+python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-baseline-MVA-OneBinAll-ptVMerge -n -a 5 -l Nominal OBAptVMerge
+
+python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-baseline-MVA-OneBinAll -n -a 5 -l Nominal OneBinAll
