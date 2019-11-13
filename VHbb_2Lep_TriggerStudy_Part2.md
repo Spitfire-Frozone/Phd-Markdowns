@@ -888,7 +888,7 @@ If nothing is wrong, then
 cd Reader_2L_32-15_a_CUT_D1/fetch/
 hadd DATA15.root hist-data15-*
 ~~~
-The last job then is to create a 2L boosted input with this change and to run with systematics
+The last job then is to create a 2L boosted input with this change and to run with systematics. This is going to be a very large so you will need to be able to run somewhere that has some space. Your /eos space - CERNBox has 1T of space. 
 ~~~
 vim CxAODOperation_VHbb/scripts/submitReader.sh
 ~~~
@@ -905,7 +905,7 @@ make -j10
 source x86_64-centos7-gcc8-opt/setup.sh
 cd ../run
 
-../source/CxAODOperations_VHbb/scripts/submitReader.sh /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/VH/CxAOD_r32-15 FullBoostedSysts_newestTrigger 2L a,d,e VHbb CUT D1 32-15 none none 1
+../source/CxAODOperations_VHbb/scripts/submitReader.sh /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/VH/CxAOD_r32-15 /eos/user/d/dspiteri/FullBoostedSysts_newestTrigger 2L a,d,e VHbb CUT D1 32-15 none none 1
 ~~~
 After submission ensure that none of the jobs failed!
 ~~~
