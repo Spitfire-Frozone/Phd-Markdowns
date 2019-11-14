@@ -752,18 +752,18 @@ mv FullBoosted_newestTrigger_xe80 DataBoosted_newestTrigger_xe80
 Then you need to check that all of the jobs were sucessfully submitted.
 ~~~
 cd SignalBoosted_newestTrigger
-python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_august2019/source/CxAODOperations_VHbb/scripts/checkReaderFails.py Reader_2L_32-15_a_CUT_D1
-python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_august2019/source/CxAODOperations_VHbb/scripts/checkReaderFails.py Reader_1L_32-15_a_CUT_D1
+python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_october2019/source/CxAODOperations_VHbb/scripts/checkReaderFails.py Reader_2L_32-15_a_CUT_D1
+python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_october2019/source/CxAODOperations_VHbb/scripts/checkReaderFails.py Reader_1L_32-15_a_CUT_D1
 
 cd ../SignalBoosted_newestTrigger_xe80
-python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_august2019/source/CxAODOperations_VHbb/scripts/checkReaderFails.py Reader_2L_32-15_a_CUT_D1
-python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_august2019/source/CxAODOperations_VHbb/scripts/checkReaderFails.py Reader_1L_32-15_a_CUT_D1
+python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_october2019/source/CxAODOperations_VHbb/scripts/checkReaderFails.py Reader_2L_32-15_a_CUT_D1
+python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_october2019/source/CxAODOperations_VHbb/scripts/checkReaderFails.py Reader_1L_32-15_a_CUT_D1
 
 cd ../DataBoosted_newestTrigger
-python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_august2019/source/CxAODOperations_VHbb/scripts/checkReaderFails.py Reader_2L_32-15_a_CUT_D1
+python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_october2019/source/CxAODOperations_VHbb/scripts/checkReaderFails.py Reader_2L_32-15_a_CUT_D1
 
 cd ../DataBoosted_newestTrigger_xe80
-python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_august2019/source/CxAODOperations_VHbb/scripts/checkReaderFails.py Reader_2L_32-15_a_CUT_D1
+python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_october2019/source/CxAODOperations_VHbb/scripts/checkReaderFails.py Reader_2L_32-15_a_CUT_D1
 ~~~
 Once all of the jobs are present then you can hadd the outputs to produce the things we run over.  
 ~~~
@@ -843,7 +843,7 @@ cd ../run
 ../source/CxAODOperations_VHbb/scripts/submitReader.sh /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/VH/CxAOD_r32-15 SignalBoosted_newestTrigger_xe70xe80 1L a VHbb CUT D1 32-15 2lsignal none 1
 
 cd SignalBoosted_newestTrigger_xe70xe80
-python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_august2019/source/CxAODOperations_VHbb/scripts/checkReaderFails.py Reader_1L_32-15_a_CUT_D1
+python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_october2019/source/CxAODOperations_VHbb/scripts/checkReaderFails.py Reader_1L_32-15_a_CUT_D1
 
 cd Reader_1L_32-15_a_CUT_D1/fetch/
 hadd GGZH.root hist-ggZ*
@@ -881,7 +881,7 @@ cd ../run
 ../source/CxAODOperations_VHbb/scripts/submitReader.sh /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/VH/CxAOD_r32-15 DataBoosted_oldTrigger 2L a VHbb CUT D1 32-15 data15 none 1
 
 cd DataBoosted_oldTrigger
-python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_august2019/source/CxAODOperations_VHbb/scripts/checkReaderFails.py Reader_2L_32-15_a_CUT_D1
+python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_october2019/source/CxAODOperations_VHbb/scripts/checkReaderFails.py Reader_2L_32-15_a_CUT_D1
 ~~~
 If nothing is wrong, then
 ~~~
@@ -928,9 +928,9 @@ cd /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_october2019/
 setupATLAS && lsetup git && lsetup "root 6.14.04-x86_64-slc6-gcc62-opt" 
 cd run/FullBoosted_oldTrigger
 
-python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_august2019/source/CxAODOperations_VHbb/scripts/checkReaderFails.py Reader_2L_32-15_a_CUT_D
-python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_august2019/source/CxAODOperations_VHbb/scripts/checkReaderFails.py Reader_2L_32-15_d_CUT_D
-python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_august2019/source/CxAODOperations_VHbb/scripts/checkReaderFails.py Reader_2L_32-15_e_CUT_D
+python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_october2019/source/CxAODOperations_VHbb/scripts/checkReaderFails.py Reader_2L_32-15_a_CUT_D
+python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_october2019/source/CxAODOperations_VHbb/scripts/checkReaderFails.py Reader_2L_32-15_d_CUT_D
+python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_october2019/source/CxAODOperations_VHbb/scripts/checkReaderFails.py Reader_2L_32-15_e_CUT_D
 ~~~
 Now lets hadd our stuff together to make the final input! You will need to rename it such that WSMaker can get info from the name. v1 = muon trigger enabled and v2 = MET trigger enabled.
 ~~~
@@ -961,9 +961,9 @@ cd /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_october2019/
 setupATLAS && lsetup git && lsetup "root 6.14.04-x86_64-slc6-gcc62-opt" 
 cd run/FullBoosted_newestTrigger
 
-python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_august2019/source/CxAODOperations_VHbb/scripts/checkReaderFails.py Reader_2L_32-15_a_CUT_D
-python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_august2019/source/CxAODOperations_VHbb/scripts/checkReaderFails.py Reader_2L_32-15_d_CUT_D
-python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_august2019/source/CxAODOperations_VHbb/scripts/checkReaderFails.py Reader_2L_32-15_e_CUT_D
+python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_october2019/source/CxAODOperations_VHbb/scripts/checkReaderFails.py Reader_2L_32-15_a_CUT_D
+python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_october2019/source/CxAODOperations_VHbb/scripts/checkReaderFails.py Reader_2L_32-15_d_CUT_D
+python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_october2019/source/CxAODOperations_VHbb/scripts/checkReaderFails.py Reader_2L_32-15_e_CUT_D
 ~~~
 Now lets hadd our stuff together to make the final input for my changes! v2 = MET trigger enabled.
 ~~~
