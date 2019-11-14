@@ -2,7 +2,7 @@
 
 ## VHbb 2 Lepton Trigger Study Part 2 ##
 
-Last Edited: 16-10-2019
+Last Edited: 14-11-2019
 -------------------------------------------------------------------------------
 
 # Setup Script
@@ -895,8 +895,9 @@ Hence there will be two inputs that have to be introduced. Both without systemat
 vim CxAODOperation_VHbb/scripts/submitReader.sh
 ~~~
 >   CHANGE Analysis strategy to be merged (ensure it is changed)                                                            
->   >    ANASTRATEGY="Merged"                                                                                                                                                                                       
->   ADD limitations to the size of the outputs (~L198)                                                                     
+>   >    ANASTRATEGY="Merged"                                                                                               
+
+>   ADD limitations to the size of the outputs (~L198)                                                                      
 >   >    DOONLYINPUTS="true"     
 >   >    JOBSIZELIMITMB="15000"
 
