@@ -888,24 +888,35 @@ If nothing is wrong, then
 cd Reader_2L_32-15_a_CUT_D1/fetch/
 hadd DATA15.root hist-data15-*
 ~~~
-The last job then is to create a 2L boosted input with this change and to run with systematics. This is going to be a very large so you will need to be able to run somewhere that has some space. Your /eos space - CERNBox has 1T of space. 
+The last job then is to create a 2L boosted input with this change and to run with systematics. This is going to be a very large so you will need to be able to run somewhere that has some space. Your /eos space - CERNBox has 1T of space. However you can write to eos directly if you follow [this](https://gitlab.cern.ch/CxAODFramework/CxAODReader/blob/master/Root/AnalysisReader.cxx#L177) . Since the MET Trigger changes introduced do not have any syst associated with them and the lepton trigger syst are tiny (they get pruned in fact), and you don't add any for the met trigger, systematics do NOT need to be run over. 
+
 ~~~
 vim CxAODOperation_VHbb/scripts/submitReader.sh
 ~~~
->   CHANGE to run over systematics (~L205,L220)
->   >    NOMINALONLY="false"
+>   CHANGE Analysis strategy to be merged (ensure it is changed)                                                            
+>   >    ANASTRATEGY="Merged"                                                                                                                                                                                       
+>   ADD limitations to the size of the outputs (~L198)                                                                     
+>   >    DOONLYINPUTS="true"     
+>   >    JOBSIZELIMITMB="15000"
+
+>   CHANGE to run over systematics (~L205,L220)                                                                          
+>   >    NOMINALONLY="true"                                                                                                
+
+>   CHANGE to run over new Trigger regime (~L303)                                                                     
+>   >    DO2LMETTRIGGER="false"                                                                                              
+ 
 ~~~
 cd /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_october2019/
 setupATLAS && lsetup git && lsetup "root 6.14.04-x86_64-slc6-gcc62-opt" 
 release=`cat source/CxAODBootstrap_VHbb/bootstrap/release.txt` && echo "release=$release"
 asetup $release,AnalysisBase
-cd build
+cd build && rm -rf *
 cmake ../source
 make -j10
 source x86_64-centos7-gcc8-opt/setup.sh
 cd ../run
 
-../source/CxAODOperations_VHbb/scripts/submitReader.sh /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/VH/CxAOD_r32-15 /eos/user/d/dspiteri/FullBoostedSysts_newestTrigger 2L a,d,e VHbb CUT D1 32-15 none none 1
+../source/CxAODOperations_VHbb/scripts/submitReader.sh /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/VH/CxAOD_r32-15 FullBoosted_newestTrigger 2L a,d,e VHbb CUT D 32-15 none none 1
 ~~~
 After submission ensure that none of the jobs failed!
 ~~~
