@@ -892,7 +892,7 @@ hadd DATA15.root hist-data15-*
 
 The last job then is to create a 2L boosted input with this change and to run with systematics. This is going to be a very large so you will need to be able to run somewhere that has some space. Your /eos space - CERNBox has 1T of space. However you can write to eos directly if you follow [this](https://gitlab.cern.ch/CxAODFramework/CxAODReader/blob/master/Root/AnalysisReader.cxx#L177) . Since the MET Trigger changes introduced do not have any syst associated with them and the lepton trigger syst are tiny (they get pruned in fact), and you don't add any for the met trigger, systematics do NOT need to be run over. 
 
-Hence there will be two inputs that have to be introduced. Both without systematics, but one with DO2LMETTRIGGER="true" and the other with DO2LMETTRIGGER="false".
+Hence there will be two inputs that have to be introduced. Both without systematics, but one with DO2LMETTRIGGER="true" and the other with DO2LMETTRIGGER="false". The ones without DO2LMETTRIGGER="true" are the nominal produced by the group. One could run the DO2LMETTRIGGER="true" as a sanity check, but the nominal should be the inputs produced by the group. 
 ~~~
 vim CxAODOperation_VHbb/scripts/submitReader.sh
 ~~~
@@ -907,7 +907,7 @@ vim CxAODOperation_VHbb/scripts/submitReader.sh
 >   >    NOMINALONLY="true"                                                                                                
 
 >   CHANGE to run over new Trigger regime (~L303)                                                                     
->   >    DO2LMETTRIGGER="false"                                                                                              
+>   >    DO2LMETTRIGGER="true"                                                                                              
  
 ~~~
 cd /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_october2019/
@@ -920,7 +920,7 @@ make -j10
 source x86_64-centos7-gcc8-opt/setup.sh
 cd ../run
 
-../source/CxAODOperations_VHbb/scripts/submitReader.sh /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/VH/CxAOD_r32-15 FullBoosted_oldTrigger 2L a,d,e VHbb CUT D 32-15 none none 1
+../source/CxAODOperations_VHbb/scripts/submitReader.sh /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/VH/CxAOD_r32-15 FullBoosted_newestTrigger 2L a,d,e VHbb CUT D 32-15 none none 1
 ~~~
 After submission ensure that none of the jobs failed!
 ~~~
@@ -935,12 +935,15 @@ python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_october2019/sourc
 Now lets hadd our stuff together to make the final input! You will need to rename it such that WSMaker can get info from the name. v1 = muon trigger enabled and v2 = MET trigger enabled.
 ~~~
 source ../../../VHbbHaddAll2LadeCUT.sh
-mv Reader_2L_32-15_ade_CUT_D1/fetch/2LEPINPUT.root Reader_2L_32-15_ade_CUT_D1/fetch/LimitHistograms.VH.llbb.13TeV.mc16ade.Glasgow.v1.VR.root
-
+mv Reader_2L_32-15_ade_CUT_D/fetch/2LEPINPUT.root Reader_2L_32-15_ade_CUT_D1/fetch/LimitHistograms.VH.llbb.13TeV.mc16ade.Glasgow.v2.VR.root
+~~~
+Now if you want to run over the old regime. 
+~~~
 vim CxAODOperation_VHbb/scripts/submitReader.sh
 ~~~
+
 >   CHANGE to run over new Trigger regime (~L303)                                                                     
->   >    DO2LMETTRIGGER="true"                                                                                            
+>   >    DO2LMETTRIGGER="false"                                                                                            
 ~~~
 cd /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_october2019/
 setupATLAS && lsetup git && lsetup "root 6.14.04-x86_64-slc6-gcc62-opt" 
@@ -952,7 +955,7 @@ make -j10
 source x86_64-centos7-gcc8-opt/setup.sh
 cd ../run
 
-../source/CxAODOperations_VHbb/scripts/submitReader.sh /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/VH/CxAOD_r32-15 FullBoosted_newestTrigger 2L a,d,e VHbb CUT D 32-15 none none 1
+../source/CxAODOperations_VHbb/scripts/submitReader.sh /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/VH/CxAOD_r32-15 FullBoosted_oldTrigger 2L a,d,e VHbb CUT D 32-15 none none 1
 
 ~~~
 Once again after submission check that none of the jobs failed!
@@ -965,10 +968,10 @@ python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_october2019/sourc
 python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_october2019/source/CxAODOperations_VHbb/scripts/checkReaderFails.py Reader_2L_32-15_d_CUT_D
 python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_october2019/source/CxAODOperations_VHbb/scripts/checkReaderFails.py Reader_2L_32-15_e_CUT_D
 ~~~
-Now lets hadd our stuff together to make the final input for my changes! v2 = MET trigger enabled.
+Now lets hadd our stuff together to make the final input for my changes! v1 = MET trigger not enabled.
 ~~~
 source ../../../VHbbHaddAll2LadeCUT.sh
-mv Reader_2L_32-15_ade_CUT_D1/fetch/2LEPINPUT.root Reader_2L_32-15_ade_CUT_D1/fetch/LimitHistograms.VH.llbb.13TeV.mc16ade.Glasgow.v2.VR.root
+mv Reader_2L_32-15_ade_CUT_D/fetch/2LEPINPUT.root Reader_2L_32-15_ade_CUT_D1/fetch/LimitHistograms.VH.llbb.13TeV.mc16ade.Glasgow.v1.VR.root
 ~~~
 
 # Running Boosted WSMaker
@@ -1045,8 +1048,9 @@ vim scripts/launch_default_jobs.py
 
 >    CHANGE variables so you are running the observed 0L standalone fit (~L31-L41)
 >   >  channels = ["2"]         (~L34)                                                                                        
->   >  MCTypes = ["mc16ade"]    (~L37)                                                                                     
->   >  syst_type = ["Systs"]    (~L41)                                                                              
+>   >  MCTypes = ["mc16ade"]    (~L37)
+
+>   >  syst_type = ["StatOnly"] (~L41)                                                                              
 
 >    CHANGE variables to run on pre-fit Asimov (~L45)
 >   >  doExp = "1" # "0" to run observed, "1" to run expected only
