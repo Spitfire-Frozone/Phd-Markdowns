@@ -2,7 +2,7 @@
 
 ## VHbb 2 Lepton Trigger Study Part 2 ##
 
-Last Edited: 14-11-2019
+Last Edited: 18-11-2019
 -------------------------------------------------------------------------------
 
 # Setup Script
@@ -926,7 +926,7 @@ After submission ensure that none of the jobs failed!
 ~~~
 cd /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_october2019/
 setupATLAS && lsetup git && lsetup "root 6.14.04-x86_64-slc6-gcc62-opt" 
-cd run/FullBoosted_oldTrigger
+cd run/FullBoosted_newestTrigger
 
 python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_october2019/source/CxAODOperations_VHbb/scripts/checkReaderFails.py Reader_2L_32-15_a_CUT_D
 python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_october2019/source/CxAODOperations_VHbb/scripts/checkReaderFails.py Reader_2L_32-15_d_CUT_D
@@ -935,7 +935,7 @@ python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_october2019/sourc
 Now lets hadd our stuff together to make the final input! You will need to rename it such that WSMaker can get info from the name. v1 = muon trigger enabled and v2 = MET trigger enabled.
 ~~~
 source ../../../VHbbHaddAll2LadeCUT.sh
-mv Reader_2L_32-15_ade_CUT_D/fetch/2LEPINPUT.root Reader_2L_32-15_ade_CUT_D1/fetch/LimitHistograms.VH.llbb.13TeV.mc16ade.Glasgow.v2.VR.root
+mv Reader_2L_32-15_ade_CUT_D/fetch/2LEPINPUT.root Reader_2L_32-15_ade_CUT_D/fetch/LimitHistograms.VH.llbb.13TeV.mc16ade.Glasgow.v2.VR.root
 ~~~
 Now if you want to run over the old regime. 
 ~~~
@@ -962,7 +962,7 @@ Once again after submission check that none of the jobs failed!
 ~~~
 cd /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_october2019/
 setupATLAS && lsetup git && lsetup "root 6.14.04-x86_64-slc6-gcc62-opt" 
-cd run/FullBoosted_newestTrigger
+cd run/FullBoosted_oldTrigger
 
 python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_october2019/source/CxAODOperations_VHbb/scripts/checkReaderFails.py Reader_2L_32-15_a_CUT_D
 python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_october2019/source/CxAODOperations_VHbb/scripts/checkReaderFails.py Reader_2L_32-15_d_CUT_D
@@ -971,7 +971,7 @@ python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_october2019/sourc
 Now lets hadd our stuff together to make the final input for my changes! v1 = MET trigger not enabled.
 ~~~
 source ../../../VHbbHaddAll2LadeCUT.sh
-mv Reader_2L_32-15_ade_CUT_D/fetch/2LEPINPUT.root Reader_2L_32-15_ade_CUT_D1/fetch/LimitHistograms.VH.llbb.13TeV.mc16ade.Glasgow.v1.VR.root
+mv Reader_2L_32-15_ade_CUT_D/fetch/2LEPINPUT.root Reader_2L_32-15_ade_CUT_D/fetch/LimitHistograms.VH.llbb.13TeV.mc16ade.Glasgow.v1.VR.root
 ~~~
 
 # Running Boosted WSMaker
