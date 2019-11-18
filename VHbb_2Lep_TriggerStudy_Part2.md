@@ -1016,7 +1016,7 @@ Then we need to create a file to split the new inputs for new 2L. This is more c
 ~~~
 cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_boostedVHbb
 mkdir 012Linputs
-cp /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_october2019/run/FullBoosted_newestTrigger/Reader_2L_32-15_ade_CUT_D1/fetch/LimitHistograms.VH.llbb.13TeV.mc16ade.Glasgow.v1.VR.root  012Linputs/
+cp /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_october2019/run/FullBoosted_newestTrigger/Reader_2L_32-15_ade_CUT_D/fetch/LimitHistograms.VH.llbb.13TeV.mc16ade.Glasgow.v2.VR.root  012Linputs/
 cp /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/BoostedVHbb2019/OneLep/LimitHistograms.VH.lvbb.13TeV.mc16ade.UCL.v2.VR.root 012Linputs/
 cp /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/BoostedVHbb2019/ZeroLep/LimitHistograms.VH.vvbb.13TeV.mc16ade.PISA.v3.VR.root 012Linputs/
 
@@ -1025,7 +1025,7 @@ vim inputConfigs/SMVHVZ_BoostedVHbb2019_CUT_mc16ade_v05_METTrigger.txt
 >   ADD newly generated inputs
 >   >  ZeroLepton LimitHistograms.VH.vvbb.13TeV.mc16ade.PISA.v3.VR.root      mJ
 >   >  OneLepton  LimitHistograms.VH.lvbb.13TeV.mc16ade.UCL.v2.VR.root       mJ
->   >  TwoLepton  LimitHistograms.VH.llbb.13TeV.mc16ade.Glasgow.v1.VR.root   mJ
+>   >  TwoLepton  LimitHistograms.VH.llbb.13TeV.mc16ade.Glasgow.v2.VR.root   mJ
 ~~~
 cd build && cmake ..
 make -j10
