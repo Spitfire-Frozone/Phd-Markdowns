@@ -511,9 +511,11 @@ python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-MVA-OneBinAll
 mv output/SMVHVZ_2019_MVA_mc16ade_milestone1_v02_STXS.140ifb-0L-ade-STXS-baseline-MVA-OneBinAll_fullRes_VHbb_140ifb-0L-ade-STXS-baseline-MVA-OneBinAll_0_mc16ade_Systs_mva_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/140ifb-0L-ade-STXS-baseline-MVA-OneBinAll
 
 ~~~
-We also want to run this with the merged PtV. 
+We also want to run this with the merged PtV. Which means we will need the Merged PtV files that were created. 
 ~~~
 cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_0LFitTest
+
+cp -r /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Btagging/inputs/SMVHVZ_2019_MVA_mc16ade_milestone1_v02_0L_STXS_MergedPtV/ inputs/
 
 vim scripts/launch_default_jobs.py 
 ~~~
