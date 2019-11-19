@@ -2,7 +2,7 @@
 
 ## VHbb WSMaker and Hbb Stat ##
 
-## Last Edited: 12-11-2019
+## Last Edited: 18-11-2019
 -------------------------------------------------------------------------------
 # Investigating B-tagging
 Last time we played with the fit, some of the b-tagging systematics were being pulled in wierd ways. We will now perform many variations of the 0L fit in an attempt to better understand it, and to see what the issue is with the b-tagging parts of the fit. This also helps understand the fit problems with psuedo-continuous b-tagging (PCBT) as they are expected to be related.
@@ -75,11 +75,11 @@ vim scripts/launch_default_jobs.py
 
 >    CHANGE what you want to run in the 0L standalone fit (~L62-L69)
 >   >  createSimpleWorkspace = True                                                                                
->   >  runPulls = False                                                                                                       
->   >  runBreakdown = True                                                                                              
->   >  runRanks = True                                                                                                
+>   >  runPulls = True                                                                                                       
+>   >  runBreakdown = False                                                                                              
+>   >  runRanks = False                                                                                                
 >   >  runLimits = False                                                                                                      
->   >  runP0 = True                                                                                                        
+>   >  runP0 = False                                                                                                        
 >   >  runToyStudy = False                                                                                                 
 
 >    ADD additional debug plots for shape plots(~L72)                                                                
@@ -398,10 +398,85 @@ mv output/SMVHVZ_2019_MVA_mc16ade_milestone1_v02_STXS.140ifb-0L-ade-STXS-baselin
 python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-baseline-MVA-ProcessDecorr -n -a 5 -l Nominal bcl_proc_decorr
 mv output/pullComparisons output/Nominal_vs_BCLProcDecorr
 ~~~
+## General Fit Tests
+Now we shall go on to test the standalone fit itself by decomposing it into it's various parts and understanding the pulls. 
+~~~
+cd /afs/cern.ch/work/d/dspiteri/VHbb/
+setupATLAS && lsetup git && lsetup "root 6.14.04-x86_64-slc6-gcc62-opt"
+git clone --recursive ssh://git@gitlab.cern.ch:7999/atlas-physics/higgs/hbb/WSMaker_VHbb.git
+mv WSMaker_VHbb WSMaker_VHbb_0LFitTest
+cd WSMaker_VHbb_0LFitTest
+source setup.sh
+mkdir inputs
+cd build
+cmake ..
+make -j8
+cd ..
+~~~
+The inputs have already been split, and these are special ones that we'll require, they are the same as last time.
+>    /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/FullRunII2019/statArea/inputs/AfterWSMakerSplit/2019-10-03/ms1toms2/
+~~~
+cd inputs
+cp -r /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/FullRunII2019/statArea/inputs/AfterWSMakerSplit/2019-10-03/ms1toms2/ .
+mv ms1toms2/ SMVHVZ_2019_MVA_mc16ade_milestone1_v02_STXS
+cd ..
+
+vim scripts/launch_default_jobs.py 
+~~~
+>    CHANGE Global run conditions (~L13-L15)
+>   >  version = "milestone1_v02_STXS"                                                                                    
+>   >  GlobalRun = False            
+>   >  doPostFit = False                                                                                                
+
+>    CHANGE all do cutbase block to 'false' (~L17-L23)
+>   >  doCutBase = False        (~L17)
+>   >  do_mbb_plot = False      (~L23)                                                                                     
+
+>    CHANGE the STXS block suck that we can run the 1 POI scheme (~L27-L32)
+>   >  doSTXS = True                                                                                            
+>   >  FitSTXS_Scheme = 1 #3 corresponds to 5 POI                                                                   
+>   >  doSTXSQCD = True                                                                                         
+>   >  doSTXSPDF = True                                                                               
+>   >  doSTXSDropTheoryAcc= True                                                  
+>   >  doXSWS = False # switch to true for 3/5 POIs                                                                        
+
+>    CHANGE variable such that you run over the new CR's (~L34)
+>   >  doNewRegions = True 
+
+>    CHANGE variables so you are running the observed 0L standalone fit (~L46-L57)
+>   >  channels = ["0"]         (~L48)                                                                                        
+>   >  MCTypes = ["mc16ade"]    (~L50)                                                                                     
+>   >  syst_type = ["Systs"]    (~L53)                                                                              
+
+>    CHANGE variables to run on the batch as this will be hefty job (~L60)
+>   >  run_on_batch = True                                                                                             
+
+>    CHANGE what you want to run in the 0L standalone fit (~L62-L69)
+>   >  createSimpleWorkspace = True                                                                                
+>   >  runPulls = True                                                                                                       
+>   >  runBreakdown = False                                                                                              
+>   >  runRanks = False                                                                                                
+>   >  runLimits = False                                                                                                      
+>   >  runP0 = False                                                                                                        
+>   >  runToyStudy = False                                                                                                 
+
+>    ADD additional debug plots for shape plots(~L72)                                                                
+>   >  doplots = True                                                                                                        
+
+Then once you are ready you can once again run the nominal fit by doing the same commands as seen above.
+~~~
+cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_0LFitTest
+source setup.sh
+cd build
+cmake ..
+make -j8
+cd ..
+python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-MVA
+mv output/SMVHVZ_2019_MVA_mc16ade_milestone1_v02_STXS.140ifb-0L-ade-STXS-baseline-MVA_fullRes_VHbb_140ifb-0L-ade-STXS-baseline-MVA_0_mc16ade_Systs_mva_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/140ifb-0L-ade-STXS-baseline-MVA
+~~~
 ### One Bin in all regions
 ~~~
-cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Btagging
-
+cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_0LFitTest
 
 vim scripts/launch_default_jobs.py 
 ~~~
@@ -438,7 +513,7 @@ mv output/SMVHVZ_2019_MVA_mc16ade_milestone1_v02_STXS.140ifb-0L-ade-STXS-baselin
 ~~~
 We also want to run this with the merged PtV. 
 ~~~
-cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Btagging
+cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_0LFitTest
 
 vim scripts/launch_default_jobs.py 
 ~~~
