@@ -1050,7 +1050,7 @@ vim scripts/launch_default_jobs.py
 >   >  channels = ["2"]         (~L34)                                                                                        
 >   >  MCTypes = ["mc16ade"]    (~L37)
 
->   >  syst_type = ["StatOnly"] (~L41)                                                                              
+>   >  syst_type = ["MCStat"]   (~L41)      #["StatOnly"] not working                                                      
 
 >    CHANGE variables to run on pre-fit Asimov (~L45)
 >   >  doExp = "1" # "0" to run observed, "1" to run expected only
@@ -1077,7 +1077,7 @@ cmake ..
 make -j8
 cd ..
 python scripts/launch_default_jobs.py 140ifb-2L-ade-STXS-baseline-CUT-doExp1
-mv output/SMVHVZ_BoostedVHbb2019_CUT_mc16ade_v05.140ifb-2L-ade-STXS-baseline-CUT-doExp1_fullRes_boostedVHbb_140ifb-2L-ade-STXS-baseline-CUT-doExp1_2_mc16ade_StatOnly_mBB_VR output/140ifb-2L-ade-STXS-baseline-CUT-doExp1
+mv output/SMVHVZ_BoostedVHbb2019_CUT_mc16ade_v05.140ifb-2L-ade-STXS-baseline-CUT-doExp1_fullRes_boostedVHbb_140ifb-2L-ade-STXS-baseline-CUT-doExp1_2_mc16ade_MCStat_mBB_VR output/140ifb-2L-ade-STXS-baseline-CUT-doExp1
 ~~~
 To understand why this is being run twice one can consult VolIII of Dwayne PhD Research - p413-p414
 ~~~
@@ -1103,7 +1103,7 @@ cmake ..
 make -j8
 cd ..
 python scripts/launch_default_jobs.py 140ifb-2L-ade-STXS-baseline-CUT-doExp0
-mv output/SMVHVZ_BoostedVHbb2019_CUT_mc16ade_v05.140ifb-2L-ade-STXS-baseline-CUT-doExp0_fullRes_boostedVHbb_140ifb-2L-ade-STXS-baseline-CUT-doExp0_2_mc16ade_StatOnly_mBB_VR output/140ifb-2L-ade-STXS-baseline-CUT-doExp0
+mv output/mv output/SMVHVZ_BoostedVHbb2019_CUT_mc16ade_v05.140ifb-2L-ade-STXS-baseline-CUT-doExp0_fullRes_boostedVHbb_140ifb-2L-ade-STXS-baseline-CUT-doExp0_2_mc16ade_MCStat_mBB_VR output/140ifb-2L-ade-STXS-baseline-CUT-doExp0
 ~~~
 For the second set of inputs you do as before but changing the version name
 ~~~
@@ -1119,7 +1119,7 @@ cmake ..
 make -j8
 cd ..
 python scripts/launch_default_jobs.py 140ifb-2L-ade-STXS-METTrig-CUT-doExp1
-mv output/SMVHVZ_BoostedVHbb2019_CUT_mc16ade_v05.140ifb-2L-ade-STXS-METTrig-CUT-doExp1_fullRes_boostedVHbb_140ifb-2L-ade-STXS-METTrig-CUT-doExp1_2_mc16ade_Systs_mBB_VR output/140ifb-2L-ade-STXS-METTrig-CUT-doExp1
+mv output/SMVHVZ_BoostedVHbb2019_CUT_mc16ade_v05_METTrigger.140ifb-2L-ade-STXS-METTrig-CUT-doExp1_fullRes_boostedVHbb_140ifb-2L-ade-STXS-METTrig-CUT-doExp1_2_mc16ade_MCStat_mBB_VR output/140ifb-2L-ade-STXS-METTrig-CUT-doExp1
 
 
 cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_boostedVHbb
@@ -1129,4 +1129,12 @@ cmake ..
 make -j8
 cd ..
 python scripts/launch_default_jobs.py 140ifb-2L-ade-STXS-METTrig-CUT-doExp0
-mv output/SMVHVZ_BoostedVHbb2019_CUT_mc16ade_v05_METTrigger.140ifb-2L-ade-STXS-METTrig-CUT-doExp0_fullRes_boostedVHbb_140ifb-2L-ade-STXS-METTrig-CUT-doExp0_2_mc16ade_Systs_mBB_VR output/140ifb-2L-ade-STXS-METTrig-CUT-doExp0
+mv output/SMVHVZ_BoostedVHbb2019_CUT_mc16ade_v05_METTrigger.140ifb-2L-ade-STXS-METTrig-CUT-doExp0_fullRes_boostedVHbb_140ifb-2L-ade-STXS-METTrig-CUT-doExp0_2_mc16ade_MCStat_mBB_VR output/140ifb-2L-ade-STXS-METTrig-CUT-doExp0
+~~~
+After this is done the only thing left to do is to run the pull comparison plots.
+~~~
+python WSMakerCore/scripts/comparePulls.py -w 140ifb-2L-ade-STXS-baseline-CUT-doExp0 140ifb-2L-ade-STXS-METTrig-CUT-doExp0 -n -a 9 -l Nominal METTrigger
+mv output/pullComparisons output/Nominal_vs_2LMETDoExp0
+
+python WSMakerCore/scripts/comparePulls.py -w 140ifb-2L-ade-STXS-baseline-CUT-doExp1 140ifb-2L-ade-STXS-METTrig-CUT-doExp1 -n -a 7 -l Nominal METTrigger
+mv output/pullComparisons output/Nominal_vs_2LMETDoExp1
