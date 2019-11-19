@@ -1131,10 +1131,16 @@ cd ..
 python scripts/launch_default_jobs.py 140ifb-2L-ade-STXS-METTrig-CUT-doExp0
 mv output/SMVHVZ_BoostedVHbb2019_CUT_mc16ade_v05_METTrigger.140ifb-2L-ade-STXS-METTrig-CUT-doExp0_fullRes_boostedVHbb_140ifb-2L-ade-STXS-METTrig-CUT-doExp0_2_mc16ade_MCStat_mBB_VR output/140ifb-2L-ade-STXS-METTrig-CUT-doExp0
 ~~~
-After this is done the only thing left to do is to run the pull comparison plots.
+After this to get the pull comparison plots one runs.
 ~~~
-python WSMakerCore/scripts/comparePulls.py -w 140ifb-2L-ade-STXS-baseline-CUT-doExp0 140ifb-2L-ade-STXS-METTrig-CUT-doExp0 -n -a 9 -l Nominal METTrigger
+python WSMakerCore/scripts/comparePulls.py -w 140ifb-2L-ade-STXS-baseline-CUT-doExp0 140ifb-2L-ade-STXS-METTrig-CUT-doExp0 -n -a 5 -l Nominal METTrigger
 mv output/pullComparisons output/Nominal_vs_2LMETDoExp0
 
-python WSMakerCore/scripts/comparePulls.py -w 140ifb-2L-ade-STXS-baseline-CUT-doExp1 140ifb-2L-ade-STXS-METTrig-CUT-doExp1 -n -a 7 -l Nominal METTrigger
+python WSMakerCore/scripts/comparePulls.py -w 140ifb-2L-ade-STXS-baseline-CUT-doExp1 140ifb-2L-ade-STXS-METTrig-CUT-doExp1 -n -a 5 -l Nominal METTrigger
 mv output/pullComparisons output/Nominal_vs_2LMETDoExp1
+~~~
+The flagship test is the significance. To obtain the significances of the different fits you can print the last 10 lines of the log to the screen.
+~~~
+cd output
+tail -n 10 140ifb-2L-ade-STXS-baseline-CUT-doExp1/logs/output_getSig_125.log
+tail -n 10 140ifb-2L-ade-STXS-METTrig-CUT-doExp1/logs/output_getSig_125.log
