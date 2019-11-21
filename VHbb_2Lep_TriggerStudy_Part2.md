@@ -79,25 +79,25 @@ vim CxAODOperation_VHbb/CxAODTools_VHbb/Root/TriggerTool_VHbb1Lep.cxx
 vim CxAODOperation_VHbb/CxAODTools_VHbb/Root/TriggerTool_VHbb2Lep.cxx
 ~~~
 > CUT all of lines of config declarations relating to m_doMETMuonTrigger, m_METTriggerin2L, m_do_1L_MuonTrigger and m_pT(W/Z)cutVal from TriggerTool_VHbb1lep::TriggerTool_VHbb1lep and TriggerTool_VHbb2lep::TriggerTool_VHbb2lep to TriggerTool_VHbb::TriggerTool_VHbb (L6)
->   >  
->   >    TriggerTool_VHbb::TriggerTool_VHbb(ConfigStore& config) 
->   >      :TriggerTool(config),
->   >    
->   >        m_do_1L_MuonTrigger(false),
->   >        m_METTriggerin2L(false),
->   >        m_doMETMuonTrigger(false),
->   >        m_analysisType("2lep"),
->   >        m_pTWcutVal(150e3),
->   >        m_pTZcutVal(150e3)
->   >    {	
->   >      m_config.getif<bool>("doMETMuonTrigger", m_doMETMuonTrigger); 
->   >      m_config.getif<bool>("do_1L_MuonTrigger", m_do_1L_MuonTrigger);
->   >      m_config.getif<bool>("METTriggerin2L", m_METTriggerin2L);
->   >      m_config.getif<std::string>("analysisType", m_analysisType);
->   >      m_config.getif<double>("Trig::pTWcutVal", m_pTWcutVal);
->   >      m_config.getif<double>("Trig::pTZcutVal", m_pTZcutVal);
->   >    
->   >    }
+>   >                                                                                          
+>   >    TriggerTool_VHbb::TriggerTool_VHbb(ConfigStore& config)                                                             
+>   >      :TriggerTool(config),                                        
+>   >                                                                                                                      
+>   >        m_do_1L_MuonTrigger(false),                                                                               
+>   >        m_METTriggerin2L(false),                                                                                         
+>   >        m_doMETMuonTrigger(false),                                                                                 
+>   >        m_analysisType("2lep"),                                                                                        
+>   >        m_pTWcutVal(150e3),                                                                                        
+>   >        m_pTZcutVal(150e3)                                                                                          
+>   >    {	                                                                                                                
+>   >      m_config.getif<bool>("doMETMuonTrigger", m_doMETMuonTrigger);                                               
+>   >      m_config.getif<bool>("do_1L_MuonTrigger", m_do_1L_MuonTrigger);                                                   
+>   >      m_config.getif<bool>("METTriggerin2L", m_METTriggerin2L);                                                      
+>   >      m_config.getif<std::string>("analysisType", m_analysisType);                                                    
+>   >      m_config.getif<double>("Trig::pTWcutVal", m_pTWcutVal);                                                          
+>   >      m_config.getif<double>("Trig::pTZcutVal", m_pTZcutVal);                                            
+>   >                                                                                                                      
+>   >    }                                                                                                              
 
 ## 5) Change 2L MET trigger code to work with 1L instances of the function as well.
 Here analysis-dependent decisions need to be made as ptV is made up of different objects depending on the analysis. Declare all objects but only fill them depending on analysis type.
