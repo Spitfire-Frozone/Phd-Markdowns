@@ -991,7 +991,7 @@ We will need to run and split that new milestone inputs for 2L and compare them 
 > /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/FullRunII2019/statArea/inputs/TwoLep/r32-15_customCDI_20190814/v2/fullSysts
 > BOOSTED                                                                                                                    
 > /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/BoostedVHbb2019/TwoLep/LimitHistograms.VH.llbb.13TeV.mc16ade.UIOWAUSTC.v07.VR.root
-
+> /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/BoostedVHbb2019/TwoLep/LimitHistograms.VH.llbb.13TeV.mc16ade.UIOWAUSTC.v07.VR.extension_nominal.root
 If you want more details you can check out [The](https://github.com/Spitfire-Frozone/Phd-Markdowns/blob/master/VHbb_WSMakerHbbstat.md)  [input](https://github.com/Spitfire-Frozone/Phd-Markdowns/blob/master/VHbb_WSMakerHbbstat_Part2.md) [markdowns](https://github.com/Spitfire-Frozone/Phd-Markdowns/edit/master/VHbb_WSMakerHbbstat_Part3.md)
 ~~~
 cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_boostedVHbb
@@ -1032,7 +1032,22 @@ make -j10
 cd ..
 SplitInputs -v SMVHVZ_BoostedVHbb2019_CUT_mc16ade_v05_METTrigger -inDir /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_boostedVHbb/012Linputs/
 ~~~
+So nothing in this life is ever that easy though. By running defaultly on lxplus, these inputs have Z+jets extensions that are not present in the default inputs, so the improvement one would get by adding the MET Trigger to the 2L analysis is convoluted with the increase of adding the Z+jet extensions. Weitao kindly provided some samples which have only the extensions in. Assuming that the increase in Z+jet extensions and the MET trigger is uncorrelated, then these significances can be found and the relative increases divided out to isolate the increase solely due to the MET Trigger.
+~~~
+cp /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/BoostedVHbb2019/TwoLep/LimitHistograms.VH.llbb.13TeV.mc16ade.UIOWAUSTC.v07.VR.extension_nominal.root .
 
+vim inputConfigs/SMVHVZ_BoostedVHbb2019_CUT_mc16ade_v05_Extensions.txt
+~~~
+>   ADD newly generated inputs
+>   >  ZeroLepton LimitHistograms.VH.vvbb.13TeV.mc16ade.PISA.v3.VR.root      mJ
+>   >  OneLepton  LimitHistograms.VH.lvbb.13TeV.mc16ade.UCL.v2.VR.root       mJ
+>   >  TwoLepton  LimitHistograms.VH.llbb.13TeV.mc16ade.UIOWAUSTC.v07.VR.extension_nominal.root      mJ
+~~~
+cd build && cmake ..
+make -j10
+cd ..
+SplitInputs -v SMVHVZ_BoostedVHbb2019_CUT_mc16ade_v05_Extensions -inDir /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_boostedVHbb/012Linputs/
+~~~
 Then you will want to edit the launcher. For the full fit you will want to run twice for each set of inputs. 
 ~~~
 vim scripts/launch_default_jobs.py 
@@ -1079,7 +1094,7 @@ cd ..
 python scripts/launch_default_jobs.py 140ifb-2L-ade-STXS-baseline-CUT-doExp1
 mv output/SMVHVZ_BoostedVHbb2019_CUT_mc16ade_v05.140ifb-2L-ade-STXS-baseline-CUT-doExp1_fullRes_boostedVHbb_140ifb-2L-ade-STXS-baseline-CUT-doExp1_2_mc16ade_MCStat_mBB_VR output/140ifb-2L-ade-STXS-baseline-CUT-doExp1
 ~~~
-To understand why this is being run twice one can consult VolIII of Dwayne PhD Research - p413-p414
+To understand why this is being run twice one can consult Vol III of Dwayne PhD Research - p412
 ~~~
 vim scripts/launch_default_jobs.py 
 ~~~
@@ -1118,9 +1133,29 @@ cd build
 cmake ..
 make -j8
 cd ..
-python scripts/launch_default_jobs.py 140ifb-2L-ade-STXS-METTrig-CUT-doExp1
-mv output/SMVHVZ_BoostedVHbb2019_CUT_mc16ade_v05_METTrigger.140ifb-2L-ade-STXS-METTrig-CUT-doExp1_fullRes_boostedVHbb_140ifb-2L-ade-STXS-METTrig-CUT-doExp1_2_mc16ade_MCStat_mBB_VR output/140ifb-2L-ade-STXS-METTrig-CUT-doExp1
+python scripts/launch_default_jobs.py 140ifb-2L-ade-STXS-METTrig-CUT-doExp0
+mv output/SMVHVZ_BoostedVHbb2019_CUT_mc16ade_v05_METTrigger.140ifb-2L-ade-STXS-METTrig-CUT-doExp0_fullRes_boostedVHbb_140ifb-2L-ade-STXS-METTrig-CUT-doExp0_2_mc16ade_MCStat_mBB_VR output/140ifb-2L-ade-STXS-METTrig-CUT-doExp0
 
+vim scripts/launch_default_jobs.py 
+~~~
+>    CHANGE variables to run on pre-fit Asimov (~L45)
+>   >  doExp = "1" # "0" to run observed, "1" to run expected only
+
+>    CHANGE variables to run on the batch as this will be hefty job (~L48)
+>   >  run_on_batch = False                                                                                             
+
+>    CHANGE what you want to run in the 0L standalone fit (~L62-L69)
+>   >  createSimpleWorkspace = True                                                                                
+>   >  runP0 = True   
+>   >  runPulls = True                                                                                                       
+>   >  runBreakdown = True                                                                                              
+>   >  runRanks = True                                                                                                
+>   >  runLimits = False                                                                                                      
+>   >  runToyStudy = False                                                                                                 
+
+>    ADD additional debug plots for shape plots (~L60)                                                                
+>   >  doplots = True  
+~~~
 
 cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_boostedVHbb
 source setup.sh
@@ -1128,19 +1163,72 @@ cd build
 cmake ..
 make -j8
 cd ..
-python scripts/launch_default_jobs.py 140ifb-2L-ade-STXS-METTrig-CUT-doExp0
-mv output/SMVHVZ_BoostedVHbb2019_CUT_mc16ade_v05_METTrigger.140ifb-2L-ade-STXS-METTrig-CUT-doExp0_fullRes_boostedVHbb_140ifb-2L-ade-STXS-METTrig-CUT-doExp0_2_mc16ade_MCStat_mBB_VR output/140ifb-2L-ade-STXS-METTrig-CUT-doExp0
+python scripts/launch_default_jobs.py 140ifb-2L-ade-STXS-METTrig-CUT-doExp1
+mv output/SMVHVZ_BoostedVHbb2019_CUT_mc16ade_v05_METTrigger.140ifb-2L-ade-STXS-METTrig-CUT-doExp1_fullRes_boostedVHbb_140ifb-2L-ade-STXS-METTrig-CUT-doExp1_2_mc16ade_MCStat_mBB_VR output/140ifb-2L-ade-STXS-METTrig-CUT-doExp1
 ~~~
-After this to get the pull comparison plots one runs.
+In addition to this one can run a systematic fit on the set of inputs generated by my framwork locally, so the ones with both the addition from the Z+jets extenstions and the MET Trigger Study in 2L and compare the post fit plots to the ones in the note.
 ~~~
-python WSMakerCore/scripts/comparePulls.py -w 140ifb-2L-ade-STXS-baseline-CUT-doExp0 140ifb-2L-ade-STXS-METTrig-CUT-doExp0 -n -a 5 -l Nominal METTrigger
-mv output/pullComparisons output/Nominal_vs_2LMETDoExp0
+vim scripts/launch_default_jobs.py 
+~~~
+>    CHANGE the fit type to running on systematics
+>   >  syst_type = ["Systs"]   (~L41)      #["StatOnly"] not working                                                      
+~~~
+cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_boostedVHbb
+source setup.sh
+cd build
+cmake ..
+make -j8
+cd ..
+python scripts/launch_default_jobs.py 140ifb-2L-ade-STXS-METTrig-CUT-doExp1-Systs
+mv output/SMVHVZ_BoostedVHbb2019_CUT_mc16ade_v05_METTrigger.140ifb-2L-ade-STXS-METTrig-CUT-doExp1-Systs_fullRes_boostedVHbb_140ifb-2L-ade-STXS-METTrig-CUT-doExp1-Systs_2_mc16ade_Systs_mBB_VR output/140ifb-2L-ade-STXS-METTrig-CUT-doExp1-Systs
+~~~
+For the third set of inputs you do as before but changing the version name
+~~~
+vim scripts/launch_default_jobs.py 
+~~~
+>    CHANGE Global run conditions (~L11)
+>   >  version = "v05_Extensions"     
+~~~
+cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_boostedVHbb
+source setup.sh
+cd build
+cmake ..
+make -j8
+cd ..
+python scripts/launch_default_jobs.py 140ifb-2L-ade-STXS-Xten-CUT-doExp1
+mv output/SMVHVZ_BoostedVHbb2019_CUT_mc16ade_v05_Extensions.140ifb-2L-ade-STXS-Xten-CUT-doExp1_fullRes_boostedVHbb_140ifb-2L-ade-STXS-Xten-CUT-doExp1_2_mc16ade_MCStat_mBB_VR output/140ifb-2L-ade-STXS-Xten-CUT-doExp1
 
-python WSMakerCore/scripts/comparePulls.py -w 140ifb-2L-ade-STXS-baseline-CUT-doExp1 140ifb-2L-ade-STXS-METTrig-CUT-doExp1 -n -a 5 -l Nominal METTrigger
-mv output/pullComparisons output/Nominal_vs_2LMETDoExp1
+vim scripts/launch_default_jobs.py 
+~~~
+>    CHANGE variables to run on post-fit Asimov (~L45)
+>   >  doExp = "0" # "0" to run observed, "1" to run expected only
+
+>    CHANGE what you want to run in the 0L standalone fit (~L62-L69)
+>   >  createSimpleWorkspace = True                                                                                
+>   >  runP0 = True   
+>   >  runPulls = True                                                                                                      
+>   >  runBreakdown = False                                                                                              
+>   >  runRanks = False                                                                                             
+>   >  runLimits = False                                                                                                                                                                                                  
+>    ADD additional debug plots for shape plots (~L60)                                                                
+>   >  doplots = False  
+~~~
+cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_boostedVHbb
+source setup.sh
+cd build
+cmake ..
+make -j8
+cd ..
+python scripts/launch_default_jobs.py 140ifb-2L-ade-STXS-Xten-CUT-doExp0
+mv output/SMVHVZ_BoostedVHbb2019_CUT_mc16ade_v05_Extensions.140ifb-2L-ade-STXS-Xten-CUT-doExp0_fullRes_boostedVHbb_140ifb-2L-ade-STXS-Xten-CUT-doExp0_2_mc16ade_MCStat_mBB_VR output/140ifb-2L-ade-STXS-Xten-CUT-doExp0
+
 ~~~
 The flagship test is the significance. To obtain the significances of the different fits you can print the last 10 lines of the log to the screen.
 ~~~
 cd output
 tail -n 10 140ifb-2L-ade-STXS-baseline-CUT-doExp1/logs/output_getSig_125.log
 tail -n 10 140ifb-2L-ade-STXS-METTrig-CUT-doExp1/logs/output_getSig_125.log
+tail -n 10 140ifb-2L-ade-STXS-Xten-CUT-doExp1/logs/output_getSig_125.log
+~~~
+In addition to this one can run a systematic fit on the set of inputs generated by my framwork locally, so the ones with both the addition from the Z+jets extenstions and the MET Trigger Study in 2L and compare the post fit plots to the ones in the note.
+~~~~ 
