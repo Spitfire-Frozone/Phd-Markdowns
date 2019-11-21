@@ -1227,6 +1227,6 @@ The flagship test is the significance. To obtain the significances of the differ
 ~~~
 cd output
 tail -n 10 140ifb-2L-ade-STXS-baseline-CUT-doExp1/logs/output_getSig_125.log
-tail -n 10 140ifb-2L-ade-STXS-METTrig-CUT-doExp1/logs/output_getSig_125.log
 tail -n 10 140ifb-2L-ade-STXS-Xten-CUT-doExp1/logs/output_getSig_125.log
+tail -n 10 140ifb-2L-ade-STXS-METTrig-CUT-doExp1/logs/output_getSig_125.log
 ~~~
