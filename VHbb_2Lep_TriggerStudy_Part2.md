@@ -1002,9 +1002,9 @@ First we need to create a file to split the nominal inputs
 vim inputConfigs/SMVHVZ_BoostedVHbb2019_CUT_mc16ade_v05.txt
 ~~~
 >   ADD newly generated inputs
->   >  ZeroLepton ZeroLep/LimitHistograms.VH.vvbb.13TeV.mc16ade.PISA.v3.VR.root      mJ
->   >  OneLepton  OneLep/LimitHistograms.VH.lvbb.13TeV.mc16ade.UCL.v2.VR.root        mJ
->   >  TwoLepton  TwoLep/LimitHistograms.VH.llbb.13TeV.mc16ade.UIOWAUSTC.v07.VR.root mJ
+>   >  ZeroLepton ZeroLep/LimitHistograms.VH.vvbb.13TeV.mc16ade.PISA.v3.VR.root      mJ                             
+>   >  OneLepton  OneLep/LimitHistograms.VH.lvbb.13TeV.mc16ade.UCL.v2.VR.root        mJ                                   
+>   >  TwoLepton  TwoLep/LimitHistograms.VH.llbb.13TeV.mc16ade.UIOWAUSTC.v07.VR.root mJ                                       
 ~~~
 cd build && cmake ..
 make -j10
@@ -1023,9 +1023,9 @@ cp /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/BoostedVHbb2019/ZeroLep/Li
 vim inputConfigs/SMVHVZ_BoostedVHbb2019_CUT_mc16ade_v05_METTrigger.txt
 ~~~
 >   ADD newly generated inputs
->   >  ZeroLepton LimitHistograms.VH.vvbb.13TeV.mc16ade.PISA.v3.VR.root      mJ
->   >  OneLepton  LimitHistograms.VH.lvbb.13TeV.mc16ade.UCL.v2.VR.root       mJ
->   >  TwoLepton  LimitHistograms.VH.llbb.13TeV.mc16ade.Glasgow.v2.VR.root   mJ
+>   >  ZeroLepton LimitHistograms.VH.vvbb.13TeV.mc16ade.PISA.v3.VR.root      mJ                                         
+>   >  OneLepton  LimitHistograms.VH.lvbb.13TeV.mc16ade.UCL.v2.VR.root       mJ                                            
+>   >  TwoLepton  LimitHistograms.VH.llbb.13TeV.mc16ade.Glasgow.v2.VR.root   mJ                                              
 ~~~
 cd build && cmake ..
 make -j10
@@ -1039,9 +1039,9 @@ cp /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/BoostedVHbb2019/TwoLep/Lim
 vim inputConfigs/SMVHVZ_BoostedVHbb2019_CUT_mc16ade_v05_Extensions.txt
 ~~~
 >   ADD newly generated inputs
->   >  ZeroLepton LimitHistograms.VH.vvbb.13TeV.mc16ade.PISA.v3.VR.root      mJ
->   >  OneLepton  LimitHistograms.VH.lvbb.13TeV.mc16ade.UCL.v2.VR.root       mJ
->   >  TwoLepton  LimitHistograms.VH.llbb.13TeV.mc16ade.UIOWAUSTC.v07.VR.extension_nominal.root      mJ
+>   >  ZeroLepton LimitHistograms.VH.vvbb.13TeV.mc16ade.PISA.v3.VR.root      mJ                                         
+>   >  OneLepton  LimitHistograms.VH.lvbb.13TeV.mc16ade.UCL.v2.VR.root       mJ                                  
+>   >  TwoLepton  LimitHistograms.VH.llbb.13TeV.mc16ade.UIOWAUSTC.v07.VR.extension_nominal.root      mJ                       
 ~~~
 cd build && cmake ..
 make -j10
@@ -1052,30 +1052,30 @@ Then you will want to edit the launcher. For the full fit you will want to run t
 ~~~
 vim scripts/launch_default_jobs.py 
 ~~~
->    CHANGE Global run conditions (~L11)
+>    CHANGE Global run conditions (~L11)                                                                                    
 >   >  version = "v05"                                                                                             
 >   >  doPostFit = False                                                                                                
 
->    CHANGE all do cutbase block to 'true' (~L13)
+>    CHANGE all do cutbase block to 'true' (~L13)                                                                          
 >   >  doCutBase = True         (~L17)                                                                                                                                                     
->    CHANGE variable such that you run over the new CR's (~L34)
->   >  doNewRegions = True 
+>    CHANGE variable such that you run over the new CR's (~L34)                                                             
+>   >  doNewRegions = True                                                                                                       
 
->    CHANGE variables so you are running the observed 0L standalone fit (~L31-L41)
+>    CHANGE variables so you are running the observed 0L standalone fit (~L31-L41)                                           
 >   >  channels = ["2"]         (~L34)                                                                                        
->   >  MCTypes = ["mc16ade"]    (~L37)
+>   >  MCTypes = ["mc16ade"]    (~L37)                                                                                       
 
 >   >  syst_type = ["MCStat"]   (~L41)      #["StatOnly"] not working                                                      
 
->    CHANGE variables to run on pre-fit Asimov (~L45)
->   >  doExp = "1" # "0" to run observed, "1" to run expected only
+>    CHANGE variables to run on pre-fit Asimov (~L45)                                                                  
+>   >  doExp = "1" # "0" to run observed, "1" to run expected only                                                           
 
->    CHANGE variables to run on the batch as this will be hefty job (~L48)
+>    CHANGE variables to run on the batch as this will be hefty job (~L48)                                                   
 >   >  run_on_batch = False                                                                                             
 
 >    CHANGE what you want to run in the 0L standalone fit (~L62-L69)
 >   >  createSimpleWorkspace = True                                                                                
->   >  runP0 = True   
+>   >  runP0 = True                                                                                                       
 >   >  runPulls = True                                                                                                       
 >   >  runBreakdown = True                                                                                              
 >   >  runRanks = True                                                                                                
@@ -1083,7 +1083,7 @@ vim scripts/launch_default_jobs.py
 >   >  runToyStudy = False                                                                                                 
 
 >    ADD additional debug plots for shape plots (~L60)                                                                
->   >  doplots = True  
+>   >  doplots = True                                                                                                        
 ~~~
 cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_boostedVHbb
 source setup.sh
@@ -1103,13 +1103,13 @@ vim scripts/launch_default_jobs.py
 
 >    CHANGE what you want to run in the 0L standalone fit (~L62-L69)
 >   >  createSimpleWorkspace = True                                                                                
->   >  runP0 = True   
+>   >  runP0 = True                                                                                                          
 >   >  runPulls = True                                                                                                      
 >   >  runBreakdown = False                                                                                              
->   >  runRanks = False                                                                                             
+>   >  runRanks = False                                                                                                       
 >   >  runLimits = False                                                                                                                                                                                                  
 >    ADD additional debug plots for shape plots (~L60)                                                                
->   >  doplots = False  
+>   >  doplots = False                                                                                                      
 ~~~
 cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_boostedVHbb
 source setup.sh
@@ -1124,8 +1124,8 @@ For the second set of inputs you do as before but changing the version name
 ~~~
 vim scripts/launch_default_jobs.py 
 ~~~
->    CHANGE Global run conditions (~L11)
->   >  version = "v05_METTrigger"     
+>    CHANGE Global run conditions (~L11)                                                                                    
+>   >  version = "v05_METTrigger"                                                                                            
 ~~~
 cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_boostedVHbb
 source setup.sh
@@ -1146,7 +1146,7 @@ vim scripts/launch_default_jobs.py
 
 >    CHANGE what you want to run in the 0L standalone fit (~L62-L69)
 >   >  createSimpleWorkspace = True                                                                                
->   >  runP0 = True   
+>   >  runP0 = True                                                                                                          
 >   >  runPulls = True                                                                                                       
 >   >  runBreakdown = True                                                                                              
 >   >  runRanks = True                                                                                                
@@ -1154,7 +1154,7 @@ vim scripts/launch_default_jobs.py
 >   >  runToyStudy = False                                                                                                 
 
 >    ADD additional debug plots for shape plots (~L60)                                                                
->   >  doplots = True  
+>   >  doplots = True                                                                                                     
 ~~~
 
 cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_boostedVHbb
@@ -1170,7 +1170,7 @@ In addition to this one can run a systematic fit on the set of inputs generated 
 ~~~
 vim scripts/launch_default_jobs.py 
 ~~~
->    CHANGE the fit type to running on systematics
+>    CHANGE the fit type to running on systematics                                                                           
 >   >  syst_type = ["Systs"]   (~L41)      #["StatOnly"] not working                                                      
 ~~~
 cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_boostedVHbb
@@ -1186,8 +1186,8 @@ For the third set of inputs you do as before but changing the version name
 ~~~
 vim scripts/launch_default_jobs.py 
 ~~~
->    CHANGE Global run conditions (~L11)
->   >  version = "v05_Extensions"     
+>    CHANGE Global run conditions (~L11)                                                                                     
+>   >  version = "v05_Extensions"                                                                                             
 ~~~
 cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_boostedVHbb
 source setup.sh
@@ -1205,13 +1205,13 @@ vim scripts/launch_default_jobs.py
 
 >    CHANGE what you want to run in the 0L standalone fit (~L62-L69)
 >   >  createSimpleWorkspace = True                                                                                
->   >  runP0 = True   
+>   >  runP0 = True                                                                                                      
 >   >  runPulls = True                                                                                                      
 >   >  runBreakdown = False                                                                                              
 >   >  runRanks = False                                                                                             
 >   >  runLimits = False                                                                                                                                                                                                  
 >    ADD additional debug plots for shape plots (~L60)                                                                
->   >  doplots = False  
+>   >  doplots = False                                                                                                    
 ~~~
 cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_boostedVHbb
 source setup.sh
