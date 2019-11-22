@@ -984,17 +984,15 @@ vim  ../TriggerStudyPlots.cxx
 >   >   1) samples = {"ggZllH125", "qqZllH125", "qqWlvH125"}; // 2L Signal                                                
 >   >   2) samples = {"data"} //data only                                                                                    
 >   >   3) samples = {"ggZZ","stops", "stopt", "stopWt", "ttbar", "Wbb", "Wbc", "Wbl", "Wcc", "Wcl", "Wl", "WZ", "Zbb","Zbc","Zbl","Zcc", "Zcl", "Zl", "ZZ"}; //All backgrounds   
->   >      OR samples = {"stopWt", "ttbar", "Wbb", "WZ", "Zbb","Zbc","Zbl","Zcc", "Zcl", "Zl", "ZZ"}; //All Relevant backgrounds 
+>   >      OR                                                                                                                 
+>   >      samples = {"stopWt", "ttbar", "Wbb", "WZ", "Zbb","Zbc","Zbl","Zcc", "Zcl", "Zl", "ZZ"}; //All Relevant backgrounds                                                                                                        
+
 >    CHANGE legend sub-titles (~L526, ~L535, ~L576)                                                                    
->   >   1)                                                                                                                  
->   >   Form("Signal (%) Gain ..."                                                                                          
->   >   #it{#sqrt{s}} = 13 TeV, MC16ade"                                                                                    
->   >   2)                                                                                                                  
->   >   Form("Data (%) Gain ..."                                                                                           
->   >   #it{#sqrt{s}} = 13 TeV, Run-II 140ifb Data"
->   >   3)                                                                                                                  
->   >   Form("Background (%) Gain ..."                                                                                     
->   >   #it{#sqrt{s}} = 13 TeV, MC16ade"                                                                                    
+>   >   1) Form("Signal (%) Gain ..."                                                                                        
+>   >       #it{#sqrt{s}} = 13 TeV, MC16ade"                                                                                 
+>   >   2) Form("Data (%) Gain ..."                                                                                       
+>   >      #it{#sqrt{s}} = 13 TeV, Run-II 140ifb Data"
+>   >   3) Form("Background (%) Gain ..."                                                                                     >   >      #it{#sqrt{s}} = 13 TeV, MC16ade"                                                                                    
 ~~~
 1. 
 root -b -l -q '../TriggerStudyPlots.cxx("/afs/cern.ch/work/d/dspiteri/VHbb/", "CxAODFramework_master_october2019/","FullBoosted","old","newest","SIGNAL.root","2L","32-15","ade","CUT","D","SR","","")'
@@ -1023,7 +1021,7 @@ mkdir inputs
 ~~~
 We will need to run and split that new milestone inputs for 2L and compare them against the ones where the trigger regime has changed. Luckily for us the former has already been done and run and the split inputs can be found here:
 > RESOLVED                                                                                                                 
-> /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/FullRunII2019/statArea/inputs/TwoLep/r32-15_customCDI_20190814/v2/fullSysts
+> /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/FullRunII2019/statArea/inputs/TwoLep/r32-15_customCDI_20190814/v2/fullSysts                                                                                           
 > BOOSTED                                                                                                                    
 > /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/BoostedVHbb2019/TwoLep/LimitHistograms.VH.llbb.13TeV.mc16ade.UIOWAUSTC.v07.VR.root
 > /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/BoostedVHbb2019/TwoLep/LimitHistograms.VH.llbb.13TeV.mc16ade.UIOWAUSTC.v07.VR.extension_nominal.root
