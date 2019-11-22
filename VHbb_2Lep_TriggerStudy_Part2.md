@@ -983,25 +983,28 @@ vim  ../TriggerStudyPlots.cxx
 >   COMMENT IN new samples to run over (~L112)                                                                      
 >   >   1) samples = {"ggZllH125", "qqZllH125", "qqWlvH125"}; // 2L Signal                                                
 >   >   2) samples = {"data"} //data only                                                                                    
->   >   3) samples = {"ggZZ","stops", "stopt", "stopWt", "ttbar", "Wbb", "Wbc", "Wbl", "Wcc", "Wcl", "Wl", "WZ", "Zbb","Zbc","Zbl","Zcc", "Zcl", "Zl", "ZZ"}; //All backgrounds                                                               
-
+>   >   3) samples = {"ggZZ","stops", "stopt", "stopWt", "ttbar", "Wbb", "Wbc", "Wbl", "Wcc", "Wcl", "Wl", "WZ", "Zbb","Zbc","Zbl","Zcc", "Zcl", "Zl", "ZZ"}; //All backgrounds   
+>   >      OR samples = {"stopWt", "ttbar", "Wbb", "WZ", "Zbb","Zbc","Zbl","Zcc", "Zcl", "Zl", "ZZ"}; //All Relevant backgrounds 
 >    CHANGE legend sub-titles (~L526, ~L535, ~L576)                                                                    
->   >   1)
->   >   Form("Signal (%) Gain ..."                                                 
->   >   #it{#sqrt{s}} = 13 TeV, MC16ade"   
->   >   2)
->   >   Form("Data (%) Gain ..."
+>   >   1)                                                                                                                  
+>   >   Form("Signal (%) Gain ..."                                                                                          
+>   >   #it{#sqrt{s}} = 13 TeV, MC16ade"                                                                                    
+>   >   2)                                                                                                                  
+>   >   Form("Data (%) Gain ..."                                                                                           
 >   >   #it{#sqrt{s}} = 13 TeV, Run-II 140ifb Data"
->   >   3)
->   >   Form("Background (%) Gain ..."
->   >   #it{#sqrt{s}} = 13 TeV, MC16ade"
+>   >   3)                                                                                                                  
+>   >   Form("Background (%) Gain ..."                                                                                     
+>   >   #it{#sqrt{s}} = 13 TeV, MC16ade"                                                                                    
 ~~~
+1. 
 root -b -l -q '../TriggerStudyPlots.cxx("/afs/cern.ch/work/d/dspiteri/VHbb/", "CxAODFramework_master_october2019/","FullBoosted","old","newest","SIGNAL.root","2L","32-15","ade","CUT","D","SR","","")'
 mv run/FullBoosted-oldandnewest_TriggerPlots run/SignalBoosted_2L_ade_TriggerPlots
 
+2.
 root -b -l -q '../TriggerStudyPlots.cxx("/afs/cern.ch/work/d/dspiteri/VHbb/", "CxAODFramework_master_october2019/","FullBoosted","old","newest","DATA.root","2L","32-15","ade","CUT","D","SR","","")'
 mv run/FullBoosted-oldandnewest_TriggerPlots run/DataBoosted_2L_ade_TriggerPlots
 
+3.
 root -b -l -q '../TriggerStudyPlots.cxx("/afs/cern.ch/work/d/dspiteri/VHbb/", "CxAODFramework_master_october2019/","FullBoosted","old","newest","2LEPBKG.root","2L","32-15","ade","CUT","D","SR","","")'
 mv run/FullBoosted-oldandnewest_TriggerPlots run/BkgBoosted_2L_ade_TriggerPlots
 
