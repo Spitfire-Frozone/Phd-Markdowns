@@ -2,7 +2,7 @@
 
 ## VHbb 2 Lepton Trigger Study Part 2 ##
 
-Last Edited: 21-11-2019
+Last Edited: 25-11-2019
 -------------------------------------------------------------------------------
 
 # Setup Script
@@ -971,7 +971,7 @@ python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_october2019/sourc
 Now lets hadd our stuff together to make the final input for my changes! v1 = MET trigger not enabled.
 ~~~
 source ../../../VHbbHaddAll2LadeCUT.sh
-mv Reader_2L_32-15_ade_CUT_D/fetch/2LEPINPUT.root Reader_2L_32-15_ade_CUT_D/fetch/LimitHistograms.VH.llbb.13TeV.mc16ade.Glasgow.v1.VR.root
+mv Reader_2L_32-15_ade_CUT_D/fetch/2LEPINPUT.root Reader_2L_32-15_ade_CUT_D/fetch/LimitHistograms.VH.llbb.13TeV.mc16ade.GLASGOW.v1.VR.METTriggerOn.root
 ~~~
 Probably best at this point to re-run some of the plots. We want some final final Signal, Data and Background plots
 ~~~
@@ -1049,7 +1049,7 @@ Then we need to create a file to split the new inputs for new 2L. This is more c
 ~~~
 cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_boostedVHbb
 mkdir 012Linputs
-cp /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_october2019/run/FullBoosted_newestTrigger/Reader_2L_32-15_ade_CUT_D/fetch/LimitHistograms.VH.llbb.13TeV.mc16ade.Glasgow.v2.VR.root  012Linputs/
+cp /afs/cern.ch/work/d/dspiteri/VHbb/CxAODFramework_master_october2019/run/FullBoosted_newestTrigger/Reader_2L_32-15_ade_CUT_D/fetch/LimitHistograms.VH.llbb.13TeV.mc16ade.GLASGOW.v1.VR.METTriggerOn.root  012Linputs/
 cp /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/BoostedVHbb2019/OneLep/LimitHistograms.VH.lvbb.13TeV.mc16ade.UCL.v2.VR.root 012Linputs/
 cp /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/BoostedVHbb2019/ZeroLep/LimitHistograms.VH.vvbb.13TeV.mc16ade.PISA.v3.VR.root 012Linputs/
 
@@ -1058,7 +1058,7 @@ vim inputConfigs/SMVHVZ_BoostedVHbb2019_CUT_mc16ade_v05_METTrigger.txt
 >   ADD newly generated inputs
 >   >  ZeroLepton LimitHistograms.VH.vvbb.13TeV.mc16ade.PISA.v3.VR.root      mJ                                         
 >   >  OneLepton  LimitHistograms.VH.lvbb.13TeV.mc16ade.UCL.v2.VR.root       mJ                                            
->   >  TwoLepton  LimitHistograms.VH.llbb.13TeV.mc16ade.Glasgow.v2.VR.root   mJ                                              
+>   >  TwoLepton  LimitHistograms.VH.llbb.13TeV.mc16ade.GLASGOW.v1.VR.METTriggerOn.root   mJ                                              
 ~~~
 cd build && cmake ..
 make -j10
@@ -1263,4 +1263,38 @@ cd output
 tail -n 10 140ifb-2L-ade-STXS-baseline-CUT-doExp1/logs/output_getSig_125.log
 tail -n 10 140ifb-2L-ade-STXS-Xten-CUT-doExp1/logs/output_getSig_125.log
 tail -n 10 140ifb-2L-ade-STXS-METTrig-CUT-doExp1/logs/output_getSig_125.log
+~~~
+
+# Putting the generated sample in a common area.
+Now that the samples have been confirmed to work, the last step is make these inputs available to a wider audience so an analyser can reproduce the results. When the inputs get copied over you will need to create a Readme
+
+~~~
+cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_boostedVHbb/012Linputs/
+cp LimitHistograms.VH.llbb.13TeV.mc16ade.GLASGOW.v1.VR.METTriggerOn.root /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/BoostedVHbb2019/TwoLep/
+
+vim Readme.VH.llbb.13TeV.GLASGOW.v01.METTriggerOn.v1.txt
+~~~
+>    ADD deatils on what was run to generate these inputs.                                                                   
+>   >  CxAOD 32-15                                                                                                           
+>   >  CDI: boosted-CDI-30-07-2019                                                                                           
+>   >  B-Tagging systematics not included                                                                                    
+>   >  VR + Z+jets Extentions + MET Trigger turned on                                                                        
+>   >  15/11/2019 Reader                                                                                                     
+>   >                                                                                                                        
+>   >  Samples:                                                                                                               
+>   >  data15, data16, data17, data18                                                                                        
+>   >  qqZllHbbJ_PwPy8MINLO ggZllHbb_PwPy8                                                                                   
+>   >  ZeeB_Sh221 ZeeC_Sh221 ZeeL_Sh221 Zee_Sh221
+>   >  ZmumuB_Sh221 ZmumuC_Sh221 ZmumuL_Sh221 Zmumu_Sh221                                                                   
+>   >  ZtautauB_Sh221 ZtautauC_Sh221 ZtautauL_Sh221 Ztautau_Sh221                                                          
+>   >  ZbbZll_Sh221 ZbbZvv_Sh221                                                                                            
+>   >  ZqqZll_Sh221 ZqqZvv_Sh221                                                                                             
+>   >  WlvZbb_Sh221 WlvZqq_Sh221 WqqZll_Sh221 WqqZvv_Sh221                                                                   
+>   >  WenuB_Sh221 WenuC_Sh221 WenuL_Sh221 Wenu_Sh221                                                                   
+>   >  WmunuB_Sh221 WmunuC_Sh221 WmunuL_Sh221 Wmunu_Sh221                                                                   
+>   >  WtaunuB_Sh221 WtaunuC_Sh221 WtaunuL_Sh221 Wtaunu_Sh221                                                                
+>   >  ttbar_allhad_PwPy8 ttbar_dilep_PwPy8 ttbar_nonallhad_PwPy8                                                          
+>   >                                                                                                                        
+>   >  Dwayne Spiteri                                                                                                         
+
 ~~~
