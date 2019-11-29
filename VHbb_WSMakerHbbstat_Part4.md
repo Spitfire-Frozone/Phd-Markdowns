@@ -62,30 +62,30 @@ vim scripts/launch_default_jobs.py
 ~~~
 >    CHANGE Global run conditions (~L13-L15)
 >   >  version = "v03_STXS"                                                                                                  
->   >  GlobalRun = False            
+>   >  GlobalRun = False                                                                                                 
 >   >  doPostFit = False                                                                                                
 
 >    CHANGE all do cutbase block to 'false' (~L17-L23)
->   >  doCutBase = False        (~L17)
+>   >  doCutBase = False        (~L17)                                                                                        
 >   >  do_mbb_plot = False      (~L23)                                                                                     
 
 >    CHANGE the STXS block suck that we can run the 1 POI scheme (~L27-L32)
->   >  doSTXS = True                                                                                            
->   >  FitSTXS_Scheme = 1 #3 corresponds to 5 POI                                                                   
->   >  doSTXSQCD = True                                                                                         
->   >  doSTXSPDF = True                                                                               
->   >  doSTXSDropTheoryAcc= True                                                  
+>   >  doSTXS = True                                                                                                          
+>   >  FitSTXS_Scheme = 1 #3 corresponds to 5 POI                                                                             
+>   >  doSTXSQCD = True                                                                                                      
+>   >  doSTXSPDF = True                                                                                                      
+>   >  doSTXSDropTheoryAcc= True                                                                                            
 >   >  doXSWS = False # switch to true for 3/5 POIs                                                                        
 
 >    CHANGE variable such that you run over the new CR's (~L34)
->   >  doNewRegions = True 
+>   >  doNewRegions = True                                                                                                     
 
->    CHANGE variables so you are running the observed 0L standalone fit (~L46-L57)
+>    CHANGE variables so you are running the observed 0L standalone fit (~L46-L57)                                            
 >   >  channels = ["0"]         (~L48)                                                                                        
 >   >  MCTypes = ["mc16ade"]    (~L50)                                                                                     
 >   >  syst_type = ["Systs"]    (~L53)                                                                              
 
->    CHANGE variables to run locally (~L60)
+>    CHANGE variables to run locally (~L60)                                                                                   
 >   >  run_on_batch = False                                                                                             
 
 >    CHANGE what you want to run in the 0L standalone fit (~L62-L69)
@@ -116,17 +116,36 @@ Create a website so that everyone can see your plots
 cd output
 python "../WSMakerCore/macros/webpage/createHtmlOverview.py"
 ~~~
+### Asimov 0L Fit
+~~~
+vim scripts/launch_default_jobs.py 
+~~~
+>    CHANGE to construct Asimov dataset using prefit NP's (~L62)                                                               
+>   >  doExp=0 -> doExp=1                                                                                                    
+~~~
+cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Milestone2
+source setup.sh
+cd build
+cmake ..
+make -j8
+cd ..
+python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-MVA-Asimov
+mv output/SMVHVZ_2019_MVA_mc16ade_v03_STXS.140ifb-0L-ade-STXS-baseline-MVA-Asimov_fullRes_VHbb_140ifb-0L-ade-STXS-baseline-MVA-Asimov_0_mc16ade_Systs_mva_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/140ifb-0L-ade-STXS-baseline-MVA-Asimov
+~~~
 
 ### PostFit 0L
 To break down the output mva into the main variables that go into it.
 ~~~
 vim scripts/launch_default_jobs.py 
 ~~~
->    CHANGE Global run conditions (~L15)
->   >  doPostFit = True                                                                                                     
+>    CHANGE Global run conditions (~L15)                                                                                      
+>   >  doPostFit = True      
+
+>    CHANGE to construct Asimov dataset using central values from fit to data (~L62)                                           
+>   >  doExp=0 -> doExp=1  
 
 >    CHANGE what you want to run in the 0L standalone fit (~L69)                                                          
->   >  runPulls = False      
+>   >  runPulls = False                                                                                                 
 
 >    CHANGE postfit variables of interest (~L92)
 >   >  vs2tag = ['pTV','MET','pTB1','pTB2','mBB','dRBB','dEtaBB','dPhiVBB','dEtaVBB','MEff','MEff3','dPhiLBmin','mTW','mLL','dYWH','Mtop','pTJ3','mBBJ','mBBJ3','METSig'] -> vs2tag =  ['pTV','MET']
@@ -144,3 +163,6 @@ mv output/SMVHVZ_2019_MVA_mc16ade_v03_STXS.140ifb-0L-ade-STXS-baseline-MVA-postf
 mv output/SMVHVZ_2019_MVA_mc16ade_v03_STXS.140ifb-0L-ade-STXS-baseline-MVA-postfitVars_fullRes_VHbb_140ifb-0L-ade-STXS-baseline-MVA-postfitVars_0_mc16ade_Systs_pTV_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/140ifb-0L-ade-STXS-baseline-MET
 python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 3 -f 140ifb-0L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-baseline-mBB
 
+
+### Full 0L Fit
+Now we have to run the full nominal standalone 0L fit.
