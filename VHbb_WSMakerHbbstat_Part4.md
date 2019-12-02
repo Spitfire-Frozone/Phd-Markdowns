@@ -2,7 +2,7 @@
 
 ## VHbb WSMaker and Hbb Stat ##
 
-## Last Edited: 28-11-2019
+## Last Edited: 02-12-2019
 -------------------------------------------------------------------------------
 ## Milestone 2 Fits on latest inputs
 
@@ -60,14 +60,17 @@ Now we have to run the nominal standalone 0L fit.
 ~~~
 vim scripts/launch_default_jobs.py 
 ~~~
->    CHANGE Global run conditions (~L13-L15)
+>    CHANGE Global run conditions (~L13-L15)                                                                                  
 >   >  version = "v03_STXS"                                                                                                  
 >   >  GlobalRun = False                                                                                                 
 >   >  doPostFit = False                                                                                                
 
 >    CHANGE all do cutbase block to 'false' (~L17-L23)
 >   >  doCutBase = False        (~L17)                                                                                        
->   >  do_mbb_plot = False      (~L23)                                                                                     
+>   >  do_mbb_plot = False      (~L23)                                                                                        
+
+>    CHANGE setting of new PCBT inputs to be true (~L24)                                                                      
+>   >  PCBTInputs = True                                                                                                       
 
 >    CHANGE the STXS block suck that we can run the 1 POI scheme (~L27-L32)
 >   >  doSTXS = True                                                                                                          
@@ -88,7 +91,7 @@ vim scripts/launch_default_jobs.py
 >    CHANGE variables to run locally (~L60)                                                                                   
 >   >  run_on_batch = False                                                                                             
 
->    CHANGE what you want to run in the 0L standalone fit (~L62-L69)
+>    CHANGE what you want to run in the 0L standalone fit (~L62-L69)                                                         
 >   >  createSimpleWorkspace = True                                                                                
 >   >  runPulls = True                                                                                                       
 >   >  runBreakdown = False                                                                                              
