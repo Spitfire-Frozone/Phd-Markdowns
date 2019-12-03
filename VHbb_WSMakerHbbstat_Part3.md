@@ -107,14 +107,14 @@ After this is ready, we will want to run many fits for all of the b-tagging syst
 vim src/systematiclistsbuilder_vhbbrun2.cpp
 ~~~
 >    ADD selective decorrelation for systematic of your choice (~L544)
->   >  if (sysname == "Eigen_Light_0") m_histoSysts.insert( { "SysFT_EFF_"+sysname , SysConfig{T::shape, S::noSmooth, Sym::noSym}.decorr(P::nJet) });
+>   >  if (sysname == "Eigen_Light_0") m_histoSysts.insert( { "SysFT_EFF_"+sysname , SysConfig{T::shape, S::noSmooth, Sym::noSym}.decorr(P::nJet) });                                                                                              
 >   >  m_histoSysts.insert({ "SysFT_EFF_"+sysname , noSmoothConfig});  -> else m_histoSysts.insert({ "SysFT_EFF_"+sysname , noSmoothConfig});                                                                                        
 
 Here T::shape defines the type of the uncertainty. T::shape="shape+norm" T::shapeOnly="shape"
 
 The other two options you need to run for this are then
 >    .decorr(P::binMin)                                                                                               
->    .decorr({P::nJet, P::binMin})   
+>    .decorr({P::nJet, P::binMin})                                                                                             
 
 Then you need to rebuild and re-run as normal
 ~~~
@@ -132,17 +132,17 @@ mv output/pullComparisons output/Nominal_vs_Light_0ptVnJ
 
 ~~~
 >    python scripts/launch_default_jobs.py Light_0_nJetDeco
->    mv output/SMVHVZ_2019_MVA_mc16ade_milestone1_v02_STXS.Light_0_nJetDeco_fullRes_VHbb_Light_0_nJetDeco_0_mc16ade_Systs_mva_STXS_Fit>    Scheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/Light_0_nJetDeco
+>    mv output/SMVHVZ_2019_MVA_mc16ade_milestone1_v02_STXS.Light_0_nJetDeco_fullRes_VHbb_Light_0_nJetDeco_0_mc16ade_Systs_mva_STXS_Fit>    Scheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/Light_0_nJetDeco                                               
 
->    python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA Light_0_nJetDeco -n -a 5 -l Nominal L0_nJDecorr 
+>    python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA Light_0_nJetDeco -n -a 5 -l Nominal L0_nJDecorr                                                                                               
 >    mv output/pullComparisons output/Nominal_vs_Light_0nJ
 
 
->    python scripts/launch_default_jobs.py Light_0_PtVDeco
->    mv output/SMVHVZ_2019_MVA_mc16ade_milestone1_v02_STXS.Light_0_PtVDeco_fullRes_VHbb_Light_0_PtVDeco_0_mc16ade_Systs_mva_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/Light_0_PtVDeco
+>    python scripts/launch_default_jobs.py Light_0_PtVDeco                                                                     
+>    mv output/SMVHVZ_2019_MVA_mc16ade_milestone1_v02_STXS.Light_0_PtVDeco_fullRes_VHbb_Light_0_PtVDeco_0_mc16ade_Systs_mva_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/Light_0_PtVDeco                                                       
 
->    python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA Light_0_PtVDeco -n -a 5 -l Nominal L0_PtVDecorr 
->    mv output/pullComparisons output/Nominal_vs_Light_0PtV
+>    python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA Light_0_PtVDeco -n -a 5 -l Nominal L0_PtVDecorr                                                                                               
+>    mv output/pullComparisons output/Nominal_vs_Light_0PtV                                                                   
 
 ### C_0
 ~~~
@@ -238,20 +238,20 @@ cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Btagging
 vim src/systematiclistsbuilder_vhbbrun2.cpp
 ~~~
 >    REMOVE selective decorrelation for systematic of your choice (~L544)
->   >  if (sysname == "Eigen_Light_0") m_histoSysts.insert( { "SysFT_EFF_"+sysname , SysConfig{T::shape, S::noSmooth, Sym::noSym}.decorr(P::nJet) });
->   > else m_histoSysts.insert({ "SysFT_EFF_"+sysname , noSmoothConfig}); -> m_histoSysts.insert({ "SysFT_EFF_"+sysname , noSmoothConfig}); 
+>   >  if (sysname == "Eigen_Light_0") m_histoSysts.insert( { "SysFT_EFF_"+sysname , SysConfig{T::shape, S::noSmooth, Sym::noSym}.decorr(P::nJet) });                                                                                              
+>   > else m_histoSysts.insert({ "SysFT_EFF_"+sysname , noSmoothConfig}); -> m_histoSysts.insert({ "SysFT_EFF_"+sysname , noSmoothConfig});                                                                                                            
 
 ~~~
 vim scripts/launch_default_jobs.py 
 ~~~
->    CHANGE flag to run over merged ptV inputs (~L13)
->   >  version = "milestone1_v02_0L_STXS_MergedPtV"
+>    CHANGE flag to run over merged ptV inputs (~L13)                                                                         
+>   >  version = "milestone1_v02_0L_STXS_MergedPtV"                                                                         
 
->    CHANGE flag to switch on merged PtV run (~L21)
->   >  mrgPtV = True 
+>    CHANGE flag to switch on merged PtV run (~L21)                                                                         
+>   >  mrgPtV = True                                                                                                         
 
->    CHANGE flag to switch on merged PtV run (~L68)
->   >  runP0 = True
+>    CHANGE flag to switch on merged PtV run (~L68)                                                                          
+>   >  runP0 = True                                                                                                          
 ~~~
 cd inputs
 mkdir SMVHVZ_2019_MVA_mc16ade_milestone1_v02_0L_STXS_MergedPtV
@@ -306,17 +306,16 @@ cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Btagging
 
 vim scripts/launch_default_jobs.py 
 ~~~
->    CHANGE flag to run over merged ptV inputs (~L13)
->   >  version = "milestone1_v02_0L_STXS_MergedSR"
+>    CHANGE flag to run over merged ptV inputs (~L13)                                                                         
+>   >  version = "milestone1_v02_0L_STXS_MergedSR"                                                                         
 
->    CHANGE flag to switch on merged PtV run (~L21)
->   >  mrgPtV = False 
+>    CHANGE flag to switch on merged PtV run (~L21)                                                                         
+>   >  mrgPtV = False                                                                                                         
 
->    CHANGE flag to switch off the new CR's (~L34)
->   >  doNewRegions = False
-
->    CHANGE flag to switch on merged PtV run (~L68)
->   >  runP0 = True
+>    CHANGE flag to switch off the new CR's (~L34)                                                                         
+>   >  doNewRegions = False                                                                                                       
+>    CHANGE flag to switch on merged PtV run (~L68)                                                                         
+>   >  runP0 = True                                                                                                           
 
 ~~~
 cd inputs
@@ -362,24 +361,24 @@ cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Btagging
 
 vim scripts/launch_default_jobs.py 
 ~~~
->    CHANGE Global run conditions (~L13, L21, L34)
->   >  version = "milestone1_v02_STXS"  
+>    CHANGE Global run conditions (~L13, L21, L34)                                                                         
+>   >  version = "milestone1_v02_STXS"                                                                                         
 
->   >  mrgPtV = False    
+>   >  mrgPtV = False                                                                                                         
 
->   >  doNewRegions = True
+>   >  doNewRegions = True                                                                                                    
 ~~~
 vim src/systematiclistsbuilder_vhbbrun2.cpp
 ~~~
 >    ADD decorrelation for flavour tagging (~L534)
->   >    SysConfig FTag_Process_Decorr_Config = noSmoothConfig;
->   >      FTag_Process_Decorr_Config.decorrFun([](const PropertiesSet& pset, const Sample& s) {                 
+>   >    SysConfig FTag_Process_Decorr_Config = noSmoothConfig;                                                               
+>   >      FTag_Process_Decorr_Config.decorrFun([](const PropertiesSet& pset, const Sample& s) {                               
 >   >                                     if( s.hasKW("Diboson") || s.hasKW("Higgs") ) return "_signal_VV";             
 >   >                                     else if( s.name() == "Zbb" || s.name() == "Wbb" ) return "_Vbb";                  
->   >                                     else if( s.name() == "Zbc" || s.name() == "Wbc" || s.name() == "Wcl" || s.name() == "Zcl" || s.name() == "Zcc" || s.name() == "Wcc" ) return "_Vc";                             
->   >                                     else if( s.name() == "Zbl" || s.name() == "Wbl" || s.name() == "Wl" || s.name() == "Zl" ) return "_Vl";                                                                     
->   >                                     else if( s.name() == "ttbar" ) return "_ttbar";                      
->   >                                     else return "";                                                        
+>   >                                     else if( s.name() == "Zbc" || s.name() == "Wbc" || s.name() == "Wcl" || s.name() == "Zcl" || s.name() == "Zcc" || s.name() == "Wcc" ) return "_Vc";                                                              
+>   >                                     else if( s.name() == "Zbl" || s.name() == "Wbl" || s.name() == "Wl" || s.name() == "Zl" ) return "_Vl";                                                                                                         
+>   >                                     else if( s.name() == "ttbar" ) return "_ttbar";                                    
+>   >                                     else return "";                                                                    
 >   >                                     });                                                                                 
 
 >    ADD selective decorrelation for problematic flavour tagging pulls (~L544)
@@ -425,42 +424,42 @@ vim scripts/launch_default_jobs.py
 ~~~
 >    CHANGE Global run conditions (~L13-L15)
 >   >  version = "milestone1_v02_STXS"                                                                                    
->   >  GlobalRun = False            
+>   >  GlobalRun = False                                                                                     
 >   >  doPostFit = False                                                                                                
 
->    CHANGE all do cutbase block to 'false' (~L17-L23)
->   >  doCutBase = False        (~L17)
->   >  do_mbb_plot = False      (~L23)                                                                                     
+>    CHANGE all do cutbase block to 'false' (~L17-L23)                                                                         
+>   >  doCutBase = False        (~L17)                                                                                         
+>   >  do_mbb_plot = False      (~L23)                                                                                         
 
->    CHANGE the STXS block suck that we can run the 1 POI scheme (~L27-L32)
->   >  doSTXS = True                                                                                            
->   >  FitSTXS_Scheme = 1 #3 corresponds to 5 POI                                                                   
->   >  doSTXSQCD = True                                                                                         
->   >  doSTXSPDF = True                                                                               
->   >  doSTXSDropTheoryAcc= True                                                  
->   >  doXSWS = False # switch to true for 3/5 POIs                                                                        
+>    CHANGE the STXS block suck that we can run the 1 POI scheme (~L27-L32)                                                   
+>   >  doSTXS = True                                                                                                           
+>   >  FitSTXS_Scheme = 1 #3 corresponds to 5 POI                                                                            
+>   >  doSTXSQCD = True                                                                                                       
+>   >  doSTXSPDF = True                                                                                                       
+>   >  doSTXSDropTheoryAcc= True                                                                                             
+>   >  doXSWS = False # switch to true for 3/5 POIs                                                                          
 
->    CHANGE variable such that you run over the new CR's (~L34)
->   >  doNewRegions = True 
+>    CHANGE variable such that you run over the new CR's (~L34)                                                               
+>   >  doNewRegions = True                                                                                                    
 
->    CHANGE variables so you are running the observed 0L standalone fit (~L46-L57)
+>    CHANGE variables so you are running the observed 0L standalone fit (~L46-L57)                                            
 >   >  channels = ["0"]         (~L48)                                                                                        
->   >  MCTypes = ["mc16ade"]    (~L50)                                                                                     
->   >  syst_type = ["Systs"]    (~L53)                                                                              
+>   >  MCTypes = ["mc16ade"]    (~L50)                                                                                        
+>   >  syst_type = ["Systs"]    (~L53)                                                                                        
 
->    CHANGE variables to run on the batch as this will be hefty job (~L60)
->   >  run_on_batch = True                                                                                             
+>    CHANGE variables to run on the batch as this will be hefty job (~L60)                                                     
+>   >  run_on_batch = True                                                                                                     
 
->    CHANGE what you want to run in the 0L standalone fit (~L62-L69)
->   >  createSimpleWorkspace = True                                                                                
->   >  runPulls = True                                                                                                       
->   >  runBreakdown = False                                                                                              
->   >  runRanks = False                                                                                                
+>    CHANGE what you want to run in the 0L standalone fit (~L62-L69)                                                           
+>   >  createSimpleWorkspace = True                                                                                          
+>   >  runPulls = True                                                                                                        
+>   >  runBreakdown = False                                                                                                  
+>   >  runRanks = False                                                                                                       
 >   >  runLimits = False                                                                                                      
 >   >  runP0 = False                                                                                                        
->   >  runToyStudy = False                                                                                                 
+>   >  runToyStudy = False                                                                                                    
 
->    ADD additional debug plots for shape plots(~L72)                                                                
+>    ADD additional debug plots for shape plots(~L72)                                                                        
 >   >  doplots = True                                                                                                        
 
 Then once you are ready you can once again run the nominal fit by doing the same commands as seen above.
@@ -480,27 +479,27 @@ cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_0LFitTest
 
 vim scripts/launch_default_jobs.py 
 ~~~
->    CHANGE Global run conditions (~L13, L21, L34)
->   >  version = "milestone1_v02_STXS"  
+>    CHANGE Global run conditions (~L13, L21, L34)                                                                         
+>   >  version = "milestone1_v02_STXS"                                                                                      
 
->   >  mrgPtV = False    
+>   >  mrgPtV = False                                                                                                         
 
->   >  doNewRegions = True
+>   >  doNewRegions = True                                                                                                   
 
->    ADD shapes plots just in case they are needed (~L72)
->   >  doplots = True
+>    ADD shapes plots just in case they are needed (~L72)                                                                     
+>   >  doplots = True                                                                                                      
 ~~~
 
 vim src/binning_vhbbrun2.cpp
 ~~~
->    CHANGE Binning to be 1 in SR and CRs (~L140)
->   >      //Testing Single bin in all regions
->   >      if (doNewRegions && (c(Property::descr).Contains("CR")) ){
->   >        return oneBin(c);
->   >      }
->   >      if (doNewRegions && (c(Property::descr).Contains("SR")) ){
->   >        return oneBin(c);
->   >      }
+>    CHANGE Binning to be 1 in SR and CRs (~L140)                                                                         
+>   >      //Testing Single bin in all regions                                                                         
+>   >      if (doNewRegions && (c(Property::descr).Contains("CR")) ){                                                         
+>   >        return oneBin(c);                                                                                               
+>   >      }                                                                                                                 
+>   >      if (doNewRegions && (c(Property::descr).Contains("SR")) ){                                                       
+>   >        return oneBin(c);                                                                                                
+>   >      }                                                                                                                  
 ~~~
 source setup.sh
 cd build && rm -rf *
@@ -519,11 +518,11 @@ cp -r /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Btagging/inputs/SMVHVZ_2019
 
 vim scripts/launch_default_jobs.py 
 ~~~
->    CHANGE flag to run over merged ptV inputs (~L13)
->   >  version = "milestone1_v02_0L_STXS_MergedPtV"
+>    CHANGE flag to run over merged ptV inputs (~L13)                                                                         
+>   >  version = "milestone1_v02_0L_STXS_MergedPtV"                                                                         
 
->    CHANGE Global run conditions (~L21)
->   >  mrgPtV = True    
+>    CHANGE Global run conditions (~L21)                                                                                     
+>   >  mrgPtV = True                                                                                                          
 ~~~
 source setup.sh
 cd build && rm -rf *
