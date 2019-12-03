@@ -33,13 +33,16 @@ The first thing to do is to check the yields against the previous inputs used.
 ~~~
 vim scripts/InputsCheck_VHbb.py
 ~~~
->    CHANGE Inputs to compare and the common area where they are kept (~L28-30)
->   >  eos_dir='/eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/FullRunII2019/statArea/inputs/'                             
->   >  IC.input_ref  = eos_dir+'ZeroLep/r32-15_PCBT_20191113/LimitHistograms.VHbb.0Lep.13TeV.mc16ade.Oxford-newExt-PCBT.32-15.root'
->   >  IC.input_test = eos_dir+'ZeroLep/r32-15_postMS2_20191127/LimitHistograms.VHbb.0Lep.13TeV.mc16ade.Oxford.r32-15.root'
+>    CHANGE Inputs to compare and the common area where they are kept (~L28-30)                                               
+>   >  eos_dir ='/eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/FullRunII2019/statArea/inputs/'                           
+>   >  input_ref  = eos_dir + 'ZeroLep/r32-15_PCBT_20191113/LimitHistograms.VHbb.0Lep.13TeV.mc16ade.Oxford-newExt-PCBT.32-15.root'                                                                                                                      
+>   >  input_test = eos_dir + 'ZeroLep/r32-15_postMS2_20191127/LimitHistograms.VHbb.0Lep.13TeV.mc16ade.Oxford.r32-15.root'
 
->    CHANGE the Lepton channel to 0 lepton.
->   >  IC.lep = 'L0'
+>    CHANGE the Lepton channel to 0 lepton (~L27)                                                                             
+>   >  lep = 'L0'                                                                                                             
+
+>    CHANGE the Lepton variable to run over (~L54)                                                                      
+>   >  'L0' = 'mva'                                                                                                             
 ~~~
 python scripts/InputsCheck_VHbb.py > Comp32-15_PCBT-20191113_postMS2_20191127.txt
 tail -n 7 Comp32-15_PCBT-20191113_postMS2_20191127.txt
@@ -144,7 +147,6 @@ cd ..
 python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-MVA-Asimov
 mv output/SMVHVZ_2019_MVA_mc16ade_v03_STXS.140ifb-0L-ade-STXS-baseline-MVA-Asimov_fullRes_VHbb_140ifb-0L-ade-STXS-baseline-MVA-Asimov_0_mc16ade_Systs_mva_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/140ifb-0L-ade-STXS-baseline-MVA-Asimov
 ~~~
-
 ### PostFit 0L
 To break down the output mva into the main variables that go into it.
 ~~~
@@ -161,7 +163,7 @@ vim scripts/launch_default_jobs.py
 
 >    CHANGE postfit variables of interest (~L92)
 >   >  vs2tag = ['pTV','MET','pTB1','pTB2','mBB','dRBB','dEtaBB','dPhiVBB','dEtaVBB','MEff','MEff3','dPhiLBmin','mTW','mLL','dYWH','Mtop','pTJ3','mBBJ','mBBJ3','METSig'] -> vs2tag =  ['pTV','MET']
-~~~
+
 Then once you are ready you can run
 ~~~
 cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Milestone2
@@ -174,7 +176,7 @@ python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-MVA-postfitVar
 mv output/SMVHVZ_2019_MVA_mc16ade_v03_STXS.140ifb-0L-ade-STXS-baseline-MVA-postfitVars_fullRes_VHbb_140ifb-0L-ade-STXS-baseline-MVA-postfitVars_0_mc16ade_Systs_MET_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/140ifb-0L-ade-STXS-baseline-MET
 mv output/SMVHVZ_2019_MVA_mc16ade_v03_STXS.140ifb-0L-ade-STXS-baseline-MVA-postfitVars_fullRes_VHbb_140ifb-0L-ade-STXS-baseline-MVA-postfitVars_0_mc16ade_Systs_mBB_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/140ifb-0L-ade-STXS-baseline-mBB
 python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 3 -f 140ifb-0L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-baseline-mBB
-
+~~~
 
 ### Full 0L Fit
 Now we have to run the full nominal standalone 0L fit. This may take some time. 
@@ -206,8 +208,32 @@ cmake ..
 make -j8
 cd ..
 python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-MVA-Full
-mv output/SMVHVZ_2019_MVA_mc16ade_v03_STXS.140ifb-0L-ade-STXS-baseline-MVA-Full_fullRes_VHbb_140ifb-0L-ade-STXS-baseline-MVA-Full_0_mc16ade_Systs_MET_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/140ifb-0L-ade-STXS-baseline-Full
-
+mv output/SMVHVZ_2019_MVA_mc16ade_v03_STXS.140ifb-0L-ade-STXS-baseline-MVA-Full_fullRes_VHbb_140ifb-0L-ade-STXS-baseline-MVA-Full_0_mc16ade_Systs_mva_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/140ifb-0L-ade-STXS-baseline-MVA-Full
+~~~
+## Getting the Plots you want
+~~~
+cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Milestone2
+source setup.sh
+~~~
+### MVA Vs Asimov Pulls
+~~~
+python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA -n -a 5
+mv output/pullComparisons output/pullComp_DataVSAsimov
+~~~
+### MVA Breakdowns
+~~~
+python WSMakerCore/scripts/mergeBreakdown.py 140ifb-0L-ade-STXS-baseline-MVA-Full
+vim /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Milestone2/output/140ifb-0L-ade-STXS-baseline-MVA-Full/plots/breakdown/muHatTable_mode11_Asimov1_SigXsecOverSM.txt 
+~~~
+### MVA Rankings
+~~~
+python WSMakerCore/scripts/makeNPrankPlots.py 140ifb-0L-ade-STXS-baseline-MVA-Full
+imgcat output/140ifb-0L-ade-STXS-baseline-MVA-Full/pdf-files/pulls_SigXsecOverSM_125.pdf
+~~~
+### Mbb Plots
+~~~
+python WSMakerCore/scripts/makeNPrankPlots.py 140ifb-0L-ade-STXS-baseline-MVA-Full
+imgcat output/140ifb-0L-ade-STXS-baseline-MVA-Full/pdf-files/pulls_SigXsecOverSM_125.pdf
 ~~~
 # Investigating B-tagging
 With the new inputs, the 0L fit needs to be checked that the features present in the flavour sector pulls are still there, and if so they need to be investigated. To do this the first thing we need to do is to restore the launch options to the default and decorrelate the entire fit sector in PtV, SR/CR and Njet. 
@@ -219,7 +245,7 @@ source setup.sh
 mv /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Btagging/output/140ifb-0L-ade-STXS-baseline-MVA/ /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Btagging/output/140ifb-0L-ade-STXS-baseline-MVA_OLD/
 mv /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Btagging/output/140ifb-0L-ade-STXS-baseline-MVA_OLD/ output/
 python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-baseline-MVA_OLD -n -a 5 -l NEW OLD
-mv output/pullComparisons output/NEWvsOLDpulls
+mv output/pullComparisons output/pullComp_NEWvsOLDpulls
 ~~~
 The new fit has waay more B-tagging pulls, but what makes a pull.
 
@@ -252,4 +278,29 @@ vim scripts/launch_default_jobs.py
 ~~~
 vim src/systematicslistsbuilder_vhbbrun2.cpp
 ~~~
+(L566)
+    if(!PCBTInputs) m_histoSysts.insert({ "SysFT_EFF_"+sysname , noSmoothConfig});
+    else m_histoSysts.insert({ "SysFT_EFF_"+sysname , SysConfig{T::shape, S::noSmooth, Sym::symmetriseOneSided}});
+    
+      for(auto sysname: btagSysts) {
+    if(!PCBTInputs) m_histoSysts.insert({ "SysFT_EFF_"+sysname , noSmoothConfig}); 
+    else {
+      if (sysname == "Eigen_B_1") m_histoSysts.insert({ "SysFT_EFF_"+sysname , SysConfig{T::shape, S::noSmooth, Sym::symmetriseOneSided}.decorr({P::nJet, P::binMin, P::descr}) });
+      else m_histoSysts.insert({ "SysFT_EFF_"+sysname , SysConfig{T::shape, S::noSmooth, Sym::symmetriseOneSided}});
+    } 
+  }
+~~~
+cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Milestone2
+source setup.sh
+cd build
+cmake ..
+make -j8
+cd ..
 
+python scripts/launch_default_jobs.py B_1_nJetPtVSRCRDeco
+mv output/SMVHVZ_2019_MVA_mc16ade_v03_STXS.B_1_nJetPtVSRCRDeco_fullRes_VHbb_B_1_nJetPtVSRCRDeco_0_mc16ade_Systs_mva_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/140ifb-0L-ade-STXS-MVA-B_1_nJetPtVSRCRDeco 
+~~~
+Then you need to compare this output to that of the current un-decorrelated fit.
+~~~
+python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-MVA-B_1_nJetPtVSRCRDeco  -n -a 5 -l Nominal B_1FullDeco
+mv output/pullComparisons output/pullComp_Nominal_VS_B1FullDeco
