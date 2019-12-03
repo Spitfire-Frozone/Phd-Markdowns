@@ -22,9 +22,12 @@ make -j8
 cd ..
 ~~~
 The inputs can be found here.
->    0-lepton :/eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/FullRunII2019/statArea/inputs/ZeroLep/r32-15_postMS2_20191127/LimitHistograms.VHbb.0Lep.13TeV.mc16ade.Oxford.r32-15.                                                     
->    1-lepton : /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/FullRunII2019/statArea/inputs/OneLep/r32-15_postMS2_20191128/LimitHistograms.VHbb.1Lep.13TeV.mc16ade.UCL.32-15.root                                                     
->    2-lepton : /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/FullRunII2019/statArea/inputs/TwoLep/r32-15_postMS2_20191124/v1/fullSysts/LimitHistograms.VHbb.2Lep.13TeV.mc16ade.Kyoto.r32-15_postMS2_20191124.v1.root                 
+>    0-lepton :
+/eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/FullRunII2019/statArea/inputs/ZeroLep/r32-15_postMS2_20191127/LimitHistograms.VHbb.0Lep.13TeV.mc16ade.Oxford.r32-15.                                                     
+>    1-lepton : 
+/eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/FullRunII2019/statArea/inputs/OneLep/r32-15_postMS2_20191128/LimitHistograms.VHbb.1Lep.13TeV.mc16ade.UCL.32-15.root                                                     
+>    2-lepton : 
+/eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/FullRunII2019/statArea/inputs/TwoLep/r32-15_postMS2_20191124/v1/fullSysts/LimitHistograms.VHbb.2Lep.13TeV.mc16ade.Kyoto.r32-15_postMS2_20191124.v1.root                 
 
 The first thing to do is to check the yields against the previous inputs used. 
 ~~~
@@ -218,7 +221,16 @@ mv /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Btagging/output/140ifb-0L-ade-
 python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-baseline-MVA_OLD -n -a 5 -l NEW OLD
 mv output/pullComparisons output/NEWvsOLDpulls
 ~~~
+The new fit has waay more B-tagging pulls, but what makes a pull.
+
+So the indices in the pulls usually refer to an Eigenvector decomposition. In the case of the JET systematics for example, you first group them into physical categories, like Modelling, Statistical Uncertainties, and in each of these categories you do the decomposition. 
+
+The decomposition is basically finding  a linear combination of uncertainties. If you see each systematic variation as being correlated with others than you can think of the decomposition as dioganolizing this matrix(1**). then your new "decomposed" uncertainties (or eigenvectors) are a linear combination of the ones you put in. You then label them according to their impact (1 being the one with the most impact, ...). It is important to note that it is no longer so clear what they actually are. The input systematic uncertainties are of course meaningful in the sense that one corresponds maybe to the difference between MC generator 1 and MC generator 2 but after the decomposition they are linear combinations of each other. Then you usually say I take the N most important ones separately and the ones with i > N I add in quadrature to form the N+1 NP. 
+
+(1**)the matrix that is used for the eigenvector problem. It starts from the construction of the covariance matrix corresponding to each source of uncertainty, and then sums these covariance matrices to obtain the total covariance matrix. Being a symmetric, positive-definite matrix this can be considered as an eigenvalue problem. The eigenvectors that "solve" this problem can be seen as "directions" in which to carry out independent variations. The sizes of the variations are given by the square root of the corresponding eigenvalues.
+ 
 ## De-correlation of everything for B-tagging
+The fit exhibits a pull in the 21st one, but lets say the problem is more fundamental and the half sigma pull of B_1 is more important. Will decorrelate B1 in ptV, nJets and in SRCR and see what happens.
 ~~~
 vim scripts/launch_default_jobs.py 
 ~~~
