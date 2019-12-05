@@ -278,18 +278,13 @@ vim scripts/launch_default_jobs.py
 ~~~
 vim src/systematicslistsbuilder_vhbbrun2.cpp
 ~~~
-(L566)
-    if(!PCBTInputs) m_histoSysts.insert({ "SysFT_EFF_"+sysname , noSmoothConfig});
-    else m_histoSysts.insert({ "SysFT_EFF_"+sysname , SysConfig{T::shape, S::noSmooth, Sym::symmetriseOneSided}});
-    
-      for(auto sysname: btagSysts) {
-    if(!PCBTInputs) m_histoSysts.insert({ "SysFT_EFF_"+sysname , noSmoothConfig}); 
-    else {
-      if (sysname == "Eigen_B_1") m_histoSysts.insert({ "SysFT_EFF_"+sysname , SysConfig{T::shape, S::noSmooth, Sym::symmetriseOneSided}.decorr({P::nJet, P::binMin, P::descr}) });
-      else m_histoSysts.insert({ "SysFT_EFF_"+sysname , SysConfig{T::shape, S::noSmooth, Sym::symmetriseOneSided}});
-    } 
-  }
-~~~
+>    ADD splitting of B_1 systematic (~L566)                                                                                  
+>   >  else m_histoSysts.insert({ "SysFT_EFF_"+sysname , SysConfig{T::shape, S::noSmooth, Sym::symmetriseOneSided}}); ->       
+>   >  else {                                                                                                                
+>   >        if (sysname == "Eigen_B_1") m_histoSysts.insert({ "SysFT_EFF_"+sysname , SysConfig{T::shape, S::noSmooth, Sym::symmetriseOneSided}.decorr({P::nJet, P::binMin, P::descr}) });                                                           
+>   >        else m_histoSysts.insert({ "SysFT_EFF_"+sysname , SysConfig{T::shape, S::noSmooth, Sym::symmetriseOneSided}});   
+>   >      }                                                                                                                
+~~~ 
 cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Milestone2
 source setup.sh
 cd build
@@ -304,3 +299,5 @@ Then you need to compare this output to that of the current un-decorrelated fit.
 ~~~
 python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-MVA-B_1_nJetPtVSRCRDeco  -n -a 5 -l Nominal B_1FullDeco
 mv output/pullComparisons output/pullComp_Nominal_VS_B1FullDeco
+~~~
+It seems that 
