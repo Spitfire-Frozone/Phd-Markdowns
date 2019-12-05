@@ -94,7 +94,7 @@ cmake ..
 make -j8
 cd ..
 python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-MVA
-mv output/SMVHVZ_2019_MVA_mc16ade_milestone1_v02_0L_STXS_MergedPtV.140ifb-0L-ade-STXS-baseline-MVA_fullRes_VHbb_140ifb-0L-ade-STXS-baseline-MVA_0_mc16ade_Systs_mva_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/140ifb-0L-ade-STXS-baseline-MVA
+mv output/SMVHVZ_2019_MVA_mc16ade_milestone1_v02_0L_STXS.140ifb-0L-ade-STXS-baseline-MVA_fullRes_VHbb_140ifb-0L-ade-STXS-baseline-MVA_0_mc16ade_Systs_mva_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/140ifb-0L-ade-STXS-baseline-MVA
 ~~~
 After this is ready, we will want to run many fits for all of the b-tagging systematics that have been pulled but we need to edit them one at a time. I will show how I do this for one set, though this will need to be repeated for each systematic to be investigated. 
 - B_0                                                                                                  
