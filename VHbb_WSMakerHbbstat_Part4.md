@@ -54,8 +54,8 @@ vim SMVHVZ_2019_MVA_mc16ade_v03_STXS.txt
 ~~~
 >    ADD new samples
 >   >  ZeroLepton ZeroLep/r32-15_postMS2_20191127/LimitHistograms.VHbb.0Lep.13TeV.mc16ade.Oxford.r32-15.root mva,MET,mBB,mvadiboson                                                                                 
->   >  OneLepton OneLep/r32-15_postMS2_20191128/LimitHistograms.VHbb.1Lep.13TeV.mc16ade.UCL.32-15.root mva,pTV,mBB,mvadiboson
->   >  TwoLepton TwoLep/r32-15_postMS2_20191124/v1/fullSysts/LimitHistograms.VHbb.2Lep.13TeV.mc16ade.Kyoto.r32-15_postMS2_20191124.v1.root mva,pTV,mBB,mvadiboson
+>   >  OneLepton OneLep/r32-15_postMS2_20191128/LimitHistograms.VHbb.1Lep.13TeV.mc16ade.UCL.32-15.root mva,pTV,mBB,mvadiboson 
+>   >  TwoLepton TwoLep/r32-15_postMS2_20191124/v1/fullSysts/LimitHistograms.VHbb.2Lep.13TeV.mc16ade.Kyoto.r32-15_postMS2_20191124.v1.root mva,pTV,mBB,mvadiboson                                                                              
 ~~~
 cd ..
 SplitInputs -r Run2 -v SMVHVZ_2019_MVA_mc16ade_v03_STXS
@@ -300,4 +300,63 @@ Then you need to compare this output to that of the current un-decorrelated fit.
 python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-MVA-B_1_nJetPtVSRCRDeco  -n -a 5 -l Nominal B_1FullDeco
 mv output/pullComparisons output/pullComp_Nominal_VS_B1FullDeco
 ~~~
-It seems that 
+It seems that B_1 pulls are not pulling any of the other pulls. Will decorrelate B21 in ptV, nJets and in SRCR and see what happens.
+~~~
+vim src/systematicslistsbuilder_vhbbrun2.cpp
+~~~
+>    ADD splitting of B_21 systematic instead of B_1 (~L566)                                                                   
+>   >        if (sysname == "Eigen_B_1") ... -> if (sysname == "Eigen_B_21")                                                   
+~~~ 
+cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Milestone2
+source setup.sh
+cd build
+cmake ..
+make -j8
+cd ..
+
+python scripts/launch_default_jobs.py B_21_nJetPtVSRCRDeco
+mv output/SMVHVZ_2019_MVA_mc16ade_v03_STXS.B_21_nJetPtVSRCRDeco_fullRes_VHbb_B_21_nJetPtVSRCRDeco_0_mc16ade_Systs_mva_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/140ifb-0L-ade-STXS-MVA-B_21_nJetPtVSRCRDeco 
+~~~
+Then you need to compare this output to that of the current un-decorrelated fit.
+~~~
+python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-MVA-B_21_nJetPtVSRCRDeco  -n -a 5 -l Nominal B_21FullDeco
+mv output/pullComparisons output/pullComp_Nominal_VS_B21FullDeco
+~~~
+Given that the B21 in ptV, nJets and in SRCR are also inconclusive, we will also fully de-correlate Light_0 and B_0
+~~~
+vim src/systematicslistsbuilder_vhbbrun2.cpp
+~~~
+>    ADD splitting of Light_0 systematic instead of B_21 (~L566)                                                               
+>   >        if (sysname == "Eigen_B_1") ... -> if (sysname == "Eigen_Light_0")     
+>   >        [ [ [ AND ] ] ]
+>   >        if (sysname == "Eigen_B_1") ... -> if (sysname == "B_0")   
+
+>    Light_0
+~~~ 
+cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Milestone2
+source setup.sh
+cd build
+cmake ..
+make -j8
+cd ..
+
+python scripts/launch_default_jobs.py Light_0_nJetPtVSRCRDeco
+mv output/SMVHVZ_2019_MVA_mc16ade_v03_STXS.Light_0_nJetPtVSRCRDeco_fullRes_VHbb_Light_0_nJetPtVSRCRDeco_0_mc16ade_Systs_mva_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/140ifb-0L-ade-STXS-MVA-Light_0_nJetPtVSRCRDeco 
+
+python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-MVA-Light_0_nJetPtVSRCRDeco  -n -a 5 -l Nominal Light_0FullDeco
+mv output/pullComparisons output/pullComp_Nominal_VS_Light_0FullDeco
+~~~
+>     B_0
+~~~
+cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Milestone2
+source setup.sh
+cd build
+cmake ..
+make -j8
+cd ..
+
+python scripts/launch_default_jobs.py B_0_nJetPtVSRCRDeco
+mv output/SMVHVZ_2019_MVA_mc16ade_v03_STXS.B_0_nJetPtVSRCRDeco_fullRes_VHbb_B_0_nJetPtVSRCRDeco_0_mc16ade_Systs_mva_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/140ifb-0L-ade-STXS-MVA-B_0_nJetPtVSRCRDeco 
+
+python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-MVA-B_0_nJetPtVSRCRDeco  -n -a 5 -l Nominal B_0FullDeco
+mv output/pullComparisons output/pullComp_Nominal_VS_B_0FullDeco
