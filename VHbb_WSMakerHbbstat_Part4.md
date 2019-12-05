@@ -330,8 +330,9 @@ vim src/systematicslistsbuilder_vhbbrun2.cpp
 >   >        if (sysname == "Eigen_B_1") ... -> if (sysname == "Eigen_Light_0")     
 >   >        [ [ [ AND ] ] ]
 >   >        if (sysname == "Eigen_B_1") ... -> if (sysname == "B_0")   
-
->    Light_0
+~~~
+~~~
+>     Light_0
 ~~~ 
 cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Milestone2
 source setup.sh
@@ -360,3 +361,24 @@ mv output/SMVHVZ_2019_MVA_mc16ade_v03_STXS.B_0_nJetPtVSRCRDeco_fullRes_VHbb_B_0_
 
 python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-MVA-B_0_nJetPtVSRCRDeco  -n -a 5 -l Nominal B_0FullDeco
 mv output/pullComparisons output/pullComp_Nominal_VS_B_0FullDeco
+~~~
+Time to de-correlate B0,B1 and B21 simultaneously
+~~~
+vim src/systematicslistsbuilder_vhbbrun2.cpp
+~~~
+>    ADD splitting of B_21 and B_1 systematic in addition to B_0 (~L569)                                                       
+>   >     else if (sysname == "Eigen_B_1") m_histoSysts.insert({ "SysFT_EFF_"+sysname , SysConfig{T::shape, S::noSmooth, Sym::symmetriseOneSided}.decorr({P::nJet, P::binMin, P::descr}) });                                                           
+>   >     else if (sysname == "Eigen_B_21") m_histoSysts.insert({ "SysFT_EFF_"+sysname , SysConfig{T::shape, S::noSmooth, Sym::symmetriseOneSided}.decorr({P::nJet, P::binMin, P::descr}) });                                                           
+~~~
+cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Milestone2
+source setup.sh
+cd build
+cmake ..
+make -j8
+cd ..
+
+python scripts/launch_default_jobs.py B0B1B12_nJetPtVSRCRDeco
+mv output/SMVHVZ_2019_MVA_mc16ade_v03_STXS.B0B1B12_nJetPtVSRCRDeco_fullRes_VHbb_B0B1B12_nJetPtVSRCRDeco_0_mc16ade_Systs_mva_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/140ifb-0L-ade-STXS-MVA-B0B1B12_nJetPtVSRCRDeco 
+
+python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-MVA-B0B1B12_nJetPtVSRCRDeco  -n -a 5 -l Nominal B0B1B12FullDeco
+mv output/pullComparisons output/pullComp_Nominal_VS_B0B1B12FullDeco
