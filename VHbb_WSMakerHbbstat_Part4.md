@@ -427,7 +427,7 @@ vim src/systematicslistsbuilder_vhbbrun2.cpp
 >   >      }  ->                                                                                                               
 >   >  else m_histoSysts.insert({ "SysFT_EFF_"+sysname , SysConfig{T::shape, S::noSmooth, Sym::symmetriseOneSided}});        
 
->    ADD dummy of systematics (~L383)                                                                               
+>    ADD dummy of systematics (~L383)                                                                                         
 >   >  if (doNewRegions){                                                                                                     
 >   >      normSys("SysDummyBoson_CRLow", 0.10, SysConfig{{"Wbb","Zbb"}}.applyIn(P::descr=="CRLow"));                         
 >   >      normSys("SysDummyTop_CRLow", 0.10, SysConfig{{"ttbar","stop"}}.applyIn(P::descr=="CRLow"));                       
@@ -443,7 +443,16 @@ make -j8
 cd ..
 
 python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-CRDummySysts-MVA
-mv output/SMVHVZ_2019_MVA_mc16ade_v03_STXS.140ifb-0L-ade-STXS-CRDummySysts-MVA_fullRes_VHbb_140ifb-0L-ade-STXS-CRDummySysts-MVA_0_mc16ade_Systs_mva_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/140ifb-0L-ade-STXS-CRDummySysts-MVA 
-
+mv output/SMVHVZ_2019_MVA_mc16ade_v04_STXS.140ifb-0L-ade-STXS-CRDummySysts-MVA_fullRes_VHbb_140ifb-0L-ade-STXS-CRDummySysts-MVA_0_mc16ade_Systs_mva_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/140ifb-0L-ade-STXS-CRDummySysts-MVA 
+~~~
+Now you need to edit the pull plot scripts such that the variables you added can be seen.
+~~~
+vim scripts/analysisPlottingConfig.py
+~~~
+cov_classification (L180)
+>    ADD dummy of systematics (~L383)                                                                                        
+>   >  if (doNewRegions){                                                                                                     
+~~~
 python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-CRDummySysts-MVA -n -a 5 -l Nominal ExtraSysts
 mv output/pullComparisons output/pullComp_Nominal_VS_AdditionalCRSysts
+~~~
