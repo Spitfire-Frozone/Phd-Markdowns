@@ -261,7 +261,7 @@ cmake ..
 make -j8
 cd ..
 python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-pTVShapeUncNormsGone-MVA
-mv output/SMVHVZ_2019_MVA_mc16ade_v03_STXS.140ifb-0L-ade-STXS-baseline-MVA_fullRes_VHbb_140ifb-0L-ade-STXS-pTVShapeUncNormsGone-MVA_0_mc16ade_Systs_mva_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/140ifb-0L-ade-STXS-pTVShapeUncNormsGone-MVA
+mv output/SMVHVZ_2019_MVA_mc16ade_v04_STXS.140ifb-0L-ade-STXS-pTVShapeUncNormsGone-MVA_fullRes_VHbb_140ifb-0L-ade-STXS-pTVShapeUncNormsGone-MVA_0_mc16ade_Systs_mva_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/140ifb-0L-ade-STXS-pTVShapeUncNormsGone-MVA
 
 python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-pTVShapeUncNormsGone-MVA  -n -a 5 -l Nominal pTVNormsGone
 mv output/pullComparisons output/pullComp_Nominal_VS_pTVNormsGone
@@ -414,3 +414,36 @@ mv output/SMVHVZ_2019_MVA_mc16ade_v03_STXS.B0B1B12_nJetPtVSRCRDeco_fullRes_VHbb_
 
 python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-MVA-B0B1B12_nJetPtVSRCRDeco  -n -a 5 -l Nominal B0B1B12FullDeco
 mv output/pullComparisons output/pullComp_Nominal_VS_B0B1B12FullDeco
+~~~
+##  Addition of dummy systematics for B-tagging
+One thing that could be tested, would be to introduce two dummy systs, like +10% or so, one applied just to CRHigh, and one applied just to CRLow, so see what in the fit covers for these additions 
+~~~
+vim src/systematicslistsbuilder_vhbbrun2.cpp
+~~~
+>    REMOVE splitting of B_X systematics (~L566)                                                                               
+>   >  else {                                                                                                                
+>   >        if (sysname == "Eigen_B_1") m_histoSysts.insert({ "SysFT_EFF_"+sysname , SysConfig{T::shape, S::noSmooth, Sym::symmetriseOneSided}.decorr({P::nJet, P::binMin, P::descr}) });                                                           
+>   >        else m_histoSysts.insert({ "SysFT_EFF_"+sysname , SysConfig{T::shape, S::noSmooth, Sym::symmetriseOneSided}});   
+>   >      }  ->                                                                                                               
+>   >  else m_histoSysts.insert({ "SysFT_EFF_"+sysname , SysConfig{T::shape, S::noSmooth, Sym::symmetriseOneSided}});        
+
+>    ADD dummy of systematics (~L383)                                                                               
+>   >  if (doNewRegions){                                                                                                     
+>   >      normSys("SysDummyBoson_CRLow", 0.10, SysConfig{{"Wbb","Zbb"}}.applyIn(P::descr=="CRLow"));                         
+>   >      normSys("SysDummyTop_CRLow", 0.10, SysConfig{{"ttbar","stop"}}.applyIn(P::descr=="CRLow"));                       
+>   >      normSys("SysDummyBoson_CRHigh", 0.10, SysConfig{{"Wbb","Zbb"}}.applyIn(P::descr=="CRHigh"));                       
+>   >      normSys("SysDummyTop_CRHigh", 0.10, SysConfig{{"ttbar","stop"}}.applyIn(P::descr=="CRHigh"));                     
+>   >  }    
+~~~
+cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Milestone2
+source setup.sh
+cd build
+cmake ..
+make -j8
+cd ..
+
+python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-CRDummySysts-MVA
+mv output/SMVHVZ_2019_MVA_mc16ade_v03_STXS.140ifb-0L-ade-STXS-CRDummySysts-MVA_fullRes_VHbb_140ifb-0L-ade-STXS-CRDummySysts-MVA_0_mc16ade_Systs_mva_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/140ifb-0L-ade-STXS-CRDummySysts-MVA 
+
+python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-CRDummySysts-MVA -n -a 5 -l Nominal ExtraSysts
+mv output/pullComparisons output/pullComp_Nominal_VS_AdditionalCRSysts
