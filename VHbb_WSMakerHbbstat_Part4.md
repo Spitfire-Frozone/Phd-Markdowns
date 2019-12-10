@@ -357,6 +357,11 @@ mv output/SMVHVZ_2019_MVA_mc16ade_v05_STXS.140ifb-0L-ade-STXS-baseline-CBA-Full_
 ~~~
 ## 4) Run the VV analysis with Rankings, Breakdowns and Significances 
 ~~~
+vim scripts/analysis_plotting_config.py 
+~~~
+>    CHANGE what it condisers to be signal (~L10)                                                                             
+>   >  vh_fit=False                                                                                                         
+~~~
 vim scripts/launch_default_jobs.py 
 ~~~
 >    CHANGE Analyses conditions (~L17-L19)                                                                                     
@@ -380,10 +385,33 @@ cd ..
 python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-VV-Full
 mv output/SMVHVZ_2019_MVA_mc16ade_v05_STXS.140ifb-0L-ade-STXS-baseline-CBA-Full_fullRes_VHbb_140ifb-0L-ade-STXS-baseline-VV-Full_0_mc16ade_Systs_mBB_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/140ifb-0L-ade-STXS-baseline-VV-Full
 ~~~
-
-
 ## 3) Run the VV analysis over the post-fit variables and with the EXPECTED pulls 
-        
+~~~
+vim scripts/launch_default_jobs.py 
+~~~
+>    ADD running of post-fit variables (~L15)                                                    
+>   >  doPostFit = True                                                                                                      
+
+>    CHANGE flags to get Rankings, Breakdowns and Significances (~L60-L80)                                                    
+>   >  doExp = 0                                                                                                              
+>   >  runPulls = True                                                                                                      
+>   >  runBreakdown = False                                                                                                  
+>   >  runRanks = False                                                                                                      
+>   >  runP0 = False                                                                                                           
+>   >  doplots = True                                                                                                         
+
+>    CHANGE postfit plots to run over only ones we are interested in (~L92)                                                   
+  vs2tag = ['pTV','MET','pTB1','pTB2','mBB','dRBB','dEtaBB','dPhiVBB','dEtaVBB','MEff','MEff3','dPhiLBmin','mTW','mLL','dYWH','Mtop','pTJ3','mBBJ','mBBJ3','METSig'] ->   vs2tag = ['pTV','MET']
+~~~
+cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_AuxAnalyses
+source setup.sh
+cd build
+cmake ..
+make -j8
+cd ..
+python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-VV
+mv output/SMVHVZ_2019_MVA_mc16ade_v05_STXS.140ifb-0L-ade-STXS-baseline-CBA-Full_fullRes_VHbb_140ifb-0L-ade-STXS-baseline-VV_0_mc16ade_Systs_mBB_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/140ifb-0L-ade-STXS-baseline-VV
+~~~
 
 # Investigating B-tagging
 With the new inputs, the 0L fit needs to be checked that the features present in the flavour sector pulls are still there, and if so they need to be investigated. To do this the first thing we need to do is to restore the launch options to the default and decorrelate the entire fit sector in PtV, SR/CR and Njet. 
