@@ -156,7 +156,7 @@ vim scripts/launch_default_jobs.py
 >   >  doPostFit = True                                                                                                       
 
 >    CHANGE to construct Asimov dataset using central values from fit to data (~L62)                                           
->   >  doExp=0 -> doExp=1                                                                                                    
+>   >  doExp=1 -> doExp=0                                                                                                    
 
 >    CHANGE what you want to run in the 0L standalone fit (~L69)                                                          
 >   >  runPulls = False                                                                                                 
@@ -173,9 +173,8 @@ cmake ..
 make -j8
 cd ..
 python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-MVA-postfitVars
+mv output/SMVHVZ_2019_MVA_mc16ade_v06_STXS.140ifb-0L-ade-STXS-baseline-MVA-postfitVars_fullRes_VHbb_140ifb-0L-ade-STXS-baseline-MVA-postfitVars_0_mc16ade_Systs_mBB_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/140ifb-0L-ade-STXS-baseline-mBB
 mv output/SMVHVZ_2019_MVA_mc16ade_v03_STXS.140ifb-0L-ade-STXS-baseline-MVA-postfitVars_fullRes_VHbb_140ifb-0L-ade-STXS-baseline-MVA-postfitVars_0_mc16ade_Systs_MET_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/140ifb-0L-ade-STXS-baseline-MET
-mv output/SMVHVZ_2019_MVA_mc16ade_v03_STXS.140ifb-0L-ade-STXS-baseline-MVA-postfitVars_fullRes_VHbb_140ifb-0L-ade-STXS-baseline-MVA-postfitVars_0_mc16ade_Systs_mBB_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/140ifb-0L-ade-STXS-baseline-mBB
-python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 3 -f 140ifb-0L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-baseline-mBB
 ~~~
 
 ### Full 0L Fit
@@ -187,7 +186,7 @@ vim scripts/launch_default_jobs.py
 >   >  doPostFit = False                                                                                                       
 
 >    CHANGE to construct Asimov dataset using central values from fit to data (~L62)                                           
->   >  doExp=1                                                                                                    
+>   >  doExp=0 -> doExp=1                                                                                                   
 
 >    CHANGE what you want to run in the 0L standalone fit (~L62-L69)                                                         
 >   >  createSimpleWorkspace = True                                                                                
@@ -232,8 +231,7 @@ imgcat output/140ifb-0L-ade-STXS-baseline-MVA-Full/pdf-files/pulls_SigXsecOverSM
 ~~~
 ### Mbb Plots
 ~~~
-python WSMakerCore/scripts/makeNPrankPlots.py 140ifb-0L-ade-STXS-baseline-MVA-Full
-imgcat output/140ifb-0L-ade-STXS-baseline-MVA-Full/pdf-files/pulls_SigXsecOverSM_125.pdf
+python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 3 -f 140ifb-0L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-baseline-mBB
 ~~~
 
 # Repeating for slightly newer inputs
