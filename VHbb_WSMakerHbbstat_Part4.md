@@ -449,10 +449,15 @@ Now you need to edit the pull plot scripts such that the variables you added can
 ~~~
 vim scripts/analysisPlottingConfig.py
 ~~~
-cov_classification (L180)
->    ADD dummy of systematics (~L383)                                                                                        
->   >  if (doNewRegions){                                                                                                     
+>    ADD dummy of systematics to the cov_classification (~L190)                                                               
+>   >          "LUMI": [False, ["LUMI"],[]] -> "LUMI": [False, ["LUMI" ,"SysDummyBoson_CRLow","SysDummyBoson_CRHigh","SysDummyTop_CRLow","SysDummyTop_CRHigh",[]],                                           
 ~~~
+cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Milestone2
+source setup.sh
+cd build
+cmake ..
+make -j8
+cd ..
 python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-CRDummySysts-MVA -n -a 5 -l Nominal ExtraSysts
 mv output/pullComparisons output/pullComp_Nominal_VS_AdditionalCRSysts
 ~~~
