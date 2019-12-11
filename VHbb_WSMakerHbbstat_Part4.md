@@ -2,7 +2,7 @@
 
 ## VHbb WSMaker and Hbb Stat ##
 
-## Last Edited: 02-12-2019
+## Last Edited: 11-12-2019
 -------------------------------------------------------------------------------
 # Milestone 2 Fits on latest inputs
 
@@ -322,6 +322,8 @@ cd build && rm -rf *
 cmake ..
 make -j8
 cd ..
+python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-CBA-DataSignif
+python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-VV-DataSignif
 ~~~
 ## 1) Run the CB analysis with the EXPECTED pulls 
 ~~~
@@ -502,11 +504,10 @@ cp ../140ifb-0L-ade-STXS-baseline-CBA-Full/logs/output_getSig_125.log significan
 cp ../140ifb-0L-ade-STXS-baseline-CBA-Full/plots/breakdown/* breakdown
 cp -r ../140ifb-0L-ade-STXS-baseline-CBA-Pulls/plots/fcc/* fcc
 cp ../140ifb-0L-ade-STXS-baseline-CBA-Pulls/plots/postfit/* postfit_plots/SRCR
-cp ../140ifb-0L-ade-STXS-baseline-CBA-PostFit-mBB/plots/postfit/* postfit_plots/mBB
 cd ..
 
-mv vv-mva /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/FullRunII2019/statArea/outputs/2019-12-10/l0/
-mv vh-cba /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/FullRunII2019/statArea/outputs/2019-12-10/l0/
+cp -r vv-mva /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/FullRunII2019/statArea/outputs/2019-12-10/l0/
+cp -r vh-cba /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/FullRunII2019/statArea/outputs/2019-12-10/l0/
 ~~~
 
 # Investigating B-tagging
