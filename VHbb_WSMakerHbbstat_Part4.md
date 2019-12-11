@@ -173,7 +173,7 @@ cmake ..
 make -j8
 cd ..
 python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-MVA-postfitVars
-mv output/SMVHVZ_2019_MVA_mc16ade_v06_STXS.140ifb-0L-ade-STXS-baseline-MVA-postfitVars_fullRes_VHbb_140ifb-0L-ade-STXS-baseline-MVA-postfitVars_0_mc16ade_Systs_mBB_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/140ifb-0L-ade-STXS-baseline-mBB
+mv output/SMVHVZ_2019_MVA_mc16ade_v03_STXS.140ifb-0L-ade-STXS-baseline-MVA-postfitVars_fullRes_VHbb_140ifb-0L-ade-STXS-baseline-MVA-postfitVars_0_mc16ade_Systs_mBB_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/140ifb-0L-ade-STXS-baseline-mBB
 mv output/SMVHVZ_2019_MVA_mc16ade_v03_STXS.140ifb-0L-ade-STXS-baseline-MVA-postfitVars_fullRes_VHbb_140ifb-0L-ade-STXS-baseline-MVA-postfitVars_0_mc16ade_Systs_MET_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/140ifb-0L-ade-STXS-baseline-MET
 ~~~
 
@@ -269,7 +269,7 @@ mv output/pullComparisons output/pullComp_Nominal_VS_pTVNormsGone
 The final inputs to be produced for 0L has been produced and they are here:
 >     /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/FullRunII2019/statArea/inputs/AfterWSMakerSplit/2019Dec29   
 
-Once we understand the fit we can produce the official plots for public consumption. Essentially we want to update the 0L standalone plots in here Appendix B of https://cds.cern.ch/record/2317111/files/ATL-COM-PHYS-2018-512.pdf . Hence will need to run the WSMaker four times. twice on CB analysis and twice on the VV analysis.
+Once we understand the fit we can produce the official plots for public consumption. Essentially we want to update the 0L standalone plots in here Appendix B of https://cds.cern.ch/record/2317111/files/ATL-COM-PHYS-2018-512.pdf . Hence will need to run the WSMaker ten times. five times on CB analysis and five times over the VV analysis.
 
 ~~~
 cd /afs/cern.ch/work/d/dspiteri/VHbb/
@@ -288,51 +288,72 @@ cd ..
 cp -r /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/FullRunII2019/statArea/inputs/AfterWSMakerSplit/2019Dec29 inputs/
 mv inputs/2019Dec29 inputs/SMVHVZ_2019_MVA_mc16ade_v05_STXS
 ~~~
-1) Run the CB analysis over the post-fit variables and with the EXPECTED pulls             
-2) Run the CB analysis with Rankings, Breakdowns and Significances          
+1) Run the CB analysis with the EXPECTED pulls          
+2) Run the CB analysis over the post-fit variables    
+3) Run the CB analysis with Rankings       
+4) Run the CB analysis with Breakdowns
+5) Run the CB analysis with Significances   
 
-3) Run the VV analysis over the post-fit variables and with the EXPECTED pulls  
-4) Run the VV analysis with Rankings, Breakdowns and Significances       
+6,7) Run the VV analysis over the with the EXPECTED pulls and post-fit variables  
+8,9,10) Run the VV analysis with Rankings, Breakdowns and Significances       
 
 Here is a summary of the plots that we require
 
 | Designation |      Plots                           |  Runs  |
 |:-----------:|:-------------------------------------|:------:|
-| a           | MVA Asimov VS Data                   |  (-)   |
-| b           | MVA ranking and breakdown            |  (-)   |
-| c           | MVA post-fit plots for mBB           |  (-)   |
-| d           | CBA VS MVA Or/And CBA Asimov VS Data |  (2)   |
-| e           | CBA ranking and breakdown            |  (1)   |
-| f           | CBA post-fit plots for mBB           |  (2)   |         
-| h           | VV VS MVA Or/And CBA Asimov VS Data  |  (4)   |
-| i           | VV ranking and breakdown             |  (3)   |
-| j           | VV post-fit plots for mBB            |  (4)   | 
+| a           | CBA VS MVA Or/And CBA Asimov VS Data |  (1)   |
+| b           | CBA ranking and breakdown            | (3,4)  |
+| c           | CBA post-fit plots for mBB           |  (2)   |   
+| d           | CBA Significance                     |  (5)   |         
+| e           | VV VS MVA Or/And CBA Asimov VS Data  |  (6)   |
+| f           | VV ranking and breakdown             | (8,9)  |
+| g           | VV post-fit plots for mBB            |  (7)   | 
+| h           | VV Significance                      | (10)   | 
 
 Leaving the large parts of the launch_default_jobs.py unchanged against the default.
-## 1) Run the CB analysis over the post-fit variables and with the EXPECTED pulls 
+~~~
+cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_AuxAnalyses
+source setup.sh
+cd build && rm -rf *
+cmake ..
+make -j8
+cd ..
+~~~
+## 1) Run the CB analysis with the EXPECTED pulls 
 ~~~
 vim scripts/launch_default_jobs.py 
 ~~~
 >    CHANGE Global run conditions (~L13)                                                                                  
->   >  version = "v05_STXS"                                                                                                   
+>   >  version = "v05_STXS"                                                                                               
 
->    CHANGE Analyses conditions (~L17)  
->   >  doCutBase = True                                                                                                       
+>    CHANGE flags to get Rankings, Breakdowns and Significances (~L62)                                                    
+>   >  doExp = 0                                                                                                              
 
 >    CHANGE Analyses outputs (~L67-80)  
 >   >  runPulls = True                                                                                                        
 >   >  doplots = True                                                                                                        
 ~~~
-cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_AuxAnalyses
-source setup.sh
-cd build
-cmake ..
-make -j8
-cd ..
-python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-CBA
-mv output/SMVHVZ_2019_MVA_mc16ade_v05_STXS.140ifb-0L-ade-STXS-baseline-CBA_fullRes_VHbb_140ifb-0L-ade-STXS-baseline-CBA_0_mc16ade_Systs_mBB_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/140ifb-0L-ade-STXS-baseline-CBA
+python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-CBA-Pulls
+mv output/SMVHVZ_2019_MVA_mc16ade_v05_STXS.140ifb-0L-ade-STXS-baseline-CBA-Pulls_fullRes_VHbb_140ifb-0L-ade-STXS-baseline-CBA-Pulls_0_mc16ade_Systs_mBB_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/140ifb-0L-ade-STXS-baseline-CBA-Pulls
 ~~~
-## 2) Run the CB analysis with Rankings, Breakdowns and Significances  
+## 2) Run the CB analysis over the post-fit variables
+~~~
+vim scripts/launch_default_jobs.py 
+~~~
+>    CHANGE Analysis conditions (~L17)                                                                                         
+>   >  doCutBase = True                                                                                                       
+
+>    CHANGE Analyses outputs (~L67-80)                                                                                         
+>   >  runPulls = False                                                                                                     
+
+>    CHANGE postfit variables of interest (~L92)                                                                              
+>   >  vs2tag = ['pTV','MET','pTB1','pTB2','mBB','dRBB','dEtaBB','dPhiVBB','dEtaVBB','MEff','MEff3','dPhiLBmin','mTW','mLL','dYWH','Mtop','pTJ3','mBBJ','mBBJ3','METSig'] -> vs2tag =  ['pTV','MET']                                                                        
+~~~
+python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-CBA-PostFit
+mv output/SMVHVZ_2019_MVA_mc16ade_v05_STXS.140ifb-0L-ade-STXS-baseline-CBA-PostFit_fullRes_VHbb_140ifb-0L-ade-STXS-baseline-CBA-PostFit_0_mc16ade_Systs_mBB_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/140ifb-0L-ade-STXS-baseline-CBA-PostFit-mBB
+mv output/SMVHVZ_2019_MVA_mc16ade_v05_STXS.140ifb-0L-ade-STXS-baseline-CBA-PostFit_fullRes_VHbb_140ifb-0L-ade-STXS-baseline-CBA-PostFit_0_mc16ade_Systs_MET_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/140ifb-0L-ade-STXS-baseline-CBA-PostFit-MET
+~~~
+## 3,4,5) Run the CB analysis with Rankings, Breakdowns and Significances  
 ~~~
 vim scripts/launch_default_jobs.py 
 ~~~
@@ -344,16 +365,10 @@ vim scripts/launch_default_jobs.py
 >   >  runP0 = True                                                                                                           
 >   >  doplots = False                                                                                                        
 ~~~
-cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_AuxAnalyses
-source setup.sh
-cd build
-cmake ..
-make -j8
-cd ..
 python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-CBA-Full
 mv output/SMVHVZ_2019_MVA_mc16ade_v05_STXS.140ifb-0L-ade-STXS-baseline-CBA-Full_fullRes_VHbb_140ifb-0L-ade-STXS-baseline-CBA-Full_0_mc16ade_Systs_mBB_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/140ifb-0L-ade-STXS-baseline-CBA-Full
 ~~~
-## 4) Run the VV analysis with Rankings, Breakdowns and Significances 
+## 8,9,10) Run the VV analysis with Rankings, Breakdowns and Significances 
 ~~~
 vim scripts/analysis_plotting_config.py 
 ~~~
@@ -364,54 +379,79 @@ vim scripts/launch_default_jobs.py
 ~~~
 >    CHANGE Analyses conditions (~L17-L19)                                                                                     
 >   >  doCutBase = False                                                                                                       
->   >  doDiboson = True   
-
->    CHANGE flags to get Rankings, Breakdowns and Significances (~L60-L80)                                                    
->   >  doExp = 1                                                                                                              
->   >  runPulls = False                                                                                                      
->   >  runBreakdown = True                                                                                                    
->   >  runRanks = True                                                                                                        
->   >  runP0 = True                                                                                                           
->   >  doplots = False
+>   >  doDiboson = True                                                                                                       
 ~~~
 cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_AuxAnalyses
 source setup.sh
-cd build
+cd build && rm -rf *
 cmake ..
 make -j8
 cd ..
 python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-VV-Full
 mv output/SMVHVZ_2019_MVA_mc16ade_v05_STXS.140ifb-0L-ade-STXS-baseline-VV-Full_fullRes_VHbb_140ifb-0L-ade-STXS-baseline-VV-Full_0_mc16ade_Systs_mBB_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/140ifb-0L-ade-STXS-baseline-VV-Full
 ~~~
-## 3) Run the VV analysis over the post-fit variables and with the EXPECTED pulls 
+## 6) Run the VV analysis over the post-fit variables 
 ~~~
 vim scripts/launch_default_jobs.py 
 ~~~
 >    ADD running of post-fit variables (~L15)                                                    
 >   >  doPostFit = True                                                                                                      
 
->    CHANGE flags to get Rankings, Breakdowns and Significances (~L60-L80)                                                    
+>    CHANGE flags to not get Rankings, Breakdowns and Significances (~L60-L80)                                                 
 >   >  doExp = 0                                                                                                              
->   >  runPulls = True                                                                                                      
+>   >  runPulls = False                                                                                                      
 >   >  runBreakdown = False                                                                                                  
 >   >  runRanks = False                                                                                                      
 >   >  runP0 = False                                                                                                           
->   >  doplots = True                                                                                                         
+>   >  doplots = False                                                                                                         
 
 >    CHANGE postfit plots to run over only ones we are interested in (~L92)                                                   
   vs2tag = ['pTV','MET','pTB1','pTB2','mBB','dRBB','dEtaBB','dPhiVBB','dEtaVBB','MEff','MEff3','dPhiLBmin','mTW','mLL','dYWH','Mtop','pTJ3','mBBJ','mBBJ3','METSig'] ->   vs2tag = ['pTV','MET']
 ~~~
+python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-VV-Postfit
+mv output/SMVHVZ_2019_MVA_mc16ade_v05_STXS.140ifb-0L-ade-STXS-baseline-VV_fullRes_VHbb_140ifb-0L-ade-STXS-baseline-VV_0_mc16ade_Systs_mBB_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/140ifb-0L-ade-STXS-baseline-VV-PostFit-mBB
+mv output/SMVHVZ_2019_MVA_mc16ade_v05_STXS.140ifb-0L-ade-STXS-baseline-VV_fullRes_VHbb_140ifb-0L-ade-STXS-baseline-VV_0_mc16ade_Systs_MET_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/140ifb-0L-ade-STXS-baseline-VV-PostFit-MET
+~~~
+## 7) Run the VV analysis over the EXPECTED pulls 
+~~~
+vim scripts/launch_default_jobs.py 
+~~~
+>    CHANGE running of post-fit variables (~L15)                                                    
+>   >  doPostFit = False
+
+>   >  doExp = 0                                                                                                              
+>   >  runPulls = True   
+>   >  doplots = True                                                                                                         
+~~~
+python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-VV-Pulls
+mv output/SMVHVZ_2019_MVA_mc16ade_v05_STXS.140ifb-0L-ade-STXS-baseline-VV-Pulls_fullRes_VHbb_140ifb-0L-ade-STXS-baseline-VV-Pulls_0_mc16ade_Systs_mBB_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/140ifb-0L-ade-STXS-baseline-VV-Pulls
+~~~
+## Getting the Final plots.
+~~~
 cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_AuxAnalyses
 source setup.sh
-cd build
-cmake ..
-make -j8
-cd ..
-python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-VV
-mv output/SMVHVZ_2019_MVA_mc16ade_v05_STXS.140ifb-0L-ade-STXS-baseline-VV_fullRes_VHbb_140ifb-0L-ade-STXS-baseline-VV_0_mc16ade_Systs_mBB_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/140ifb-0L-ade-STXS-baseline-VV-mBB
 ~~~
-SMVHVZ_2019_MVA_mc16ade_v05_STXS.140ifb-0L-ade-STXS-baseline-VV_fullRes_VHbb_140ifb-0L-ade-STXS-baseline-VV_0_mc16ade_Systs_mBB_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated
-
+### CBA Vs Asimov and VV Vs Asimov Pulls
+~~~
+python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-CBA -n -a 5
+mv output/pullComparisons output/pullComp_CBADataVSAsimov
+python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-VV -n -a 5
+mv output/pullComparisons output/pullComp_VVDataVSAsimov
+~~~
+### MVA Breakdowns
+~~~
+python WSMakerCore/scripts/mergeBreakdown.py 140ifb-0L-ade-STXS-baseline-MVA-Full
+vim /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Milestone2/output/140ifb-0L-ade-STXS-baseline-MVA-Full/plots/breakdown/muHatTable_mode11_Asimov1_SigXsecOverSM.txt 
+~~~
+### MVA Rankings
+~~~
+python WSMakerCore/scripts/makeNPrankPlots.py 140ifb-0L-ade-STXS-baseline-MVA-Full
+imgcat output/140ifb-0L-ade-STXS-baseline-MVA-Full/pdf-files/pulls_SigXsecOverSM_125.pdf
+~~~
+### Mbb Plots
+~~~
+python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 3 -f 140ifb-0L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-baseline-mBB
+~~~
 
 # Investigating B-tagging
 With the new inputs, the 0L fit needs to be checked that the features present in the flavour sector pulls are still there, and if so they need to be investigated. To do this the first thing we need to do is to restore the launch options to the default and decorrelate the entire fit sector in PtV, SR/CR and Njet. 
