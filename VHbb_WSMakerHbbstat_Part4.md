@@ -746,7 +746,7 @@ vim scripts/analysisPlottingConfig.py
 vim src/systematicslistsbuilder_vhbbrun2.cpp
 ~~~
 >    ADD splitting of ttbar_PS systematics (~L566)                                                                             
->   >      m_histoSysts.insert({ "SysBDTr_ttbar_PS", SysConfig{T::shape, S::noSmooth, Sym::symmetriseOneSided}.applyTo("ttbar").decorrIn({ (P::nLep==2),(P::nLep==1)&&(P::binMin==75)}) }); ->     m_histoSysts.insert({ "SysBDTr_ttbar_PS", SysConfig{T::shape, S::noSmooth, Sym::symmetriseOneSided}.applyTo("ttbar").decorr({P::nJet, P::binMin, P::descr}) });
+>   >  m_histoSysts.insert({ "SysBDTr_ttbar_PS", SysConfig{T::shape, S::noSmooth, Sym::symmetriseOneSided}.applyTo("ttbar").decorrIn({ (P::nLep==2),(P::nLep==1)&&(P::binMin==75)}) }); ->     m_histoSysts.insert({ "SysBDTr_ttbar_PS", SysConfig{T::shape, S::noSmooth, Sym::symmetriseOneSided}.applyTo("ttbar").decorr({P::nJet, P::binMin, P::descr}) });
 
 >    COMMENT OUT dummy systematics (~L383)                                                                                    
 >   >  /* if (doNewRegions){                                                                                                   
@@ -762,19 +762,19 @@ cd build
 cmake ..
 make -j8
 cd ..
-python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-Nominal-MVA-ttbar_PSSplit
-mv output/SMVHVZ_2019_MVA_mc16ade_v06_STXS.140ifb-0L-ade-STXS-Nominal-MVA-ttbar_PSSplit_fullRes_VHbb_140ifb-0L-ade-STXS-Nominal-MVA-ttbar_PSSplit_0_mc16ade_Systs_mva_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/140ifb-0L-ade-STXS-Nominal-MVA-ttbar_PSDecorr_All
+python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-MVA-ttbar_PSSplit
+mv output/SMVHVZ_2019_MVA_mc16ade_v06_STXS.140ifb-0L-ade-STXS-baseline-MVA-ttbar_PSSplit_fullRes_VHbb_140ifb-0L-ade-STXS-baseline-MVA-ttbar_PSSplit_0_mc16ade_Systs_mva_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/140ifb-0L-ade-STXS-baseline-MVA-ttbar_PSDecorr_All
 
-python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-Nominal-MVA-ttbar_PSDecorr_All -n -a 5 -l Nominal ttbar_PSDecorr_All
+python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-baseline-MVA-ttbar_PSDecorr_All -n -a 5 -l Nominal ttbar_PSDecorr_All
 mv output/pullComparisons output/pullComp_Nominal_VS_ttbar_PSDecorr_All
-~~~
+~~~ 
 
 Split partly as well. 
 ~~~
 vim src/systematicslistsbuilder_vhbbrun2.cpp
 ~~~
 >    ADD splitting of ttbar_PS systematics (~L566)                                                                             
->   >      m_histoSysts.insert({ "SysBDTr_ttbar_PS", SysConfig{T::shape, S::noSmooth, Sym::symmetriseOneSided}.applyTo("ttbar").decorr({P::nJet, P::binMin, P::descr}) }); ->  m_histoSysts.insert({ "SysBDTr_ttbar_PS", SysConfig{T::shape, S::noSmooth, Sym::symmetriseOneSided}.applyTo("ttbar").decorr({P::nJet, P::binMin}) }); 
+>   >   m_histoSysts.insert({ "SysBDTr_ttbar_PS", SysConfig{T::shape, S::noSmooth, Sym::symmetriseOneSided}.applyTo("ttbar").decorr({P::nJet, P::binMin, P::descr}) }); ->  m_histoSysts.insert({ "SysBDTr_ttbar_PS", SysConfig{T::shape, S::noSmooth, Sym::symmetriseOneSided}.applyTo("ttbar").decorr({P::nJet, P::binMin}) }); 
 ~~~    
 cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Milestone2
 source setup.sh
@@ -782,8 +782,35 @@ cd build
 cmake ..
 make -j8
 cd ..
-python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-Nominal-MVA-ttbar_PSDecorr_nJptV
-mv output/SMVHVZ_2019_MVA_mc16ade_v06_STXS.140ifb-0L-ade-STXS-Nominal-MVA-ttbar_PSSplitnJptV_fullRes_VHbb_140ifb-0L-ade-STXS-Nominal-MVA-ttbar_PSDecorr_nJptV_0_mc16ade_Systs_mva_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/140ifb-0L-ade-STXS-Nominal-MVA-ttbar_PSDecorr_nJptV 
+python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-MVA-ttbar_PSDecorr_nJptV
+mv output/SMVHVZ_2019_MVA_mc16ade_v06_STXS.140ifb-0L-ade-STXS-Nominal-MVA-ttbar_PSDecorr_nJptV_fullRes_VHbb_140ifb-0L-ade-STXS-Nominal-MVA-ttbar_PSDecorr_nJptV_0_mc16ade_Systs_mva_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/140ifb-0L-ade-STXS-baseline-MVA-ttbar_PSDecorr_nJptV 
 
-python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-Nominal-MVA-ttbar_PSSplitnJptV -n -a 5 -l Nominal ttbar_PS-Decorr_nJptV
-mv output/pullComparisons output/pullComp_Nominal_VS_ttbar_PS-Decorr_nJptV
+python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-baseline-MVA-ttbar_PSDecorr_nJptV -n -a 5 -l Nominal ttbar_PS-Decorr_nJptV
+mv output/pullComparisons output/pullComp_Nominal_VS_ttbar_PSDecorr_nJptV
+~~~
+Now do the same for ttbar_ME
+~~~
+cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Milestone2
+source setup.sh
+cd build
+cmake ..
+make -j8
+cd ..
+python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-MVA-ttbar_MEDecorr_All
+mv output/SMVHVZ_2019_MVA_mc16ade_v06_STXS.140ifb-0L-ade-STXS-baseline-MVA-ttbar_PSSplit_fullRes_VHbb_140ifb-0L-ade-STXS-baseline-MVA-ttbar_MEDecorr_All_0_mc16ade_Systs_mva_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/140ifb-0L-ade-STXS-baseline-MVA-ttbar_MEDecorr_All
+
+python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-baseline-MVA-ttbar_MEDecorr_All -n -a 5 -l Nominal ttbar_MEDecorr_All
+mv output/pullComparisons output/pullComp_Nominal_VS_ttbar_MEDecorr_All
+
+
+cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Milestone2
+source setup.sh
+cd build
+cmake ..
+make -j8
+cd ..
+python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-MVA-ttbar_MEDecorr_nJptV
+mv output/SMVHVZ_2019_MVA_mc16ade_v06_STXS.140ifb-0L-ade-STXS-baseline-MVA-ttbar_MEDecorr_nJptV_fullRes_VHbb_140ifb-0L-ade-STXS-baseline-MVA-ttbar_MEDecorr_nJptV_0_mc16ade_Systs_mva_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/140ifb-0L-ade-STXS-baseline-MVA-ttbar_MEDecorr_nJptV 
+
+python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-baseline-MVA-ttbar_MEDecorr_nJptV -n -a 5 -l Nominal ttbar_ME-Decorr_nJptV
+mv output/pullComparisons output/pullComp_Nominal_VS_ttbar_MEDecorr_nJptV
