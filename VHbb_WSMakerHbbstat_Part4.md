@@ -721,3 +721,69 @@ cd ..
 python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-CRDummySysts-MVA -n -a 5 -l Nominal ExtraSysts
 mv output/pullComparisons output/pullComp_Nominal_VS_AdditionalCRSysts
 ~~~
+In the fits that have been done we want to investigate problematic pulls that remain when we turn the SR into only one bin. We see that in 0L the ttbar_PS and ttbar_ME systematics have funny behaviours. Also we should check that they behave similarly to that of 1L. 
+There, as there usually is a new set of inputs to look at as well:
+ >   /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/FullRunII2019/statArea/inputs/AfterWSMakerSplit/2019Dec10_for_second_unblinding
+
+~~~
+cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Milestone2
+cd inputs
+cp -r /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/FullRunII2019/statArea/inputs/AfterWSMakerSplit/2019Dec10_for_second_unblinding .
+mv 2019Dec10_for_second_unblinding SMVHVZ_2019_MVA_mc16ade_v06_STXS
+
+vim scripts/launch_default_jobs.py 
+~~~
+>    CHANGE Global run conditions (~L13)                                                                                  
+>   >  version = "v06_STXS"                                                                                               
+
+~~~
+vim scripts/analysisPlottingConfig.py
+~~~
+>    ADD dummy of systematics to the cov_classification (~L190)                                                               
+>   >          "LUMI": [False, ["LUMI" ,"SysDummyBoson_CRLow","SysDummyBoson_CRHigh","SysDummyTop_CRLow","SysDummyTop_CRHigh",[]],  ->  "LUMI": [False, ["LUMI"],[]]                            
+
+~~~
+vim src/systematicslistsbuilder_vhbbrun2.cpp
+~~~
+>    ADD splitting of ttbar_PS systematics (~L566)                                                                             
+>   >      m_histoSysts.insert({ "SysBDTr_ttbar_PS", SysConfig{T::shape, S::noSmooth, Sym::symmetriseOneSided}.applyTo("ttbar").decorrIn({ (P::nLep==2),(P::nLep==1)&&(P::binMin==75)}) }); ->     m_histoSysts.insert({ "SysBDTr_ttbar_PS", SysConfig{T::shape, S::noSmooth, Sym::symmetriseOneSided}.applyTo("ttbar").decorr({P::nJet, P::binMin, P::descr}) });
+
+>    COMMENT OUT dummy systematics (~L383)                                                                                    
+>   >  /* if (doNewRegions){                                                                                                   
+>   >      normSys("SysDummyBoson_CRLow", 0.10, SysConfig{{"Wbb","Zbb"}}.applyIn(P::descr=="CRLow"));                         
+>   >      normSys("SysDummyTop_CRLow", 0.10, SysConfig{{"ttbar","stop"}}.applyIn(P::descr=="CRLow"));                       
+>   >      normSys("SysDummyBoson_CRHigh", 0.10, SysConfig{{"Wbb","Zbb"}}.applyIn(P::descr=="CRHigh"));                       
+>   >      normSys("SysDummyTop_CRHigh", 0.10, SysConfig{{"ttbar","stop"}}.applyIn(P::descr=="CRHigh"));                     
+>   >  }  */  
+~~~
+cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Milestone2
+source setup.sh
+cd build
+cmake ..
+make -j8
+cd ..
+python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-Nominal-MVA-ttbar_PSSplit
+mv output/SMVHVZ_2019_MVA_mc16ade_v06_STXS.140ifb-0L-ade-STXS-Nominal-MVA-ttbar_PSSplit_fullRes_VHbb_140ifb-0L-ade-STXS-Nominal-MVA-ttbar_PSSplit_0_mc16ade_Systs_mva_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/140ifb-0L-ade-STXS-Nominal-MVA-ttbar_PSDecorr_All
+
+python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-Nominal-MVA-ttbar_PSDecorr_All -n -a 5 -l Nominal ttbar_PSDecorr_All
+mv output/pullComparisons output/pullComp_Nominal_VS_ttbar_PSDecorr_All
+~~~
+
+Split partly as well. 
+~~~
+vim src/systematicslistsbuilder_vhbbrun2.cpp
+~~~
+>    ADD splitting of ttbar_PS systematics (~L566)                                                                             
+>   >      m_histoSysts.insert({ "SysBDTr_ttbar_PS", SysConfig{T::shape, S::noSmooth, Sym::symmetriseOneSided}.applyTo("ttbar").decorr({P::nJet, P::binMin, P::descr}) }); ->  m_histoSysts.insert({ "SysBDTr_ttbar_PS", SysConfig{T::shape, S::noSmooth, Sym::symmetriseOneSided}.applyTo("ttbar").decorr({P::nJet, P::binMin}) }); 
+~~~    
+cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Milestone2
+source setup.sh
+cd build
+cmake ..
+make -j8
+cd ..
+python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-Nominal-MVA-ttbar_PSDecorr_nJptV
+mv output/SMVHVZ_2019_MVA_mc16ade_v06_STXS.140ifb-0L-ade-STXS-Nominal-MVA-ttbar_PSSplitnJptV_fullRes_VHbb_140ifb-0L-ade-STXS-Nominal-MVA-ttbar_PSDecorr_nJptV_0_mc16ade_Systs_mva_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/140ifb-0L-ade-STXS-Nominal-MVA-ttbar_PSDecorr_nJptV 
+
+python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-Nominal-MVA-ttbar_PSSplitnJptV -n -a 5 -l Nominal ttbar_PS-Decorr_nJptV
+mv output/pullComparisons output/pullComp_Nominal_VS_ttbar_PS-Decorr_nJptV
