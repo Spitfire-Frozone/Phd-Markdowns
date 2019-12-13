@@ -774,7 +774,7 @@ Split partly as well.
 vim src/systematicslistsbuilder_vhbbrun2.cpp
 ~~~
 >    ADD splitting of ttbar_PS systematics (~L566)                                                                             
->   >   m_histoSysts.insert({ "SysBDTr_ttbar_PS", SysConfig{T::shape, S::noSmooth, Sym::symmetriseOneSided}.applyTo("ttbar").decorr({P::nJet, P::binMin, P::descr}) }); ->  m_histoSysts.insert({ "SysBDTr_ttbar_PS", SysConfig{T::shape, S::noSmooth, Sym::symmetriseOneSided}.applyTo("ttbar").decorr({P::nJet, P::binMin}) }); 
+>   >   m_histoSysts.insert({ "SysBDTr_ttbar_PS", SysConfig{T::shape, S::noSmooth, Sym::symmetriseOneSided}.applyTo("ttbar").decorr({P::nJet, P::binMin, P::descr}) }); ->  m_histoSysts.insert({ "SysBDTr_ttbar_PS", SysConfig{T::shape, S::noSmooth, Sym::symmetriseOneSided}.applyTo("ttbar").decorr({P::nJet, P::binMin}) });                                                                                                                          
 ~~~    
 cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Milestone2
 source setup.sh
@@ -788,7 +788,7 @@ mv output/SMVHVZ_2019_MVA_mc16ade_v06_STXS.140ifb-0L-ade-STXS-Nominal-MVA-ttbar_
 python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-baseline-MVA-ttbar_PSDecorr_nJptV -n -a 5 -l Nominal ttbar_PS-Decorr_nJptV
 mv output/pullComparisons output/pullComp_Nominal_VS_ttbar_PSDecorr_nJptV
 ~~~
-Now do the same for ttbar_ME
+Now do the same for ttbar_ME. Essentially replace all instances of "PS" with "ME" and visa versa. Once you are done in the same steps as above you will run for the full decorrelation
 ~~~
 cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Milestone2
 source setup.sh
@@ -797,12 +797,13 @@ cmake ..
 make -j8
 cd ..
 python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-MVA-ttbar_MEDecorr_All
-mv output/SMVHVZ_2019_MVA_mc16ade_v06_STXS.140ifb-0L-ade-STXS-baseline-MVA-ttbar_PSSplit_fullRes_VHbb_140ifb-0L-ade-STXS-baseline-MVA-ttbar_MEDecorr_All_0_mc16ade_Systs_mva_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/140ifb-0L-ade-STXS-baseline-MVA-ttbar_MEDecorr_All
+mv output/SMVHVZ_2019_MVA_mc16ade_v06_STXS.140ifb-0L-ade-STXS-baseline-MVA-ttbar_MEDecorr_All_fullRes_VHbb_140ifb-0L-ade-STXS-baseline-MVA-ttbar_MEDecorr_All_0_mc16ade_Systs_mva_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/140ifb-0L-ade-STXS-baseline-MVA-ttbar_MEDecorr_All
 
 python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-baseline-MVA-ttbar_MEDecorr_All -n -a 5 -l Nominal ttbar_MEDecorr_All
 mv output/pullComparisons output/pullComp_Nominal_VS_ttbar_MEDecorr_All
-
-
+~~~
+And the for the partial decorrelation in just nJet and ptV
+~~~
 cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Milestone2
 source setup.sh
 cd build
@@ -814,3 +815,46 @@ mv output/SMVHVZ_2019_MVA_mc16ade_v06_STXS.140ifb-0L-ade-STXS-baseline-MVA-ttbar
 
 python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-baseline-MVA-ttbar_MEDecorr_nJptV -n -a 5 -l Nominal ttbar_ME-Decorr_nJptV
 mv output/pullComparisons output/pullComp_Nominal_VS_ttbar_MEDecorr_nJptV
+~~~
+The next stage is to de-correlate the ttbarPS in njet only in the standard 0L fit and the oneBin fit.
+~~~
+vim src/systematicslistsbuilder_vhbbrun2.cpp
+~~~
+>    ADD splitting of ttbar_PS systematics (~L566)                                                                             
+>   >   m_histoSysts.insert({ "SysBDTr_ttbar_PS", SysConfig{T::shape, S::noSmooth, Sym::symmetriseOneSided}.applyTo("ttbar").decorr({P::nJet, P::binMin}) }); ->  m_histoSysts.insert({ "SysBDTr_ttbar_PS", SysConfig{T::shape, S::noSmooth, Sym::symmetriseOneSided}.applyTo("ttbar").decorr({P::nJet}) });                             
+~~~
+cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Milestone2
+source setup.sh
+cd build
+cmake ..
+make -j8
+cd ..
+python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-MVA-ttbar_PSDecorr_nJ
+mv output/SMVHVZ_2019_MVA_mc16ade_v06_STXS.140ifb-0L-ade-STXS-baseline-MVA-ttbar_PSDecorr_nJ_fullRes_VHbb_140ifb-0L-ade-STXS-baseline-MVA-ttbar_PSDecorr_nJ_0_mc16ade_Systs_mva_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/140ifb-0L-ade-STXS-baseline-MVA-ttbar_PSDecorr_nJ
+
+python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-baseline-MVA-ttbar_PSDecorr_nJ -n -a 5 -l Nominal ttbar_PS-Decorr_nJ
+mv output/pullComparisons output/pullComp_Nominal_VS_ttbar_PSDecorr_nJ
+~~~
+Then to add the one bin in the SR
+~~~
+vim src/binning_vhbbrun2.cpp
+~~~
+>    ADD splitting of ttbar_PS systematics (~L566)                                                                            
+>   >   //Force oneBin in the SR                                                                                              
+>   >   if (doNewRegions && (c(Property::descr).Contains("SR")) ){                                                            
+>   >    return oneBin(c);                                                                                                    
+>   >   }                                                                                                                     
+
+~~~
+cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Milestone2
+source setup.sh
+cd build
+cmake ..
+make -j8
+cd ..
+python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-MVA-ttbar_PSDecorr_nJOneBin
+mv output/SMVHVZ_2019_MVA_mc16ade_v06_STXS.140ifb-0L-ade-STXS-baseline-MVA-ttbar_PSDecorr_nJOneBin_fullRes_VHbb_140ifb-0L-ade-STXS-baseline-MVA-ttbar_PSDecorr_nJOneBin_0_mc16ade_Systs_mva_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/140ifb-0L-ade-STXS-baseline-MVA-ttbar_PSDecorr_nJOneBin
+
+python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-baseline-MVA-ttbar_PSDecorr_nJOneBin -n -a 5 -l Nominal ttbar_PS-Decorr_nJOneBin
+mv output/pullComparisons output/pullComp_Nominal_VS_ttbar_PSDecorr_nJOneBin
+~~~                                                                                           
