@@ -1,9 +1,9 @@
-# This is aimed at informing users how to obtain datasets from eos and run over them using the grid systems available at Glasgow#
+# This is aimed at informing users how to obtain datasets from eos and run over them using the grid systems available at Glasgow #
 
 ## "Running on Glasgow Grid" ##
-===============================================================================
+
 Last Edited: 19-06-2018
--------------------------------------------------------------------------------
+
 
 # Logging in and setup
 Glasgow PPE has a system integrated into lxplus. So to log in you need to first log into lxplus.
