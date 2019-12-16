@@ -1,4 +1,4 @@
-# This documents how to move the changes for the Track selections into svn and how to compare them to the git version.#
+# This documents how to move the changes for the Track selections into svn and how to compare them to the git version. #
 
 Last Edited: 09-10-2017
 
