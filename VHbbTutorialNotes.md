@@ -1,5 +1,5 @@
 #  VHbb Tutorial Notes - November 13th 2018
-## Adrian Buzatu
+## By Adrian Buzatu
 
 General Page
 https://gitlab.cern.ch/CxAODFramework/CxAODBootstrap_VHbb
@@ -22,11 +22,12 @@ setupATLAS && lsetup git
 source /afs/cern.ch/user/a/abuzatu/work/public/BuzatuAll/BuzatuATLAS/CxAODFramework/getMaster.sh origin/master          CxAODFramework_branch_master_21.2.39_1    1           1
 ~~~
 
-VHbb -> ICHEP
-VHbb0925 -> Latest
+> VHbb -> ICHEP
+
+> VHbb0925 -> Latest
 
 
-TEST
+## Testing
 ~~~
 source ../source/CxAODOperations_VHbb/scripts/testLocallyAsInCIPipeline.sh
 ~~~
@@ -73,11 +74,9 @@ cd /home/ppe/d/dspiteri/ATLAS/VHbb/CxAODFramework_branch_master_21.2.39_1/run
 source ../source/CxAODOperations_VHbb/scripts/submitMaker.sh 2L   d  VHbb0925  test  32-181113-dspiteri  user   0  -1   none  none  1
 ~~~
 
-**
-hsg5framework: error while loading shared libraries: libfastjet.so.0: cannot open shared object file: No such file or directory
-**
+>  hsg5framework: error while loading shared libraries: libfastjet.so.0: cannot open shared object file: No such file or directory
 
-ATLASPhysics->HiggsWorkingGroup->Higgsbb->HSG5RunIIAnalysisFramework->CxAODFramework->Release21Migration
+>  ATLASPhysics->HiggsWorkingGroup->Higgsbb->HSG5RunIIAnalysisFramework->CxAODFramework->Release21Migration
 
 ## RunMaker
 
