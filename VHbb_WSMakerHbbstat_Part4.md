@@ -725,6 +725,7 @@ In the fits that have been done we want to investigate problematic pulls that re
 There, as there usually is a new set of inputs to look at as well:
  >   /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/FullRunII2019/statArea/inputs/AfterWSMakerSplit/2019Dec10_for_second_unblinding
 
+##  De-correlation of problematic ttbar systematics
 ~~~
 cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Milestone2
 cd inputs
@@ -858,3 +859,115 @@ mv output/SMVHVZ_2019_MVA_mc16ade_v06_STXS.140ifb-0L-ade-STXS-baseline-MVA-ttbar
 python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-baseline-MVA-ttbar_PSDecorr_nJOneBin -n -a 5 -l Nominal ttbar_PS-Decorr_nJOneBin
 mv output/pullComparisons output/pullComp_Nominal_VS_ttbar_PSDecorr_nJOneBin
 ~~~                                                                                           
+
+##  De-correlation of Light_0
+Now we need to look into each of the pulls in particular to try and fin out what is going on.  The first one we will do it with is the LIght_0 pull. For this we will de-correlate in pTV, nJ and SRCR separately 
+~~~
+Then to add the one bin in the SR
+~~~
+vim src/binning_vhbbrun2.cpp
+
+>    COMMENT OUT splitting of ttbar_PS systematics (~L566)                                                                     
+>   >    /* //Force oneBin in the SR                                                                                           
+>   >   if (doNewRegions && (c(Property::descr).Contains("SR")) ){                                                            
+>   >    return oneBin(c);                                                                                                    
+>   >   } */                                                                                                                  
+
+~~~
+vim src/systematicslistsbuilder_vhbbrun2.cpp
+~~~
+>    ADD splitting of Light_0 systematic (~L566)                                                                               
+>   >  else m_histoSysts.insert({ "SysFT_EFF_"+sysname , SysConfig{T::shape, S::noSmooth, Sym::symmetriseOneSided}}); ->       
+>   >  else {                                                                                                                
+>   >        if (sysname == "Eigen_Light_0") m_histoSysts.insert({ "SysFT_EFF_"+sysname , SysConfig{T::shape, S::noSmooth, Sym::symmetriseOneSided}.decorr(P::nJet) });                                                
+>   >        [ [ [ AND ] ] ]                                                                                              
+>   >        if (sysname == "Eigen_Light_0") m_histoSysts.insert({ "SysFT_EFF_"+sysname , SysConfig{T::shape, S::noSmooth, Sym::symmetriseOneSided}.decorr(P::binMin) });                                                     
+>   >        [ [ [ AND ] ] ]                                                                                                  
+>   >        if (sysname == "Eigen_Light_0") m_histoSysts.insert({ "SysFT_EFF_"+sysname , SysConfig{T::shape, S::noSmooth, Sym::symmetriseOneSided}.decorr(P::descr) });                  
+
+>   >        else m_histoSysts.insert({ "SysFT_EFF_"+sysname , SysConfig{T::shape, S::noSmooth, Sym::symmetriseOneSided}});   
+>   >      }                                                                                                                
+~~~ 
+cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Milestone2
+source setup.sh
+cd build
+cmake ..
+make -j8
+cd ..
+
+python scripts/launch_default_jobs.py Light_0_nJetDeco
+mv output/SMVHVZ_2019_MVA_mc16ade_v06_STXS.Light_0_nJetDeco_fullRes_VHbb_Light_0_nJetDeco_0_mc16ade_Systs_mva_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/Light_0_nJetDeco
+python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA Light_0_nJetDeco -n -a 5 -l Nominal Light_0_nJetDeco
+mv output/pullComparisons output/pullComp_Nominal_VS_Light_0_nJetDeco
+
+python scripts/launch_default_jobs.py Light_0_pTVDeco
+mv output/SMVHVZ_2019_MVA_mc16ade_v06_STXS.Light_0_pTVDeco_fullRes_VHbb_Light_0_pTVDeco_0_mc16ade_Systs_mva_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/Light_0_pTVDeco
+python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA Light_0_pTVDeco -n -a 5 -l Nominal Light_0_pTVDeco
+mv output/pullComparisons output/pullComp_Nominal_VS_Light_0_pTVDeco
+
+python scripts/launch_default_jobs.py Light_0_SRCRDeco
+mv output/SMVHVZ_2019_MVA_mc16ade_v06_STXS.Light_0_SRCRDeco_fullRes_VHbb_Light_0_SRCRDeco_0_mc16ade_Systs_mva_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/Light_0_SRCRDeco
+python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA Light_0_SRCRDeco -n -a 5 -l Nominal Light_0_SRCRDeco
+mv output/pullComparisons output/pullComp_Nominal_VS_Light_0_SRCRDeco
+~~~
+Then make a webpage. Or copy them to your /eos/  
+~~~
+cp -r output/pullComp_Nominal_VS_Light_0* ~/public/flavDecorr/
+cd ~/public/flavDecorr/
+python "/afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Milestone2/WSMakerCore/macros/webpage/createHtmlOverview.py"
+~~~
+
+##  Increasing the Normalisation Uncertainties
+
+~~~
+vim src/systematicslistsbuilder_vhbbrun2.cpp
+~~~
+>    CHANGE normalisaition levels of Vx (~L576)   
+>   >    // Wl and Zl                                                                                                        
+>   >    sampleNormSys("Wl", 0.32); -> sampleNormSys("Wl", 0.64);                                                            
+>   >    sampleNormSys("Zl", 0.18); -> sampleNormSys("Zl", 0.36);                                                             
+>   >                                                                                                                        
+>   >    // Wcl and Zcl                                                                                                      
+>   >    sampleNormSys("Wcl", 0.37);  -> sampleNormSys("Wcl", 0.74);                                                           
+>   >    sampleNormSys("Zcl", 0.23);  -> sampleNormSys("Zcl", 0.46);                                                                                       
+  
+>    COMMENT OUT splitting of Light_0 systematic (~L576)                                                                       
+>   >    //if (sysname == "Eigen_Light_0") m_histoSysts.insert({ "SysFT_EFF_"+sysname , SysConfig{T::shape, S::noSmooth, Sym::symmetriseOneSided}.decorr(P::nJet) });                                                                                   
+>   >    else m_histoSysts.insert({ "SysFT_EFF_"+sysname , SysConfig{T::shape, S::noSmooth, Sym::symmetriseOneSided}}); ->  m_histoSysts.insert({ "SysFT_EFF_"+sysname , SysConfig{T::shape, S::noSmooth, Sym::symmetriseOneSided}});                     
+
+~~~    
+cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Milestone2
+source setup.sh
+cd build
+cmake ..
+make -j8
+cd ..
+
+python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-MVA-DoubleNormSysts
+mv output/SMVHVZ_2019_MVA_mc16ade_v06_STXS.140ifb-0L-ade-STXS-MVA-DoubleNormSysts_fullRes_VHbb_140ifb-0L-ade-STXS-MVA-DoubleNormSysts_0_mc16ade_Systs_mva_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/140ifb-0L-ade-STXS-MVA-DoubleNormSysts
+python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-MVA-DoubleNormSysts -n -a 5 -l Nominal DoubleNormSysts
+mv output/pullComparisons output/pullComp_Nominal_VS_DoubleNormSysts
+~~~
+Then adds in NormSysts for Vbl
+~~~
+vim src/systematicslistsbuilder_vhbbrun2.cpp
+~~~
+>    ADD normalisaition levels of Vbls (~L168)   
+>   >    // Wbl and Zbl                                                                                                      
+>   >    sampleNormSys("Wbl", 0.84);                                                            
+>   >    sampleNormSys("Zbl", 0.56);                                                            
+>   >                                                                                                                        
+~~~
+cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Milestone2
+source setup.sh
+cd build
+cmake ..
+make -j8
+cd ..
+
+python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-MVA-DoubleNormSysts_Vbl
+mv output/SMVHVZ_2019_MVA_mc16ade_v06_STXS.140ifb-0L-ade-STXS-MVA-DoubleNormSysts_Vbl_fullRes_VHbb_140ifb-0L-ade-STXS-MVA-DoubleNormSysts_Vbl_0_mc16ade_Systs_mva_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/140ifb-0L-ade-STXS-MVA-DoubleNormSysts_Vbl
+
+python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-MVA-DoubleNormSysts 140ifb-0L-ade-STXS-MVA-DoubleNormSysts_Vbl -n -a 5 -l Nominal DoubleNormSysts DoubleNormSysts_Vbl
+mv output/pullComparisons output/pullComp_Nominal_VS_DoubleNormSysts_Vbl
+~~~
