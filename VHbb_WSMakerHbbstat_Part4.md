@@ -971,3 +971,34 @@ mv output/SMVHVZ_2019_MVA_mc16ade_v06_STXS.140ifb-0L-ade-STXS-MVA-DoubleNormSyst
 python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-MVA-DoubleNormSysts 140ifb-0L-ade-STXS-MVA-DoubleNormSysts_Vbl -n -a 5 -l Nominal DoubleNormSysts DoubleNormSysts_Vbl
 mv output/pullComparisons output/pullComp_Nominal_VS_DoubleNormSysts_Vbl
 ~~~
+
+##  Splitting the Light_0 into process and njet
+Now we know that the V+lights are a small contribution we want to split this component into both njets and processes. Also we want to try and see what effect the increased norm has on this. 
+~~~
+vim src/systematicslistsbuilder_vhbbrun2.cpp
+~~~
+>   ADD decorrelation for flavour tagging (~L553)                                                                            
+>   >    SysConfig FTag_Process_Decorr_Config = noSmoothConfig;                                                               
+>   >    FTag_Process_Decorr_Config.decorrFun([](const PropertiesSet& pset, const Sample& s) {                                 
+>   >        if( s.name() == "Zbb" || s.name() == "Wbb" || s.name() == "Zbc" || s.name() == "Wbc"  || s.name() == "Zcc" || s.name() == "Wcc" || s.name() == "ttbar" || s.hasKW("Diboson") || s.hasKW("Higgs")) return "_nonVlight";                      
+>   >        else if( s.name() == "Zbl" || s.name() == "Wbl" || s.name() == "Wcl" || s.name() == "Zcl" || s.name() == "Wl" || s.name() == "Zl" ) return "_Vlight";                                                                                           
+>   >        else return "";                                                                                                   
+>   >    });                                                                                                                 
+
+>   ADD selective decorrelation for problematic flavour tagging pulls (~L583)
+>   >    if (sysname == "Eigen_Light_0") m_histoSysts.insert({ "SysFT_EFF_"+sysname , FTag_Process_Decorr_Config.decorr(P::nJet) });  
+>   >    m_histoSysts.insert({ "SysFT_EFF_"+sysname , noSmoothConfig}); -> else m_histoSysts.insert({ "SysFT_EFF_"+sysname , noSmoothConfig});
+~~~
+cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Milestone2
+source setup.sh
+cd build
+cmake ..
+make -j8
+cd ..
+
+python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-MVA-Light_0_nJetProcDecorr
+mv output/SMVHVZ_2019_MVA_mc16ade_v06_STXS.140ifb-0L-ade-STXS-MVA-Light_0_nJetProcDecorr_fullRes_VHbb_140ifb-0L-ade-STXS-MVA-Light_0_nJetProcDecorr_0_mc16ade_Systs_mva_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/140ifb-0L-ade-STXS-MVA-Light_0_nJetProcDecorr
+
+python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-MVA-Light_0_nJetProcDecorr -n -a 5 -l Nominal L-0_nJ_ProcDecorrNormx2
+mv output/pullComparisons output/pullComp_Nominal_VS_Light_0_nJProcDecorr_DoubleNorm
+~~~
