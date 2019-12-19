@@ -522,6 +522,12 @@ mv /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Btagging/output/140ifb-0L-ade-
 python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-baseline-MVA_OLD -n -a 5 -l NEW OLD
 mv output/pullComparisons output/pullComp_NEWvsOLDpulls
 ~~~
+## Comparison of pulls or all analyses
+~~~
+python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA-Pulls 140ifb-0L-ade-STXS-baseline-CBA-Pulls 140ifb-0L-ade-STXS-baseline-VV-Pulls -n -a 5 -l MVA-VH CBA-VH MVA-VV
+mv output/pullComparisons output/pullComp_MVA_vs_CBA_vs_VV
+~~~
+## De-correlation of everything for B-tagging
 The new fit has waay more B-tagging pulls, but what makes a pull.
 
 So the indices in the pulls usually refer to an Eigenvector decomposition. In the case of the JET systematics for example, you first group them into physical categories, like Modelling, Statistical Uncertainties, and in each of these categories you do the decomposition. 
@@ -530,7 +536,6 @@ The decomposition is basically finding  a linear combination of uncertainties. I
 
 (1**)the matrix that is used for the eigenvector problem. It starts from the construction of the covariance matrix corresponding to each source of uncertainty, and then sums these covariance matrices to obtain the total covariance matrix. Being a symmetric, positive-definite matrix this can be considered as an eigenvalue problem. The eigenvectors that "solve" this problem can be seen as "directions" in which to carry out independent variations. The sizes of the variations are given by the square root of the corresponding eigenvalues.
  
-## De-correlation of everything for B-tagging
 The fit exhibits a pull in the 21st one, but lets say the problem is more fundamental and the half sigma pull of B_1 is more important. Will decorrelate B1 in ptV, nJets and in SRCR and see what happens.
 ~~~
 vim scripts/launch_default_jobs.py 
