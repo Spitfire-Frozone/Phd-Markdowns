@@ -117,7 +117,7 @@ cd build
 cmake ..
 make -j8
 cd ..
-python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-MVA
+python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-MVA-FullVarsPostFit
 mv output/SMVHVZ_2019_MVA_mc16ade_v03_STXS.140ifb-0L-ade-STXS-baseline-MVA_fullRes_VHbb_140ifb-0L-ade-STXS-baseline-MVA_0_mc16ade_Systs_mva_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/140ifb-0L-ade-STXS-baseline-MVA
 ~~~
 Create a website so that everyone can see your plots
@@ -172,7 +172,7 @@ cd build
 cmake ..
 make -j8
 cd ..
-python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-MVA-postfitVars
+python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-MVA
 mv output/SMVHVZ_2019_MVA_mc16ade_v03_STXS.140ifb-0L-ade-STXS-baseline-MVA-postfitVars_fullRes_VHbb_140ifb-0L-ade-STXS-baseline-MVA-postfitVars_0_mc16ade_Systs_mBB_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/140ifb-0L-ade-STXS-baseline-mBB
 mv output/SMVHVZ_2019_MVA_mc16ade_v03_STXS.140ifb-0L-ade-STXS-baseline-MVA-postfitVars_fullRes_VHbb_140ifb-0L-ade-STXS-baseline-MVA-postfitVars_0_mc16ade_Systs_MET_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/140ifb-0L-ade-STXS-baseline-MET
 ~~~
