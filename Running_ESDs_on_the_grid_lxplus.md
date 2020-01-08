@@ -2,7 +2,7 @@
 
 ## "Running ESD jobs on the grid with lxplus" ##
 
-Last Edited: 07-04-2017
+# Last Edited: 07-04-2017
 
 
 # Getting a single ESD running.
@@ -11,7 +11,7 @@ Open two windows in the same lxplus node (i.e. lxplus027@cern.ch) to stop
 possibilities of conflicts between the python version of hte athena release and
 with the one in dq2 or panda
 
-###(1)###
+### (Terminal 1) ###
 Create new directory to store created variables SEPERATE to the DCube one
 ~~~
 mkdir ESDforGrid
@@ -66,7 +66,7 @@ vim checkout.sh
 >  CHANGE the number of processes used to make                                                                                
 >  >  make -> make -j[result of nproc] (line16)                                                                               
 
-###(2)###
+### (Terminal 2) ###
 Go into the validation folder and source the xats.sh and checkout.sh.
 ~~~
 cd ~/LOCALPATHTOEDSGRID/ESDforGrid/validation
@@ -75,14 +75,14 @@ source checkout.sh #checks out the tracking validation software and compiles it
 ~~~
 If you are not doing this for the first time and checkout.sh repeatedly fails, it's probably because something in build directory is giving you trouble. If you delete the folder and checkout checkout.sh again, it should work
 
-###(1)###
+### (Terminal 1) ###
 making a local test with validation_21.py but a symbolic link is needed to be created to the downloaded ESD file in order to allow athena to load the metadata. 
 From 11/04/17 the following steps are unnessecary if this is not your first time. For repeats the file to check, edit and source is  'dwayneValidationLocalTest.sh "${1}" '
 ~~~
 ln -s ../valid2.410000.PowhegPythiaEvtGen_P2012_ttbar_hdamp172p5_nonallhad.recon.ESD.e4993_s2958_r8727_tid09826097_00/*.root.* ESD.pool.root
 athena Validation_21.py
 ~~~
-###(2)###
+### (Terminal 2) ###
 Need to set up cmake which is done in checkout.sh
 Prepare the jobs to go on the grid by setting up panda 
 
@@ -108,7 +108,7 @@ This will not be need to be done if on this page https://lcg-voms2.cern.ch:8443/
 >   CHANGE path                                                                                                               
 >   >   source/ -> build/ (L10)                                                                                               
 
-###(1)###
+### (Terminal 1) ###
 Open up the run_21 folder and make edits, saving it under a different name You submit the jobs with the Role perf-idtracking/Role=production in order  to have high priority in the samples, but this priveledge may not have been  awarded yet. The dataset-name of the output must start with: group.perf-idtrackig.yourlabel.XXXX. The dataset-name of the input could be either the whole container if available or a  particular tid
 ~~~
 vim run_21
@@ -137,7 +137,7 @@ Save as run_21_Something and then turn your newly created tun file to an executa
 ~~~ 
 chmod +x run_21_Something  
 ~~~
-###(2)###
+### (Terminal 2) ###
 Now you are ready to submit the job to the grid
 ~~~
 ./run_21_Something valid2.410000.PowhegPythiaEvtGen_P2012_ttbar_hdamp172p5_nonallhad.recon.ESD.e4993_s2958_r8727_tid09826097_00 
