@@ -993,6 +993,17 @@ vim src/systematicslistsbuilder_vhbbrun2.cpp
 >   ADD selective decorrelation for problematic flavour tagging pulls (~L583)
 >   >    if (sysname == "Eigen_Light_0") m_histoSysts.insert({ "SysFT_EFF_"+sysname , FTag_Process_Decorr_Config.decorr(P::nJet) });  
 >   >    m_histoSysts.insert({ "SysFT_EFF_"+sysname , noSmoothConfig}); -> else m_histoSysts.insert({ "SysFT_EFF_"+sysname , noSmoothConfig});
+
+Since there are many ways to skin a cat, alternatively you can try to define a keyword in the samples builder and then decorrelate to it in the systematics list builder.
+~~~
+vim src/samplesbuilder_vhbbrun2.cpp
+~~~
+>   ADD new keywork for V+lights (~L104)                                                                            
+>   >    {"Vlight", {"Zbl","Zcl","Zl","Wbl","Wcl","Wl"}}, 
+
+>   ADD selective decorrelation for problematic flavour tagging pulls (~L583)
+>   >    if (sysname == "Eigen_Light_0") m_histoSysts.insert({ "SysFT_EFF_"+sysname , SysConfig{T::shape, S::noSmooth, Sym::symmetriseOneSided}.decorrTo({"Vlight", "Vlight"}).decorr((P::nJet==2)); });  
+>   >    m_histoSysts.insert({ "SysFT_EFF_"+sysname , noSmoothConfig}); -> else m_histoSysts.insert({ "SysFT_EFF_"+sysname , noSmoothConfig});
 ~~~
 cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Milestone2
 source setup.sh
