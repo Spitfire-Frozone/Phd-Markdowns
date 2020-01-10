@@ -2,7 +2,7 @@
 
 ## VHbb WSMaker and Hbb Stat ##
 
-## Last Edited: 19-12-2019
+## Last Edited: 11-01-2020
 -------------------------------------------------------------------------------
 # Milestone 2 Fits on latest inputs
 
@@ -1002,7 +1002,7 @@ vim src/samplesbuilder_vhbbrun2.cpp
 >   >    {"Vlight", {"Zbl","Zcl","Zl","Wbl","Wcl","Wl"}}, 
 
 >   ADD selective decorrelation for problematic flavour tagging pulls (~L583)
->   >    if (sysname == "Eigen_Light_0") m_histoSysts.insert({ "SysFT_EFF_"+sysname , SysConfig{T::shape, S::noSmooth, Sym::symmetriseOneSided}.decorrTo({"Vlight", "Vlight"}).decorr(P::nJet==2) }); 
+>   >    if (sysname == "Eigen_Light_0") m_histoSysts.insert({ "SysFT_EFF_"+sysname , SysConfig{T::shape, S::noSmooth, Sym::symmetriseOneSided}.decorrTo({"Vlight", "Vlight"}).decorr(P::nJet) });  
 >   >    m_histoSysts.insert({ "SysFT_EFF_"+sysname , noSmoothConfig}); -> else m_histoSysts.insert({ "SysFT_EFF_"+sysname , noSmoothConfig});
 ~~~
 cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Milestone2
