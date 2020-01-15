@@ -866,12 +866,12 @@ mv output/pullComparisons output/pullComp_Nominal_VS_ttbar_PSDecorr_nJOneBin
 ~~~                                                                                           
 
 ##  De-correlation of Light_0
-Now we need to look into each of the pulls in particular to try and fin out what is going on.  The first one we will do it with is the LIght_0 pull. For this we will de-correlate in pTV, nJ and SRCR separately 
-~~~
+Now we need to look into each of the pulls in particular to try and fin out what is going on.  The first one we will do it with is the Light_0 pull. For this we will de-correlate in pTV, nJ and SRCR separately 
+
 Then to add the one bin in the SR
 ~~~
 vim src/binning_vhbbrun2.cpp
-
+~~~
 >    COMMENT OUT splitting of ttbar_PS systematics (~L566)                                                                     
 >   >    /* //Force oneBin in the SR                                                                                           
 >   >   if (doNewRegions && (c(Property::descr).Contains("SR")) ){                                                            
@@ -881,11 +881,12 @@ vim src/binning_vhbbrun2.cpp
 ~~~
 vim src/systematicslistsbuilder_vhbbrun2.cpp
 ~~~
->    ADD splitting of Light_0 systematic (~L566)                                                                               
->   >  else m_histoSysts.insert({ "SysFT_EFF_"+sysname , SysConfig{T::shape, S::noSmooth, Sym::symmetriseOneSided}}); ->       
+>    ADD splitting of Light_0 systematic (~L566)                                                                             
+>   >  else m_histoSysts.insert({ "SysFT_EFF_"+sysname , SysConfig{T::shape, S::noSmooth, Sym::symmetriseOneSided}}); ->     
 >   >  else {                                                                                                                
 >   >        if (sysname == "Eigen_Light_0") m_histoSysts.insert({ "SysFT_EFF_"+sysname , SysConfig{T::shape, S::noSmooth, Sym::symmetriseOneSided}.decorr(P::nJet) });                                                
->   >        [ [ [ AND ] ] ]                                                                                              
+>   >        [ [ [ AND ] ] ]   
+
 >   >        if (sysname == "Eigen_Light_0") m_histoSysts.insert({ "SysFT_EFF_"+sysname , SysConfig{T::shape, S::noSmooth, Sym::symmetriseOneSided}.decorr(P::binMin) });                                                     
 >   >        [ [ [ AND ] ] ]                                                                                                  
 >   >        if (sysname == "Eigen_Light_0") m_histoSysts.insert({ "SysFT_EFF_"+sysname , SysConfig{T::shape, S::noSmooth, Sym::symmetriseOneSided}.decorr(P::descr) });                  
@@ -921,13 +922,34 @@ cp -r output/pullComp_Nominal_VS_Light_0* ~/public/flavDecorr/
 cd ~/public/flavDecorr/
 python "/afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Milestone2/WSMakerCore/macros/webpage/createHtmlOverview.py"
 ~~~
+##  Full Decorrelation of all of B_0, C_0 and Light_0
+~~~
+cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Milestone2
+vim src/systematicslistsbuilder_vhbbrun2.cpp
+~~~
+>    ADD splitting of B_0 and C_0 to the splitting of Light_0 systematics (~L566)                                             
+>   >   if (sysname == "Eigen_Light_0") m_histoSysts.insert({ "SysFT_EFF_"+sysname , SysConfig{T::shape, S::noSmooth, Sym::symmetriseOneSided}.decorr({P::nJet, P::binMin, P::descr}) });                                                         
+>   >   else if (sysname == "Eigen_B_0") m_histoSysts.insert({ "SysFT_EFF_"+sysname , SysConfig{T::shape, S::noSmooth, Sym::symmetriseOneSided}.decorr({P::nJet, P::binMin, P::descr}) });                                                         
+>   >   else if (sysname == "Eigen_C_0") m_histoSysts.insert({ "SysFT_EFF_"+sysname , SysConfig{T::shape, S::noSmooth, Sym::symmetriseOneSided}.decorr({P::nJet, P::binMin, P::descr}) });                                                           
 
+~~~
+cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Milestone2
+source setup.sh
+cd build
+cmake ..
+make -j8
+cd ..
+
+python scripts/launch_default_jobs.py Light_0-B_0-C_0_FullDeco
+mv output/SMVHVZ_2019_MVA_mc16ade_v06_STXS.Light_0-B_0-C_0_FullDeco_fullRes_VHbb_Light_0-B_0-C_0_FullDeco_0_mc16ade_Systs_mva_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/140ifb-0L-ade-STXS-MVA-Light_0-B_0-C_0_FullDeco
+python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-MVA-Light_0-B_0-C_0_FullDeco -n -a 5 -l Nominal Flavour_0_FullDeco
+mv output/pullComparisons output/pullComp_Nominal_VS_Light_0-B_0-C_0FullDeco
+~~~
 ##  Increasing the Normalisation Uncertainties
-
 ~~~
 vim src/systematicslistsbuilder_vhbbrun2.cpp
 ~~~
->    CHANGE normalisaition levels of Vx (~L576)   
+>    CHANGE normalisation levels of Vx (~L576)   
 >   >    // Wl and Zl                                                                                                        
 >   >    sampleNormSys("Wl", 0.32); -> sampleNormSys("Wl", 0.64);                                                            
 >   >    sampleNormSys("Zl", 0.18); -> sampleNormSys("Zl", 0.36);                                                             
