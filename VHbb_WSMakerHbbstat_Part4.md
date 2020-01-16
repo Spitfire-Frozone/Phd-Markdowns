@@ -1040,3 +1040,32 @@ mv output/SMVHVZ_2019_MVA_mc16ade_v06_STXS.140ifb-0L-ade-STXS-MVA-Light_0_nJetPr
 python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-MVA-Light_0_nJetProcDecorr -n -a 5 -l Nominal L-0_nJ_ProcDecorrNormx2
 mv output/pullComparisons output/pullComp_Nominal_VS_Light_0_nJProcDecorr_DoubleNorm
 ~~~
+##  Creating a new systematic.
+Given that we now think that the pull in Light_0 is due to mis-modelling on Light_0 itself, we can test this hypothesis. If we create a systematic that acts like Light_0, but we give it a larger variation then the fit should preferentially pull it over Light_0. From the NormVal plots we see that we have roughly a effect of 30% per light jet. So we shall be varying this systematic by about 70%. 
+~~~
+vim src/systematicslistsbuilder_vhbbrun2.cpp
+~~~
+>   ADD new Systematic (L160)
+>   >    normSys("SysDummyLight0", 0.70, SysConfig{"Vlight"})
+
+>   RESTORE flavour tagging decorrelations to their default (L559)
+>   >    for(auto sysname: btagSysts) {
+>   >      if(!PCBTInputs) m_histoSysts.insert({ "SysFT_EFF_"+sysname , noSmoothConfig}); 
+>   >      else {
+>   >        m_histoSysts.insert({ "SysFT_EFF_"+sysname , SysConfig{T::shape, S::noSmooth, Sym::symmetriseOneSided}});
+>   >      } 
+>   >    }
+~~~
+cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Milestone2
+source setup.sh
+cd build
+cmake ..
+make -j8
+cd ..
+
+python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-MVA-AddLight-likeSyst
+mv output/SMVHVZ_2019_MVA_mc16ade_v06_STXS.140ifb-0L-ade-STXS-MVA-AddLight-likeSyst_fullRes_VHbb_140ifb-0L-ade-STXS-MVA-AddLight-likeSyst_0_mc16ade_Systs_mva_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/140ifb-0L-ade-STXS-MVA-AddLight-likeSyst
+
+python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-MVA-AddLight-likeSyst -n -a 5 -l Nominal AddLight-likeSyst
+mv output/pullComparisons output/pullComp_Nominal_VS_AddLight-likeSyst
+~~~
