@@ -941,7 +941,7 @@ make -j8
 cd ..
 
 python scripts/launch_default_jobs.py Light_0-B_0-C_0_FullDeco
-mv output/SMVHVZ_2019_MVA_mc16ade_v06_STXS.Light_0-B_0-C_0_FullDeco_fullRes_VHbb_Light_0-B_0-C_0_FullDeco_0_mc16ade_Systs_mva_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/140ifb-0L-ade-STXS-MVA-Light_0-B_0-C_0_FullDeco
+mv output/SMVHVZ_2019_MVA_mc16ade_v06_STXS.Light_0-B_0-C_0_FullDeco_fullRes_VHbb_Light_0-B_0-C_0_FullDeco_0_mc16ade_Systs_mva_STXS_FitScheme_1 output/140ifb-0L-ade-STXS-MVA-Light_0-B_0-C_0_FullDeco
 python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-MVA-Light_0-B_0-C_0_FullDeco -n -a 5 -l Nominal Flavour_0_FullDeco
 mv output/pullComparisons output/pullComp_Nominal_VS_Light_0-B_0-C_0FullDeco
 ~~~
