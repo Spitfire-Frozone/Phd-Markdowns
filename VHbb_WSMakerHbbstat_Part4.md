@@ -1064,8 +1064,14 @@ make -j8
 cd ..
 
 python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-MVA-AddLight-likeSyst
-mv output/SMVHVZ_2019_MVA_mc16ade_v06_STXS.140ifb-0L-ade-STXS-MVA-AddLight-likeSyst_fullRes_VHbb_140ifb-0L-ade-STXS-MVA-AddLight-likeSyst_0_mc16ade_Systs_mva_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/140ifb-0L-ade-STXS-MVA-AddLight-likeSyst
-
+mv output/SMVHVZ_2019_MVA_mc16ade_v06_STXS.140ifb-0L-ade-STXS-MVA-AddLight-likeSyst_fullRes_VHbb_140ifb-0L-ade-STXS-MVA-AddLight-likeSyst_0_mc16ade_Systs_mva_STXS_FitScheme_1 output/140ifb-0L-ade-STXS-MVA-AddLight-likeSyst
+~~~
+Now you need to edit the pull plot scripts such that the sytematic you added can be seen.
+~~~
+vim scripts/analysisPlottingConfig.py
+~~~
+>    ADD dummy of systematics to the cov_classification (~L190)                                                               
+>   >          "LUMI": [False, ["LUMI"],[]] -> "LUMI": [False, ["LUMI" ,"SysDummyBoson_CRLow","SysDummyBoson_CRHigh","SysDummyTop_CRLow","SysDummyTop_CRHigh",[]],                                        
 python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-MVA-AddLight-likeSyst -n -a 5 -l Nominal AddLight-likeSyst
 mv output/pullComparisons output/pullComp_Nominal_VS_AddLight-likeSyst
 ~~~
