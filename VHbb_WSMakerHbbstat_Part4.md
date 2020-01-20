@@ -1098,6 +1098,6 @@ cd ..
 python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-MVA-AddLight-likeSyst-OneBin
 mv output/SMVHVZ_2019_MVA_mc16ade_v06_STXS.140ifb-0L-ade-STXS-MVA-AddLight-likeSyst-OneBin_fullRes_VHbb_140ifb-0L-ade-STXS-MVA-AddLight-likeSyst-OneBin_0_mc16ade_Systs_mva_STXS_FitScheme_1 output/140ifb-0L-ade-STXS-MVA-AddLight-likeSyst-OneBin
 
-python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-MVA-AddLight-likeSyst-OneBin 140ifb-0L-ade-STXS-baseline-MVA-OneBin -n -a 5 -l Nominal Light-likeSyst-1Bin OneBin
-mv output/pullComparisons output/pullComp_Nominal_VS_Light-likeSyst-1Bin_VS_OneBin
+python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-baseline-MVA-OneBin 140ifb-0L-ade-STXS-MVA-AddLight-likeSyst 140ifb-0L-ade-STXS-MVA-AddLight-likeSyst-OneBin  -n -a 5 -l Nominal OneBin Light-likeSyst Light-likeSyst-1Bin 
+mv output/pullComparisons output/pullComp_Nominal_VS_OneBin_VS_Light-likeSyst_VS_Light-likeSyst-1Bin
 ~~~
