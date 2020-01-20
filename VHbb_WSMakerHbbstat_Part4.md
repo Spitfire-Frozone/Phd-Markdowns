@@ -845,10 +845,10 @@ Then to add the one bin in the SR
 ~~~
 vim src/binning_vhbbrun2.cpp
 ~~~
->    ADD splitting of ttbar_PS systematics (~L566)                                                                            
->   >   //Force oneBin in the SR                                                                                              
->   >   if (doNewRegions && (c(Property::descr).Contains("SR")) ){                                                            
->   >    return oneBin(c);                                                                                                    
+>    ADD splitting of ttbar_PS systematics (~L566)                                                                           
+>   >   //Force oneBin in the SR                                                                                             
+>   >   if (doNewRegions && (c(Property::descr).Contains("SR")) ){                                                           
+>   >    return oneBin(c);                                                                                                   
 >   >   }                                                                                                                     
 
 ~~~
@@ -872,10 +872,10 @@ Then to add the one bin in the SR
 ~~~
 vim src/binning_vhbbrun2.cpp
 ~~~
->    COMMENT OUT splitting of ttbar_PS systematics (~L566)                                                                     
->   >    /* //Force oneBin in the SR                                                                                           
->   >   if (doNewRegions && (c(Property::descr).Contains("SR")) ){                                                            
->   >    return oneBin(c);                                                                                                    
+>    COMMENT OUT single bin in the SR (~L118)                                                                   
+>   >    /* //Force oneBin in the SR                                                                                         
+>   >   if (doNewRegions && (c(Property::descr).Contains("SR")) ){                                                           
+>   >    return oneBin(c);                                                                                                   
 >   >   } */                                                                                                                  
 
 ~~~
@@ -1045,16 +1045,25 @@ Given that we now think that the pull in Light_0 is due to mis-modelling on Ligh
 ~~~
 vim src/systematicslistsbuilder_vhbbrun2.cpp
 ~~~
->   ADD new Systematic (L160)
->   >    normSys("SysDummyLight0", 0.70, SysConfig{"Vlight"})
+>   ADD new Systematic (L160)                                                                                           
+>   >    normSys("SysDummyLight0", 0.70, SysConfig{"Vlight"})                                                               
 
->   RESTORE flavour tagging decorrelations to their default (L559)
->   >    for(auto sysname: btagSysts) {
->   >      if(!PCBTInputs) m_histoSysts.insert({ "SysFT_EFF_"+sysname , noSmoothConfig}); 
+>   RESTORE flavour tagging decorrelations to their default (L559)                                                           
+>   >    for(auto sysname: btagSysts) {                                                                                      
+>   >      if(!PCBTInputs) m_histoSysts.insert({ "SysFT_EFF_"+sysname , noSmoothConfig});                                    
 >   >      else {
->   >        m_histoSysts.insert({ "SysFT_EFF_"+sysname , SysConfig{T::shape, S::noSmooth, Sym::symmetriseOneSided}});
->   >      } 
->   >    }
+>   >        m_histoSysts.insert({ "SysFT_EFF_"+sysname , SysConfig{T::shape, S::noSmooth, Sym::symmetriseOneSided}});       
+>   >      }                                                                                                                 
+>   >    }                                                                                                                   
+
+
+Now you need to edit the pull plot scripts such that the sytematic you added can be seen.
+~~~
+vim scripts/analysisPlottingConfig.py
+~~~
+>    ADD dummy of systematics to the cov_classification (~L190)                                                               
+>   >    "BTag": [False, ["SysFT_EFF_Eigen", "SysFT_EFF_extrapolation"], []], -> "BTag": [False, ["SysFT_EFF_Eigen", "SysFT_EFF_extrapolation", "SysDummyLight0"], []],                  
+
 ~~~
 cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Milestone2
 source setup.sh
@@ -1065,13 +1074,30 @@ cd ..
 
 python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-MVA-AddLight-likeSyst
 mv output/SMVHVZ_2019_MVA_mc16ade_v06_STXS.140ifb-0L-ade-STXS-MVA-AddLight-likeSyst_fullRes_VHbb_140ifb-0L-ade-STXS-MVA-AddLight-likeSyst_0_mc16ade_Systs_mva_STXS_FitScheme_1 output/140ifb-0L-ade-STXS-MVA-AddLight-likeSyst
-~~~
-Now you need to edit the pull plot scripts such that the sytematic you added can be seen.
-~~~
-vim scripts/analysisPlottingConfig.py
-~~~
->    ADD dummy of systematics to the cov_classification (~L190)                                                               
->   >          "LUMI": [False, ["LUMI"],[]] -> "LUMI": [False, ["LUMI" ,"SysDummyBoson_CRLow","SysDummyBoson_CRHigh","SysDummyTop_CRLow","SysDummyTop_CRHigh",[]],                                        
+
 python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-MVA-AddLight-likeSyst -n -a 5 -l Nominal AddLight-likeSyst
 mv output/pullComparisons output/pullComp_Nominal_VS_AddLight-likeSyst
+~~~
+Now we want to do a oneBin fit on this version to see if the new pull has impaced the shape, or the normalisation part of the systematic
+~~~
+vim src/binning_vhbbrun2.cpp
+~~~
+>    ADD section to inroduce one bin into the signal region (~L118)                                                           
+>   >   //Force oneBin in the SR                                                                                             
+>   >   if (doNewRegions && (c(Property::descr).Contains("SR")) ){                                                           
+>   >    return oneBin(c);                                                                                                   
+>   >   }                                                                                                                     
+~~~
+cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Milestone2
+source setup.sh
+cd build
+cmake ..
+make -j8
+cd ..
+
+python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-MVA-AddLight-likeSyst-OneBin
+mv output/SMVHVZ_2019_MVA_mc16ade_v06_STXS.140ifb-0L-ade-STXS-MVA-AddLight-likeSyst-OneBin_fullRes_VHbb_140ifb-0L-ade-STXS-MVA-AddLight-likeSyst-OneBin_0_mc16ade_Systs_mva_STXS_FitScheme_1 output/140ifb-0L-ade-STXS-MVA-AddLight-likeSyst-OneBin
+
+python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-MVA-AddLight-likeSyst-OneBin 140ifb-0L-ade-STXS-baseline-MVA-OneBin -n -a 5 -l Nominal Light-likeSyst-1Bin OneBin
+mv output/pullComparisons output/pullComp_Nominal_VS_Light-likeSyst-1Bin_VS_OneBin
 ~~~
