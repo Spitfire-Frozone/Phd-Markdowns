@@ -1101,3 +1101,56 @@ mv output/SMVHVZ_2019_MVA_mc16ade_v06_STXS.140ifb-0L-ade-STXS-MVA-AddLight-likeS
 python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-baseline-MVA-OneBin 140ifb-0L-ade-STXS-MVA-AddLight-likeSyst 140ifb-0L-ade-STXS-MVA-AddLight-likeSyst-OneBin  -n -a 5 -l Nominal OneBin Light-likeSyst Light-likeSyst-1Bin 
 mv output/pullComparisons output/pullComp_Nominal_VS_OneBin_VS_Light-likeSyst_VS_Light-likeSyst-1Bin
 ~~~
+
+##  Running a no pruning fit.
+At a loss of what to try next, we want to have a look at what happens to the pruned systematics in the fit if they were not to be pruned. First we need to restore all the files to their factory settings
+~~~
+vim src/binning_vhbbrun2.cpp
+~~~
+>    COMMENT OUT section to inroduce one bin into the signal region (~L118)                                                   
+>   >   /*                                                                                                                   
+>   >   //Force oneBin in the SR                                                                                             
+>   >   if (doNewRegions && (c(Property::descr).Contains("SR")) ){                                                           
+>   >    return oneBin(c);                                                                                                   
+>   >   }                                                                                                                     
+>   >   */                                                                                                                 
+~~~
+vim scripts/analysisPlottingConfig.py
+~~~
+>    REMOVE dummy of systematics to the cov_classification (~L185)                                                           
+>   >     "BTag": [False, ["SysFT_EFF_Eigen", "SysFT_EFF_extrapolation", "SysDummyLight0"], []], -> "BTag": [False, ["SysFT_EFF_Eigen", "SysFT_EFF_extrapolation"], []]                
+~~~
+vim src/systematicslistsbuilder_vhbbrun2.cpp
+~~~
+>   COMMENT OUT new Systematic (L160)                                                                                        
+>   >    // normSys("SysDummyLight0", 0.70, SysConfig{"Vlight"})                                                             
+
+Now we need to turn off the pruning.
+~~~
+vim scripts/launch_default_jobs.py 
+~~~
+>    ADD flag to the baseline_configs to turn off pruning (~L150)                                                           
+>   >  'DoPruneSysts': False,                                                                                            
+
+~~~
+vim WSMakerCore/src/engine.cpp 
+~~~
+>    CHANGE default flag for doing pruning in the fit to false  (~L184)                                                       
+>   >  bool doPruneSyst = m_config.getValue("DoPruneSyst", false); //note pruneOneSideShapeSysts below is not affected by this switch!
+
+>   COMMENT OUT pruning of one-sided shape systematics (L228)                                                             
+>   >      //sic.pruneOneSideShapeSysts(); // should happen in very few circumstances                                        
+
+~~~
+cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Milestone2
+source setup.sh
+cd build
+cmake ..
+make -j8
+cd ..
+
+python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-MVA-NoPruning
+mv output/SMVHVZ_2019_MVA_mc16ade_v06_STXS.140ifb-0L-ade-STXS-baseline-MVA-NoPruning_fullRes_VHbb_140ifb-0L-ade-STXS-baseline-MVA-NoPruning_0_mc16ade_Systs_mva_STXS_FitScheme_1 output/140ifb-0L-ade-STXS-baseline-MVA-NoPruning
+
+python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-baseline-MVA-NoPruning -n -a 5 -l Nominal NoPruning
+mv output/pullComparisons output/pullComp_Nominal_VS_NoPruning
