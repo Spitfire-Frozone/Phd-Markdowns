@@ -1154,3 +1154,74 @@ mv output/SMVHVZ_2019_MVA_mc16ade_v06_STXS.140ifb-0L-ade-STXS-baseline-MVA-NoPru
 
 python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-baseline-MVA-NoPruning -n -a 5 -l Nominal NoPruning
 mv output/pullComparisons output/pullComp_Nominal_VS_NoPruning
+~~~
+##  Running a alt threshold pruning fit.
+The no-pruning fit was rather informative and the Light_0 pull was reduced simply by adding in the extra pulled systematics. Now if we can play with the pruning we might be able to pinpoint why this was the case. 
+Now we need to back on the pruning.
+~~~
+vim scripts/launch_default_jobs.py 
+~~~
+>    ADD flag to the baseline_configs to turn on pruning (~L150)                                                           
+>   >  'DoPruneSysts': True,                                                                                            
+
+~~~
+vim WSMakerCore/src/engine.cpp 
+~~~
+>    CHANGE default flag for doing pruning in the fit to true  (~L184)                                                       
+>   >  bool doPruneSyst = m_config.getValue("DoPruneSyst", true); //note pruneOneSideShapeSysts below is not affected by this switch!
+
+>   COMMENT IN pruning of one-sided shape systematics (L228)                                                             
+>   >      sic.pruneOneSideShapeSysts(); // should happen in very few circumstances                                        
+
+~~~
+doPlots=True
+createSimpleWorkspace=True
+runPulls=True
+
+cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Milestone2
+source setup.sh
+cd build
+cmake ..
+make -j8
+cd ..
+
+time python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-MVA-2
+
+vim WSMakerCore/src/sampleincategory.cpp
+~~~
+CHANGE Pruining Threshold L832,L820
+~~~
+cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Milestone2
+source setup.sh
+cd build
+cmake ..
+make -j8
+cd ..
+
+time python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-MVA-Pruning1_01
+mv output/SMVHVZ_2019_MVA_mc16ade_v06_STXS.140ifb-0L-ade-STXS-baseline-MVA-NoPruning_fullRes_VHbb_140ifb-0L-ade-STXS-baseline-MVA-NoPruning_0_mc16ade_Systs_mva_STXS_FitScheme_1 output/140ifb-0L-ade-STXS-baseline-MVA-Pruning1_01
+
+python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA-NoPruning 140ifb-0L-ade-STXS-baseline-MVA-Pruning1_01 -n -a 5 -l Nominal NoPruning Pruning1_01
+mv output/pullComparisons output/pullComp_NoPruning_VS_Pruning1_01
+~~~
+CHANGE Pruining Threshold L832,L820 again
+~~~
+cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Milestone2
+source setup.sh
+cd build
+cmake ..
+make -j8
+cd ..
+
+time python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-MVA-Pruning05_005
+~~~
+CHANGE Pruining Threshold L832,L820 again
+~~~
+cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Milestone2
+source setup.sh
+cd build
+cmake ..
+make -j8
+cd ..
+
+time python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-MVA-Pruning025_0025
