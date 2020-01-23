@@ -1248,3 +1248,10 @@ mv output/SMVHVZ_2019_MVA_mc16ade_v06_STXS.140ifb-0L-ade-STXS-baseline-MVA-Pruni
 
 python WSMakerCore/scripts/comparePulls.py -w TEST 140ifb-0L-ade-STXS-baseline-MVA-Pruning1_01 140ifb-0L-ade-STXS-baseline-MVA-Pruning025_0025 -n -a 5 -l Nominal PruneThr1_01 PruneThr025_0025
 mv output/pullComparisons output/pullComp_NoPruning_VS_Pruning1_01_VS_Pruning025_0025
+~~~
+Then you can move all of the pull plots to a folder. I have called mine pullComps and I have added some additional structure
+~~~
+cd output/pullComps
+python "/afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Milestone2/WSMakerCore/macros/webpage/createHtmlOverview.py"
+cd ..
+cp -r pullComps ~/www
