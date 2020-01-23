@@ -1200,8 +1200,8 @@ Now we want to change the level of pruning in the fit.
 vim WSMakerCore/src/sampleincategory.cpp
 ~~~
 >    CHANGE Pruining Threshold in both sensitive and non-sensitive bins (L820,L832)
->   >   return this->isSysBelow(sensitiveBins, sys, hsig, 0.01) &&
->   >   return this->isSysBelow(bins, sys, hbkg, 0.001) && //Changed from 0.005
+>   >   return this->isSysBelow(sensitiveBins, sys, hsig, 0.01) &&                                                         
+>   >   return this->isSysBelow(bins, sys, hbkg, 0.001) && //Changed from 0.005                                              
 
 ~~~
 cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Milestone2
@@ -1217,8 +1217,8 @@ mv output/SMVHVZ_2019_MVA_mc16ade_v06_STXS.140ifb-0L-ade-STXS-baseline-MVA-Pruni
 vim WSMakerCore/src/sampleincategory.cpp
 ~~~
 >    CHANGE Pruining Threshold in both sensitive and non-sensitive bins again(L820,L832)
->   >   return this->isSysBelow(sensitiveBins, sys, hsig, 0.005) &&
->   >   return this->isSysBelow(bins, sys, hbkg, 0.0005) && //Changed from 0.005
+>   >   return this->isSysBelow(sensitiveBins, sys, hsig, 0.005) &&                                                         
+>   >   return this->isSysBelow(bins, sys, hbkg, 0.0005) && //Changed from 0.005                                             
 ~~~
 cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Milestone2
 source setup.sh
@@ -1233,8 +1233,8 @@ mv output/SMVHVZ_2019_MVA_mc16ade_v06_STXS.140ifb-0L-ade-STXS-baseline-MVA-Pruni
 vim WSMakerCore/src/sampleincategory.cpp
 ~~~
 >    CHANGE Pruining Threshold in both sensitive and non-sensitive bins again(L820,L832)
->   >   return this->isSysBelow(sensitiveBins, sys, hsig, 0.0025) &&
->   >   return this->isSysBelow(bins, sys, hbkg, 0.00025) && //Changed from 0.005
+>   >   return this->isSysBelow(sensitiveBins, sys, hsig, 0.0025) &&                                                         
+>   >   return this->isSysBelow(bins, sys, hbkg, 0.00025) && //Changed from 0.005                                             
 ~~~
 cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Milestone2
 source setup.sh
