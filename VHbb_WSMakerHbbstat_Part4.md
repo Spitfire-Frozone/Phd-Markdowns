@@ -2,7 +2,7 @@
 
 ## VHbb WSMaker and Hbb Stat ##
 
-## Last Edited: 11-01-2020
+## Last Edited: 23-01-2020
 -------------------------------------------------------------------------------
 # Milestone 2 Fits on latest inputs
 
@@ -1155,15 +1155,26 @@ mv output/SMVHVZ_2019_MVA_mc16ade_v06_STXS.140ifb-0L-ade-STXS-baseline-MVA-NoPru
 python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-baseline-MVA-NoPruning -n -a 5 -l Nominal NoPruning
 mv output/pullComparisons output/pullComp_Nominal_VS_NoPruning
 ~~~
-##  Running a alt threshold pruning fit.
+##  Running alternative threshold prunings in the fit.
 The no-pruning fit was rather informative and the Light_0 pull was reduced simply by adding in the extra pulled systematics. Now if we can play with the pruning we might be able to pinpoint why this was the case. 
-Now we need to back on the pruning.
+Now we need to turn back on the pruning adn restore the launcher file to the default settings.
 ~~~
 vim scripts/launch_default_jobs.py 
 ~~~
+>    CHANGE what you want to run in the 0L standalone fit (~L62-L69)                                                         
+>   >  createSimpleWorkspace = True                                                                                
+>   >  runPulls = True                                                                                                       
+>   >  runBreakdown = False                                                                                              
+>   >  runRanks = False                                                                                                
+>   >  runLimits = False                                                                                                      
+>   >  runP0 = False                                                                                                        
+>   >  runToyStudy = False                                                                                                 
+
+>    ADD additional debug plots for shape plots(~L72)                                                                
+>   >  doplots = True                                                                                                        
+
 >    ADD flag to the baseline_configs to turn on pruning (~L150)                                                           
 >   >  'DoPruneSysts': True,                                                                                            
-
 ~~~
 vim WSMakerCore/src/engine.cpp 
 ~~~
@@ -1174,10 +1185,6 @@ vim WSMakerCore/src/engine.cpp
 >   >      sic.pruneOneSideShapeSysts(); // should happen in very few circumstances                                        
 
 ~~~
-doPlots=True
-createSimpleWorkspace=True
-runPulls=True
-
 cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Milestone2
 source setup.sh
 cd build
@@ -1186,10 +1193,16 @@ make -j8
 cd ..
 
 time python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-MVA-2
-
+~~~
+You can delete this after you have the timing information as this is the same as the nominal.
+Now we want to change the level of pruning in the fit.
+~~~
 vim WSMakerCore/src/sampleincategory.cpp
 ~~~
-CHANGE Pruining Threshold L832,L820
+>    CHANGE Pruining Threshold in both sensitive and non-sensitive bins (L820,L832)
+>   >   return this->isSysBelow(sensitiveBins, sys, hsig, 0.01) &&
+>   >   return this->isSysBelow(bins, sys, hbkg, 0.001) && //Changed from 0.005
+
 ~~~
 cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Milestone2
 source setup.sh
@@ -1199,12 +1212,13 @@ make -j8
 cd ..
 
 time python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-MVA-Pruning1_01
-mv output/SMVHVZ_2019_MVA_mc16ade_v06_STXS.140ifb-0L-ade-STXS-baseline-MVA-NoPruning_fullRes_VHbb_140ifb-0L-ade-STXS-baseline-MVA-NoPruning_0_mc16ade_Systs_mva_STXS_FitScheme_1 output/140ifb-0L-ade-STXS-baseline-MVA-Pruning1_01
+mv output/SMVHVZ_2019_MVA_mc16ade_v06_STXS.140ifb-0L-ade-STXS-baseline-MVA-Pruning1_01_fullRes_VHbb_140ifb-0L-ade-STXS-baseline-MVA-Pruning1_01_0_mc16ade_Systs_mva_STXS_FitScheme_1 output/140ifb-0L-ade-STXS-baseline-MVA-Pruning1_01
 
-python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA-NoPruning 140ifb-0L-ade-STXS-baseline-MVA-Pruning1_01 -n -a 5 -l Nominal NoPruning Pruning1_01
-mv output/pullComparisons output/pullComp_NoPruning_VS_Pruning1_01
+vim WSMakerCore/src/sampleincategory.cpp
 ~~~
-CHANGE Pruining Threshold L832,L820 again
+>    CHANGE Pruining Threshold in both sensitive and non-sensitive bins again(L820,L832)
+>   >   return this->isSysBelow(sensitiveBins, sys, hsig, 0.005) &&
+>   >   return this->isSysBelow(bins, sys, hbkg, 0.0005) && //Changed from 0.005
 ~~~
 cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Milestone2
 source setup.sh
@@ -1214,8 +1228,13 @@ make -j8
 cd ..
 
 time python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-MVA-Pruning05_005
+mv output/SMVHVZ_2019_MVA_mc16ade_v06_STXS.140ifb-0L-ade-STXS-baseline-MVA-Pruning05_005_fullRes_VHbb_140ifb-0L-ade-STXS-baseline-MVA-Pruning05_005_0_mc16ade_Systs_mva_STXS_FitScheme_1 output/140ifb-0L-ade-STXS-baseline-MVA-Pruning05_005
+
+vim WSMakerCore/src/sampleincategory.cpp
 ~~~
-CHANGE Pruining Threshold L832,L820 again
+>    CHANGE Pruining Threshold in both sensitive and non-sensitive bins again(L820,L832)
+>   >   return this->isSysBelow(sensitiveBins, sys, hsig, 0.0025) &&
+>   >   return this->isSysBelow(bins, sys, hbkg, 0.00025) && //Changed from 0.005
 ~~~
 cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Milestone2
 source setup.sh
@@ -1225,3 +1244,7 @@ make -j8
 cd ..
 
 time python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-MVA-Pruning025_0025
+mv output/SMVHVZ_2019_MVA_mc16ade_v06_STXS.140ifb-0L-ade-STXS-baseline-MVA-Pruning025_0025_fullRes_VHbb_140ifb-0L-ade-STXS-baseline-MVA-Pruning025_0025_0_mc16ade_Systs_mva_STXS_FitScheme_1 output/140ifb-0L-ade-STXS-baseline-MVA-Pruning025_0025
+
+python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA-NoPruning 140ifb-0L-ade-STXS-baseline-MVA-Pruning1_01 -n -a 5 -l Nominal PruneThr1_01 PruneThr05_005 PruneThr025_0025
+mv output/pullComparisons output/pullComp_NoPruning_VS_Pruning1_01_VS_Pruning05_005_VS_Pruning025_0025
