@@ -1255,3 +1255,48 @@ cd output/pullComps
 python "/afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Milestone2/WSMakerCore/macros/webpage/createHtmlOverview.py"
 cd ..
 cp -r pullComps ~/www
+~~~
+##  Running alternative threshold prunings in the fit.
+So after this we might remove the pruning for Light_0. To get a better overall picture on the effect this will have on the analysis we will have to run the fit without pruning with the breakdowns and the rankings.
+
+Firstly to run the breakdowns edit
+~~~
+vim scripts/launch_default_jobs.py 
+~~~
+>    CHANGE running flags to run on the breakdowns (~L66)                                                                   
+>   >  runPulls = True                                                                                                       
+>   >  runBreakdown = True                                                                                                 
+
+>    ADD flag to the baseline_configs to turn off pruning (~L150)                                                           
+>   >  'DoPruneSysts': False,                                                                                            
+
+~~~
+vim WSMakerCore/src/engine.cpp 
+~~~
+>    CHANGE default flag for doing pruning in the fit to false  (~L184)                                                       
+>   >  bool doPruneSyst = m_config.getValue("DoPruneSyst", false); //note pruneOneSideShapeSysts below is not affected by this switch!
+
+>   COMMENT OUT pruning of one-sided shape systematics (L228)                                                             
+>   >      //sic.pruneOneSideShapeSysts(); // should happen in very few circumstances                                        
+
+~~~
+cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Milestone2
+source setup.sh
+cd build
+cmake ..
+make -j8
+cd ..
+python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-MVA-NoPruning-breakdowns
+~~~
+Then to run the rankings you don't have to run the pulls again or the shapes so this should be quicker to run
+~~~
+vim scripts/launch_default_jobs.py 
+~~~
+>    CHANGE running flags to run on the breakdowns (~L66)                                                                   
+>   >  runPulls = False                                                                                                       
+>   >  runBreakdown = False                                                                                                 
+>   >  runRanking = True                                                                                                     
+>   >  doplots = False                                                                                                       
+~~~
+python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-MVA-NoPruning-rankings
+~~~
