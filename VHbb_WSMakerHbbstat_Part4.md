@@ -1287,6 +1287,10 @@ cmake ..
 make -j8
 cd ..
 python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-MVA-NoPruning-breakdowns
+mv output/SMVHVZ_2019_MVA_mc16ade_v06_STXS.140ifb-0L-ade-STXS-baseline-MVA-NoPruning-breakdowns_fullRes_VHbb_140ifb-0L-ade-STXS-baseline-MVA-NoPruning-breakdowns_0_mc16ade_Systs_mva_STXS_FitScheme_1 output/140ifb-0L-ade-STXS-baseline-MVA-NoPruning-breakdowns
+python WSMakerCore/scripts/mergeBreakdown.py 140ifb-0L-ade-STXS-baseline-MVA-NoPruning-breakdowns
+
+vim /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Milestone2/output/140ifb-0L-ade-STXS-baseline-MVA-NoPruning-breakdowns/plots/breakdown/muHatTable_mode11_Asimov1_SigXsecOverSM.txt 
 ~~~
 Then to run the rankings you don't have to run the pulls again or the shapes so this should be quicker to run
 ~~~
@@ -1299,4 +1303,9 @@ vim scripts/launch_default_jobs.py
 >   >  doplots = False                                                                                                       
 ~~~
 python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-MVA-NoPruning-rankings
+
+mv output/SMVHVZ_2019_MVA_mc16ade_v06_STXS.140ifb-0L-ade-STXS-baseline-MVA-NoPruning-rankings_fullRes_VHbb_140ifb-0L-ade-STXS-baseline-MVA-NoPruning-rankings_0_mc16ade_Systs_mva_STXS_FitScheme_1 output/140ifb-0L-ade-STXS-baseline-MVA-NoPruning-rankings
+
+python WSMakerCore/scripts/makeNPrankPlots.py 140ifb-0L-ade-STXS-baseline-MVA-NoPruning-rankings
+imgcat output/140ifb-0L-ade-STXS-baseline-MVA-NoPruning-rankings/pdf-files/pulls_SigXsecOverSM_125.pdf
 ~~~
