@@ -2,7 +2,7 @@
 
 ## VHbb WSMaker and Hbb Stat ##
 
-## Last Edited: 23-01-2020
+## Last Edited: 28-01-2020
 -------------------------------------------------------------------------------
 # Milestone 2 Fits on latest inputs
 
@@ -1256,7 +1256,7 @@ python "/afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Milestone2/WSMakerCore/ma
 cd ..
 cp -r pullComps ~/www
 ~~~
-##  Running alternative threshold prunings in the fit.
+##  Running fit details for the non-pruning fit.
 So after this we might remove the pruning for Light_0. To get a better overall picture on the effect this will have on the analysis we will have to run the fit without pruning with the breakdowns and the rankings.
 
 Firstly to run the breakdowns edit
@@ -1302,6 +1302,12 @@ vim scripts/launch_default_jobs.py
 >   >  runRanking = True                                                                                                     
 >   >  doplots = False                                                                                                       
 ~~~
+cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Milestone2
+source setup.sh
+cd build
+cmake ..
+make -j8
+cd ..
 python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-MVA-NoPruning-rankings
 
 mv output/SMVHVZ_2019_MVA_mc16ade_v06_STXS.140ifb-0L-ade-STXS-baseline-MVA-NoPruning-rankings_fullRes_VHbb_140ifb-0L-ade-STXS-baseline-MVA-NoPruning-rankings_0_mc16ade_Systs_mva_STXS_FitScheme_1 output/140ifb-0L-ade-STXS-baseline-MVA-NoPruning-rankings
