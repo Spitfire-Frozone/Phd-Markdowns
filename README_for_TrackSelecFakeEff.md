@@ -1,10 +1,10 @@
-# Documentation to accompany my code hosted on https://gitlab.cern.ch/dspiteri/atlas-trackingCP-fakestudy/ To be used by people trying to reproduce recommendations for the estimatation of the uncertainty due to fakes on inclusive tracks under the Loose and TightPrimary working points.# 
+## Documentation to accompany my code hosted on https://gitlab.cern.ch/dspiteri/atlas-trackingCP-fakestudy/ To be used by people trying to reproduce recommendations for the estimatation of the uncertainty due to fakes on inclusive tracks under the Loose and TightPrimary working points. ## 
 
-## "Reproducing Recommendations" ##
-===============================================================================
-Last Edited: 09-02-2018
--------------------------------------------------------------------------------
-# Everytime you see "/afs/cern.ch/work/d/dspiteri/PhysVal/FakeStudy/" Replace it with the absolute path of the directory that holds the atlas-trackingCP-fakestudy directory
+# Reproducing Recommendations #
+
+## Last Edited: 09-02-2018
+
+## Everytime you see "/afs/cern.ch/work/d/dspiteri/PhysVal/FakeStudy/" Replace it with the absolute path of the directory that holds the atlas-trackingCP-fakestudy directory
 
 # Setup the environment
 ~~~
