@@ -1360,7 +1360,8 @@ cd ..
 python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-MVA-noLightPruning
 mv output/SMVHVZ_2019_MVA_mc16ade_v06_STXS.140ifb-0L-ade-STXS-baseline-MVA-noLightPruning_fullRes_VHbb_140ifb-0L-ade-STXS-baseline-MVA-noLightPruning_0_mc16ade_Systs_mva_STXS_FitScheme_1 output/140ifb-0L-ade-STXS-baseline-MVA-noLightPruning
 
-
 python WSMakerCore/scripts/comparePulls.py -w 140ifb-0L-ade-STXS-baseline-MVA-NoPruning 140ifb-0L-ade-STXS-baseline-MVA-noLightPruning -n -a 5 -l NoPruning NoLightPruning
 mv output/pullComparisons output/pullComp_NoPruning_VS_NoLightPruning
 
+python WSMakerCore/scripts/comparePulls.py -w TEST 140ifb-0L-ade-STXS-baseline-MVA-noLightPruning -n -a 5 -l Pruning NoLightPruning
+mv output/pullComparisons output/pullComp_Pruning_VS_NoLightPruning
