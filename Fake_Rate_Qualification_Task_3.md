@@ -1,9 +1,9 @@
 # This will be aimed at my the second part of my qualification task which is to join the efforts surrounding the study of fake rates. This documentation is mainly focussed on adding d0 and z0 plots to the framework to try and understand fake tracks better.  
 
 ## "Fake Rate Investigations" ##
-===============================================================================
-Last Edited: 24-11-2017
--------------------------------------------------------------------------------
+
+## Last Edited: 24-11-2017
+
 ### I highly recommend you read Fake_Rate_Qualification_Task.md if you think some steps are skipped without explanation. This will hit the ground running so to speak. ###
 
 # Investigating the Fake Rate 
@@ -249,8 +249,8 @@ git push -u origin master_d0Plots
 ## Beautifying d0 plots made in the framework  
 Need to edit the NTracksvsMu_data_mc_fakerate_v3.C file
 ~~~  
-> cd /afs/cern.ch/work/d/dspiteri/PhysVal/FakeStudy/atlas-trackingCP-fakestudy/  
-> vim NTracksVsMu_datamc_fakerate_v3.C  
+cd /afs/cern.ch/work/d/dspiteri/PhysVal/FakeStudy/atlas-trackingCP-fakestudy/  
+vim NTracksVsMu_datamc_fakerate_v3.C  
 ~~~
 
 > ADD fetching of newly created TProfile Plots ~L124  
