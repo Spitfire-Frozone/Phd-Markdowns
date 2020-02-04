@@ -1,9 +1,9 @@
 # This will be aimed at my the second part of my qualification task which is to join the efforts surrounding the study of fake rates. This documentation gives help when trying to add MC based truth studies to the framework.
 
 ## "Fake Rate Investigations" ##
-===============================================================================
-Last Edited: 21-09-2018
--------------------------------------------------------------------------------
+
+## Last Edited: 21-09-2018
+
 ### I highly recommend you read Fake_Rate_Qualification_Task.md if you think some steps are skipped without explanation. This will hit the ground running so to speak. ###
 
 # Investigating the Fake Rate
