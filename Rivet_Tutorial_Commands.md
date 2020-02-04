@@ -1,4 +1,8 @@
-1009  cd RIVETtutorial/
+ # Rivet Tutorial Commands
+ # Last Edited 10/01/2019
+ ## Commands used for the setting up or RIVET from the ATLAS2019 workshop
+ ~~~
+ 1009  cd RIVETtutorial/
  1010  setupATLAS
  1011  cp ∼/cgutscho/public/rivetATLASUK/material.tar.gz .
  1012  cp ∼cgutscho/public/rivetATLASUK/material.tar.gz .
@@ -42,3 +46,4 @@
  1049  rivet-mkhtml Rivet.yoda
  1050  imgcat rivet-plots/MY_TEST_ANALYSIS/Z_mass.png
  1051  history
+~~~
