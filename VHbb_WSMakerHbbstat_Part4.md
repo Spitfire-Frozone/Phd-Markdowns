@@ -1365,3 +1365,12 @@ mv output/pullComparisons output/pullComp_NoPruning_VS_NoLightPruning
 
 python WSMakerCore/scripts/comparePulls.py -w TEST 140ifb-0L-ade-STXS-baseline-MVA-noLightPruning -n -a 5 -l Pruning NoLightPruning
 mv output/pullComparisons output/pullComp_Pruning_VS_NoLightPruning
+~~~
+Now the last thing that needs to be done is to move all the pull comparisons to one place and then make them such that everyone can access them.
+~~~
+mv output/pullComp_* output/pullComps
+cd output/pullComps
+python "/afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Milestone2/WSMakerCore/macros/webpage/createHtmlOverview.py"
+cd ..
+cp -r pullComps ~/www
+~~~
