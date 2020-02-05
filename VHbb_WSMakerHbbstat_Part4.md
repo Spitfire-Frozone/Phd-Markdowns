@@ -425,9 +425,9 @@ cd build
 cmake ..
 make -j8
 cd ..
-python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-CBA-Breakdowns
-python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-CBA-Ranking
-python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-CBA-Significance
+python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-VV-Breakdowns
+python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-VV-Ranking
+python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-VV-Significance
 ~~~
 ## 6) Run the VV analysis over the post-fit variables 
 ~~~
