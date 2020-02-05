@@ -405,7 +405,7 @@ cd build
 cmake ..
 make -j8
 cd ..
-python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-CBA-DataSignif
+python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-VV-DataSignif
 ~~~
 ## 8,9,10) Run the VV analysis with Rankings, Breakdowns and Significances 
 ~~~
