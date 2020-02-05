@@ -350,6 +350,10 @@ vim scripts/launch_default_jobs.py
 >   >  runPulls = True                                                                                                       
 >   >  doplots = True                                                                                                        
 ~~~
+cd build
+cmake ..
+make -j8
+cd ..
 python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-CBA-Pulls
 mv output/SMVHVZ_2019_MVA_mc16ade_v05_STXS.140ifb-0L-ade-STXS-baseline-CBA-Pulls_fullRes_VHbb_140ifb-0L-ade-STXS-baseline-CBA-Pulls_0_mc16ade_Systs_mBB_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/140ifb-0L-ade-STXS-baseline-CBA-Pulls
 ~~~
@@ -363,6 +367,10 @@ vim scripts/launch_default_jobs.py
 >    CHANGE postfit variables of interest (~L92)                                                                             
 >   >  vs2tag = ['pTV','MET','pTB1','pTB2','mBB','dRBB','dEtaBB','dPhiVBB','dEtaVBB','MEff','MEff3','dPhiLBmin','mTW','mLL','dYWH','Mtop','pTJ3','mBBJ','mBBJ3','METSig'] -> vs2tag =  ['mBB','MET']                                                                        
 ~~~
+cd build
+cmake ..
+make -j8
+cd ..
 python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-CBA-PostFit
 mv output/SMVHVZ_2019_MVA_mc16ade_v05_STXS.140ifb-0L-ade-STXS-baseline-CBA-PostFit_fullRes_VHbb_140ifb-0L-ade-STXS-baseline-CBA-PostFit_0_mc16ade_Systs_mBB_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/140ifb-0L-ade-STXS-baseline-CBA-PostFit-mBB
 mv output/SMVHVZ_2019_MVA_mc16ade_v05_STXS.140ifb-0L-ade-STXS-baseline-CBA-PostFit_fullRes_VHbb_140ifb-0L-ade-STXS-baseline-CBA-PostFit_0_mc16ade_Systs_MET_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/140ifb-0L-ade-STXS-baseline-CBA-PostFit-MET
@@ -379,6 +387,10 @@ vim scripts/launch_default_jobs.py
 >   >  runP0 = True                                                                                                           
 >   >  doplots = False                                                                                                        
 ~~~
+cd build
+cmake ..
+make -j8
+cd ..
 python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-CBA-Full
 mv output/SMVHVZ_2019_MVA_mc16ade_v05_STXS.140ifb-0L-ade-STXS-baseline-CBA-Full_fullRes_VHbb_140ifb-0L-ade-STXS-baseline-CBA-Full_0_mc16ade_Systs_mBB_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/140ifb-0L-ade-STXS-baseline-CBA-Full
 ~~~
@@ -435,6 +447,10 @@ vim scripts/launch_default_jobs.py
 >    CHANGE postfit plots to run over only ones we are interested in (~L92)                                                   
   vs2tag = ['pTV','MET','pTB1','pTB2','mBB','dRBB','dEtaBB','dPhiVBB','dEtaVBB','MEff','MEff3','dPhiLBmin','mTW','mLL','dYWH','Mtop','pTJ3','mBBJ','mBBJ3','METSig'] ->   vs2tag = ['mBB','MET']
 ~~~
+cd build
+cmake ..
+make -j8
+cd ..
 python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-VV-Postfit
 mv output/SMVHVZ_2019_MVA_mc16ade_v05_STXS.140ifb-0L-ade-STXS-baseline-VV-Postfit_fullRes_VHbb_140ifb-0L-ade-STXS-baseline-VV-Postfit_0_mc16ade_Systs_mBB_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/140ifb-0L-ade-STXS-baseline-VV-PostFit-mBB
 mv output/SMVHVZ_2019_MVA_mc16ade_v05_STXS.140ifb-0L-ade-STXS-baseline-VV_fullRes_VHbb_140ifb-0L-ade-STXS-baseline-VV-PostFit_0_mc16ade_Systs_MET_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/140ifb-0L-ade-STXS-baseline-VV-PostFit-MET
@@ -450,6 +466,10 @@ vim scripts/launch_default_jobs.py
 >   >  runPulls = True   
 >   >  doplots = True                                                                                                         
 ~~~
+cd build
+cmake ..
+make -j8
+cd ..
 python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-VV-Pulls
 mv output/SMVHVZ_2019_MVA_mc16ade_v05_STXS.140ifb-0L-ade-STXS-baseline-VV-Pulls_fullRes_VHbb_140ifb-0L-ade-STXS-baseline-VV-Pulls_0_mc16ade_Systs_mvadiboson_STXS_FitScheme_1_QCDUpdated_PDFUpdated_dropTheryAccUpdated output/140ifb-0L-ade-STXS-baseline-VV-Pulls
 ~~~
