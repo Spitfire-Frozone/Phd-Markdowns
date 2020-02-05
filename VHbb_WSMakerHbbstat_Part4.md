@@ -388,7 +388,7 @@ vim scripts/analysis_plotting_config.py
 ~~~
 >    CHANGE what it condisers to be signal (~L10)                                                                             
 >   >  vh_fit=False                                                                                                         
->   >  vh_cab=False                                                                                                       
+>   >  vh_cba=False                                                                                                       
 ~~~
 vim scripts/launch_default_jobs.py 
 ~~~
