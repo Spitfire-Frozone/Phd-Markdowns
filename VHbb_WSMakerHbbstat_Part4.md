@@ -340,6 +340,9 @@ vim scripts/analysis_plotting_config.py
 ~~~
 vim scripts/launch_default_jobs.py 
 ~~~
+>    CHANGE Analysis conditions (~L17)                                                                                       
+>   >  doCutBase = True                                                                                                       
+
 >    CHANGE flags to run over the pulls (~L60)                                                    
 >   >  doExp = 0                                                                                                             
 
@@ -354,13 +357,10 @@ mv output/SMVHVZ_2019_MVA_mc16ade_v05_STXS.140ifb-0L-ade-STXS-baseline-CBA-Pulls
 ~~~
 vim scripts/launch_default_jobs.py 
 ~~~
->    CHANGE Analysis conditions (~L17)                                                                                         
->   >  doCutBase = True                                                                                                       
-
->    CHANGE Analyses outputs (~L67-80)                                                                                         
+>    CHANGE Analyses outputs (~L67-80)                                                                                       
 >   >  runPulls = False                                                                                                     
 
->    CHANGE postfit variables of interest (~L92)                                                                              
+>    CHANGE postfit variables of interest (~L92)                                                                             
 >   >  vs2tag = ['pTV','MET','pTB1','pTB2','mBB','dRBB','dEtaBB','dPhiVBB','dEtaVBB','MEff','MEff3','dPhiLBmin','mTW','mLL','dYWH','Mtop','pTJ3','mBBJ','mBBJ3','METSig'] -> vs2tag =  ['mBB','MET']                                                                        
 ~~~
 python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-CBA-PostFit
