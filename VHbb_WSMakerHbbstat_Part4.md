@@ -2,7 +2,7 @@
 
 ## VHbb WSMaker and Hbb Stat ##
 
-## Last Edited: 04-02-2020
+## Last Edited: 05-02-2020
 -------------------------------------------------------------------------------
 # Milestone 2 Fits on latest inputs
 
@@ -316,13 +316,13 @@ Here is a summary of the plots that we require
 
 Leaving the large parts of the launch_default_jobs.py unchanged against the default.
 ~~~
+cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_AuxAnalyses
+source setup.sh
 vim scripts/launch_default_jobs.py 
 ~~~
 >    CHANGE Global run conditions (~L13)                                                                                  
 >   >  version = "v05_STXS"                                                                                               
 ~~~
-cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_AuxAnalyses
-source setup.sh
 cd build && rm -rf *
 cmake ..
 make -j8
