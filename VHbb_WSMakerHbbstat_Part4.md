@@ -332,13 +332,19 @@ python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-VV-DataSignif
 ~~~
 ## 1) Run the CB analysis with the EXPECTED pulls 
 ~~~
+vim scripts/analysis_plotting_config.py 
+~~~
+>    CHANGE what it condisers to be signal (~L10)                                                                             
+>   >  vh_fit=True                                                                                                         
+>   >  vh_cba=True                                                                                                         
+~~~
 vim scripts/launch_default_jobs.py 
 ~~~
->    CHANGE flags to get Rankings, Breakdowns and Significances (~L62)                                                    
->   >  doExp = 0                                                                                                              
+>    CHANGE flags to run over the pulls (~L60)                                                    
+>   >  doExp = 0                                                                                                             
 
 >    CHANGE Analyses outputs (~L67-80)  
->   >  runPulls = True                                                                                                        
+>   >  runPulls = True                                                                                                       
 >   >  doplots = True                                                                                                        
 ~~~
 python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-CBA-Pulls
@@ -366,10 +372,10 @@ mv output/SMVHVZ_2019_MVA_mc16ade_v05_STXS.140ifb-0L-ade-STXS-baseline-CBA-PostF
 vim scripts/launch_default_jobs.py 
 ~~~
 >    CHANGE flags to get Rankings, Breakdowns and Significances (~L60-L80)                                                    
->   >  doExp = 1                                                                                                              
+>   >  doExp = 1                                                                                                             
 >   >  runPulls = False                                                                                                      
->   >  runBreakdown = True                                                                                                    
->   >  runRanks = True                                                                                                        
+>   >  runBreakdown = True                                                                                                   
+>   >  runRanks = True                                                                                                       
 >   >  runP0 = True                                                                                                           
 >   >  doplots = False                                                                                                        
 ~~~
@@ -382,6 +388,7 @@ vim scripts/analysis_plotting_config.py
 ~~~
 >    CHANGE what it condisers to be signal (~L10)                                                                             
 >   >  vh_fit=False                                                                                                         
+>   >  vh_cab=False                                                                                                       
 ~~~
 vim scripts/launch_default_jobs.py 
 ~~~
