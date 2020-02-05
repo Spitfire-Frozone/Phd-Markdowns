@@ -414,6 +414,7 @@ vim scripts/analysis_plotting_config.py
 >    CHANGE what it condisers to be signal (~L10)                                                                             
 >   >  vh_fit=False                                                                                                         
 >   >  vh_cba=False                                                                                                       
+
 ~~~
 vim scripts/launch_default_jobs.py 
 ~~~
@@ -446,7 +447,8 @@ python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-VV-Ranking
 python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-VV-Significance
 
 ~~~
-Remembering once again tha t
+Remembering once again that if you want to get the Data-Conditional Significances you need to run again with some flags changed.
+~~~
 vim scripts/launch_default_jobs.py 
 ~~~
 >    CHANGE flags to get Data-Conditional Significances (~L60-L80)                                                  
@@ -466,12 +468,12 @@ vim scripts/launch_default_jobs.py
 >    ADD running of post-fit variables (~L15)                                                    
 >   >  doPostFit = True                                                                                                      
 
->    CHANGE flags to not get Rankings, Breakdowns and Significances (~L60-L80)                                                 
->   >  doExp = 0                                                                                                              
+>    CHANGE flags to not get Rankings, Breakdowns and Significances (~L60-L80)                                               
+>   >  doExp = 0                                                                                                            
 >   >  runPulls = False                                                                                                      
 >   >  runBreakdown = False                                                                                                  
 >   >  runRanks = False                                                                                                      
->   >  runP0 = False                                                                                                           
+>   >  runP0 = False                                                                                                       
 >   >  doplots = False                                                                                                         
 
 >    CHANGE postfit plots to run over only ones we are interested in (~L92)                                                   
