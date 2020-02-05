@@ -316,6 +316,11 @@ Here is a summary of the plots that we require
 
 Leaving the large parts of the launch_default_jobs.py unchanged against the default.
 ~~~
+vim scripts/launch_default_jobs.py 
+~~~
+>    CHANGE Global run conditions (~L13)                                                                                  
+>   >  version = "v05_STXS"                                                                                               
+~~~
 cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_AuxAnalyses
 source setup.sh
 cd build && rm -rf *
@@ -329,9 +334,6 @@ python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-VV-DataSignif
 ~~~
 vim scripts/launch_default_jobs.py 
 ~~~
->    CHANGE Global run conditions (~L13)                                                                                  
->   >  version = "v05_STXS"                                                                                               
-
 >    CHANGE flags to get Rankings, Breakdowns and Significances (~L62)                                                    
 >   >  doExp = 0                                                                                                              
 
