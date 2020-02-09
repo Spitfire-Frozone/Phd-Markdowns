@@ -2,7 +2,7 @@
 
 ## VHbb WSMaker and Hbb Stat ##
 
-## Last Edited: 05-02-2020
+## Last Edited: 10-02-2020
 -------------------------------------------------------------------------------
 # Milestone 2 Fits on latest inputs
 
@@ -1435,3 +1435,14 @@ python "/afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Milestone2/WSMakerCore/ma
 cd ..
 cp -r pullComps ~/www
 ~~~
+# Running THE FINAL (seriously this is the last time I am doing this). Luckily for me i'm only doing the postfit plots.
+
+## Changing the binning on the softMET postfit plots.
+~~~
+vim binning_vhbbrun2.cpp
+~~~
+>    ADD binning stipulation on the softMET postfits where the others are (~L302)                                             
+>   >    if (c(Property::dist) == "softMET" ) res = {5}; //To be tested                                                       
+
+>    ADD range change for softMET postfits plots where the others are (~L413)                                             
+>   >    if (c(Property::dist) == "softMET" ) changeRangeImpl(h,0.,200.);                                                    
