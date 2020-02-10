@@ -1437,12 +1437,34 @@ cp -r pullComps ~/www
 ~~~
 # Running THE FINAL (seriously this is the last time I am doing this). Luckily for me i'm only doing the postfit plots.
 
+This time instead of checking out the master, we are getting a specific tag. Also ROOT has been updated but we are using the old one still. 
+~~~
+cd /afs/cern.ch/work/d/dspiteri/VHbb/
+setupATLAS && lsetup git && lsetup "root 6.14.04-x86_64-slc6-gcc62-opt"
+source getMaster.sh 00-03-02bis
+~~~
+## Running VV and CBA analysis plots
+
+## Running MVA postfit plots
+
 ## Changing the binning on the softMET postfit plots.
 ~~~
-vim binning_vhbbrun2.cpp
+vim src/binning_vhbbrun2.cpp
 ~~~
 >    ADD binning stipulation on the softMET postfits where the others are (~L302)                                             
 >   >    if (c(Property::dist) == "softMET" ) res = {5}; //To be tested                                                       
 
 >    ADD range change for softMET postfits plots where the others are (~L413)                                             
 >   >    if (c(Property::dist) == "softMET" ) changeRangeImpl(h,0.,200.);                                                    
+
+Re-run the softMET plots in their new folder
+~~~
+cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Feb2020/
+source setup.sh
+cd build
+cmake ..
+make -j8
+cd ..
+
+python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 3 -f 140ifb-012L-ade-STXS-baseline-MVA 012L-0L-Postfit/140ifb-0L-ade-STXS-baseline-MVA-PostFit-softMET
+~~~
