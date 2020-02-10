@@ -1577,7 +1577,7 @@ mv output/140ifb-0L-ade-STXS-baseline-MVA-PostFit-* output/0L-0L-Postfit
 ~~~
 Finally we need to put these plots somewhere where people can easily access them.
 ~~~
-cd /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/FullRunII2019/statArea/output/2020-02-05/l0/vh-mva/
+cd /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/FullRunII2019/statArea/outputs/2020-02-05/l0/vh-mva/
 mkdir 012L-0L-Postfit 0L-0L-Postfit 
 
 cp -r /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Feb2020/output/012L-0L-Postfit/140ifb-0L-ade-STXS-baseline-MVA-PostFit-binMV2c10B1/plots/postfit 012L-0L-Postfit/Postfit-binMV2c10B1 
