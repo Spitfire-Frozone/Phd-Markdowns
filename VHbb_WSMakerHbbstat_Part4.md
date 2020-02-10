@@ -1619,10 +1619,10 @@ cp -r /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Feb2020/output/0L-0L-Postfi
 vim src/binning_vhbbrun2.cpp
 ~~~
 >    ADD binning stipulation on the softMET postfits where the others are (~L302)                                             
->   >    if (c(Property::dist) == "softMET" ) res = {5}; //To be tested                                                       
+>   >    if (c(Property::dist) == "softMET" ) res = {10}; //To be tested                                                       
 
 >    ADD range change for softMET postfits plots where the others are (~L413)                                             
->   >    if (c(Property::dist) == "softMET" ) changeRangeImpl(h,0.,200.);                                                    
+>   >    if (c(Property::dist) == "softMET" ) changeRangeImpl(h,0,80);                                                    
 
 Re-run the softMET plots in their new folder(s)
 ~~~
