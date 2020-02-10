@@ -1624,7 +1624,7 @@ vim src/binning_vhbbrun2.cpp
 >    ADD range change for softMET postfits plots where the others are (~L413)                                             
 >   >    if (c(Property::dist) == "softMET" ) changeRangeImpl(h,0.,200.);                                                    
 
-Re-run the softMET plots in their new folder
+Re-run the softMET plots in their new folder(s)
 ~~~
 cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Feb2020/
 source setup.sh
@@ -1634,4 +1634,5 @@ make -j8
 cd ..
 
 python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 3 -f 140ifb-012L-ade-STXS-baseline-MVA 012L-0L-Postfit/140ifb-0L-ade-STXS-baseline-MVA-PostFit-softMET
+python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 3 -f 140ifb-012L-ade-STXS-baseline-MVA 0L-0L-Postfit/140ifb-0L-ade-STXS-baseline-MVA-PostFit-softMET
 ~~~
