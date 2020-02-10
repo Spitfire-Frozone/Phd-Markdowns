@@ -1535,7 +1535,7 @@ Want to now make the zero lepton postfit plots by comparing them to an existing 
 ~~~
 mkdir 140ifb-012L-ade-STXS-baseline-MVA
 cd /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/FullRunII2019/statArea/outputs/2020-02-05/comb/vh-mva/
-cp -r fccs /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Feb2020/output/140ifb-012L-ade-STXS-baseline-MVA
+cp -r fccs /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Feb2020/outputs/140ifb-012L-ade-STXS-baseline-MVA
 
 python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 3 -f 140ifb-012L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-baseline-MVA-PostFit-binMV2c10B1
 python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 3 -f 140ifb-012L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-baseline-MVA-PostFit-binMV2c10B1B2
