@@ -1554,7 +1554,7 @@ python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 3 -f 140ifb-012L-ade-STXS-b
 python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 3 -f 140ifb-012L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-baseline-MVA-PostFit-softMET
 
 mkdir output/012L-0L-Postfit
-mv output/140ifb-0L-ade-STXS-baseline-MVA-PostFit-* 012L-0L-Postfit
+mv output/140ifb-0L-ade-STXS-baseline-MVA-PostFit-* output/012L-0L-Postfit
 
 python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 3 -f 140ifb-0L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-baseline-MVA-PostFit-binMV2c10B1
 python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 3 -f 140ifb-0L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-baseline-MVA-PostFit-binMV2c10B1B2
@@ -1573,7 +1573,7 @@ python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 3 -f 140ifb-0L-ade-STXS-bas
 python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 3 -f 140ifb-0L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-baseline-MVA-PostFit-softMET
 
 mkdir output/0L-0L-Postfit
-mv output/140ifb-0L-ade-STXS-baseline-MVA-PostFit-* 0L-0L-Postfit
+mv output/140ifb-0L-ade-STXS-baseline-MVA-PostFit-* output/0L-0L-Postfit
 ~~~
 Finally we need to put these plots somewhere where people can easily access them.
 ~~~
