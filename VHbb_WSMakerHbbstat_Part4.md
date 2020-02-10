@@ -1444,8 +1444,175 @@ setupATLAS && lsetup git && lsetup "root 6.14.04-x86_64-slc6-gcc62-opt"
 source getMaster.sh 00-03-02bis
 ~~~
 ## Running VV and CBA analysis plots
+The inputs used are post-splitting and post-processed. They are available here: /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/FullRunII2019/statArea/inputs/AfterWSMakerSplit/2020Feb04_VVunblindingClosure/SMVHVZ_2019_MVA_mc16ade_v03_STXS_GSC_TTBARBC-0LEP_postprocessed
+
+For details on how to do this run see the Earlier Section entitled: Running Official 0L Plots for Cut-Based(CB) and Diboson(VV) Analyses. Remebering that you will need to create a new input configs file.
 
 ## Running MVA postfit plots
+This is going to be a bit more involved than the last time. Luca has created some inputs with all the variables but without the post processing. 
+>   /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/FullRunII2019/statArea/inputs/ZeroLep/r32-15_allMVAVariables/LimitHistograms.VHbb.0Lep.13TeV.mc16ade.Oxford.r32-15allVarsZr32-24-Reader-Resolved-03.root
+
+They need to be split and then post-processed. First we need a new inputConfigs file
+~~~
+vim/inputConfigs/SMVHVZ_2019_MVA_mc16ade_0L_v03_AllVars_STXS.txt
+~~~
+>   ADD 0L All variables                                                                                                     
+>   >   CoreRegions                                                                                                         
+>   >   ZeroLepton /ZeroLep/r32-15_allMVAVariables/LimitHistograms.VHbb.0Lep.13TeV.mc16ade.Oxford.r32-15allVarsZr32-24-Reader-Resolved-03.root binMV2c10B1,binMV2c10B2,binMV2c10B1B2,dEtaBB,dPhiVBB,dRBB,dPhiBB,HT,pTB1,pTB2,pTJ3,mBB,mBBJ,MET,softMET                       
+~~~
+SplitInputs -r Run2 -v SMVHVZ_2019_MVA_mc16ade_0L_v03_AllVars_STXS
+~~~
+Once this is done the inputs need to be post-processed. However the standard post-processing happens only on the mbb & MET in 0L. We need to put the post-processing on all the variables. 
+~~~
+vim scripts/RemoveNormImpact.py
+~~~
+>   ADD full list of 0L variables to process (L181)                                                                           
+>   >   variables_0lep = ["mva", "mvadiboson", "mBB", "MET"] -> variables_0lep = ["mva", "mvadiboson", "mBB", "MET", "binMV2c10B1","binMV2c10B2","binMV2c10B1B2","dEtaBB","dPhiVBB","dRBB","dPhiBB","HT","pTB1","pTB2","pTJ3","mBBJ","softMET"]
+
+Then run the script to post-process the variables. WARNING. This takes some considerable time.
+~~~
+python scripts/RemoveNormImpact.py --indir inputs/SMVHVZ_2019_MVA_mc16ade_0L_v03_AllVars_STXS/ --outdir SMVHVZ_2019_MVA_mc16ade_0L_v03_AllVars_STXS_postprocessed/
+~~~
+Now we will run a postfit MVA
+~~~
+vim scripts/analysisPlottingConfig.py 
+~~~
+>    CHANGE plotting configuration to mva default (~L10)                                                                   
+>   >  vh_fit=True                                                                                                           
+>   >  vh_cba=False                                                                                                          
+~~~
+vim scripts/launch_default_jobs.py 
+~~~
+>    CHANGE Global run conditions (~L15)                                                                                    
+>   >  doPostFit = True                                                                                                       
+
+>    CHANGE alternative analysis to False (~L17)                                                                            
+>   >  doCutBase = False                                                                                                     
+>   >  doDiboson = False                                                                                                     
+
+>    CHANGE to construct Asimov dataset using central values from fit to data (~L62)                                         
+>   >  doExp=1 -> doExp=0                                                                                                    
+
+>    CHANGE what you want to run in the 0L standalone fit (~L69)                                                             
+>   >  createSimpleWorkspace = True                                                                                          
+>   >  runPulls = False                                                                                                       
+>   >  runBreakdown = False                                                                                                   
+>   >  runRanks = False                                                                                                       
+>   >  runLimits = False                                                                                                    
+>   >  runP0 = False                                                                                                        
+>   >  runToyStudy = False                                                                                                 
+
+>    ADD no additional debug plots for shapes (~L72)                                                                
+>   >  doplots = False
+
+>    CHANGE postfit variables of interest (~L92)                                                                            
+>   >  vs2tag = ['pTV','MET','pTB1','pTB2','mBB','dRBB','dEtaBB','dPhiVBB','dEtaVBB','MEff','MEff3','dPhiLBmin','mTW','mLL','dYWH','Mtop','pTJ3','mBBJ','mBBJ3','METSig'] -> vs2tag =  ["mBB", "MET", "binMV2c10B1","binMV2c10B2","binMV2c10B1B2","dEtaBB","dPhiVBB","dRBB","dPhiBB","HT","pTB1","pTB2","pTJ3","mBBJ","softMET"]
+~~~
+source setup.sh
+cd build
+cmake ..
+make -j8
+cd ..
+python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-MVA
+
+mv SMVHVZ_2019_MVA_mc16ade_0L_v03_AllVars_STXS_postprocessed.140ifb-0L-ade-STXS-baseline-MVA_fullRes_VHbb_140ifb-0L-ade-STXS-baseline-MVA_0_mc16ade_Systs_binMV2c10B1B2_STXS_FitScheme_1 140ifb-0L-ade-STXS-baseline-MVA-PostFit-binMV2c10B1B2 
+mv SMVHVZ_2019_MVA_mc16ade_0L_v03_AllVars_STXS_postprocessed.140ifb-0L-ade-STXS-baseline-MVA_fullRes_VHbb_140ifb-0L-ade-STXS-baseline-MVA_0_mc16ade_Systs_binMV2c10B1_STXS_FitScheme_1 140ifb-0L-ade-STXS-baseline-MVA-PostFit-binMV2c10B1
+mv SMVHVZ_2019_MVA_mc16ade_0L_v03_AllVars_STXS_postprocessed.140ifb-0L-ade-STXS-baseline-MVA_fullRes_VHbb_140ifb-0L-ade-STXS-baseline-MVA_0_mc16ade_Systs_binMV2c10B2_STXS_FitScheme_1 140ifb-0L-ade-STXS-baseline-MVA-PostFit-binMV2c10B2
+mv SMVHVZ_2019_MVA_mc16ade_0L_v03_AllVars_STXS_postprocessed.140ifb-0L-ade-STXS-baseline-MVA_fullRes_VHbb_140ifb-0L-ade-STXS-baseline-MVA_0_mc16ade_Systs_dPhiVBB_STXS_FitScheme_1 140ifb-0L-ade-STXS-baseline-MVA-PostFit-dPhiVBB 
+mv SMVHVZ_2019_MVA_mc16ade_0L_v03_AllVars_STXS_postprocessed.140ifb-0L-ade-STXS-baseline-MVA_fullRes_VHbb_140ifb-0L-ade-STXS-baseline-MVA_0_mc16ade_Systs_softMET_STXS_FitScheme_1 140ifb-0L-ade-STXS-baseline-MVA-PostFit-softMET
+mv SMVHVZ_2019_MVA_mc16ade_0L_v03_AllVars_STXS_postprocessed.140ifb-0L-ade-STXS-baseline-MVA_fullRes_VHbb_140ifb-0L-ade-STXS-baseline-MVA_0_mc16ade_Systs_dEtaBB_STXS_FitScheme_1 140ifb-0L-ade-STXS-baseline-MVA-PostFit-dEtaBB
+mv SMVHVZ_2019_MVA_mc16ade_0L_v03_AllVars_STXS_postprocessed.140ifb-0L-ade-STXS-baseline-MVA_fullRes_VHbb_140ifb-0L-ade-STXS-baseline-MVA_0_mc16ade_Systs_dPhiBB_STXS_FitScheme_1 140ifb-0L-ade-STXS-baseline-MVA-PostFit-dPhiBB
+mv SMVHVZ_2019_MVA_mc16ade_0L_v03_AllVars_STXS_postprocessed.140ifb-0L-ade-STXS-baseline-MVA_fullRes_VHbb_140ifb-0L-ade-STXS-baseline-MVA_0_mc16ade_Systs_mBBJ_STXS_FitScheme_1 140ifb-0L-ade-STXS-baseline-MVA-PostFit-mBBJ
+mv SMVHVZ_2019_MVA_mc16ade_0L_v03_AllVars_STXS_postprocessed.140ifb-0L-ade-STXS-baseline-MVA_fullRes_VHbb_140ifb-0L-ade-STXS-baseline-MVA_0_mc16ade_Systs_pTB1_STXS_FitScheme_1 140ifb-0L-ade-STXS-baseline-MVA-PostFit-pTB1
+mv SMVHVZ_2019_MVA_mc16ade_0L_v03_AllVars_STXS_postprocessed.140ifb-0L-ade-STXS-baseline-MVA_fullRes_VHbb_140ifb-0L-ade-STXS-baseline-MVA_0_mc16ade_Systs_pTB2_STXS_FitScheme_1 140ifb-0L-ade-STXS-baseline-MVA-PostFit-pTB2
+mv SMVHVZ_2019_MVA_mc16ade_0L_v03_AllVars_STXS_postprocessed.140ifb-0L-ade-STXS-baseline-MVA_fullRes_VHbb_140ifb-0L-ade-STXS-baseline-MVA_0_mc16ade_Systs_pTJ3_STXS_FitScheme_1 140ifb-0L-ade-STXS-baseline-MVA-PostFit-pTJ3
+mv SMVHVZ_2019_MVA_mc16ade_0L_v03_AllVars_STXS_postprocessed.140ifb-0L-ade-STXS-baseline-MVA_fullRes_VHbb_140ifb-0L-ade-STXS-baseline-MVA_0_mc16ade_Systs_dRBB_STXS_FitScheme_1 140ifb-0L-ade-STXS-baseline-MVA-PostFit-dRBB
+mv SMVHVZ_2019_MVA_mc16ade_0L_v03_AllVars_STXS_postprocessed.140ifb-0L-ade-STXS-baseline-MVA_fullRes_VHbb_140ifb-0L-ade-STXS-baseline-MVA_0_mc16ade_Systs_MET_STXS_FitScheme_1 140ifb-0L-ade-STXS-baseline-MVA-PostFit-MET
+mv SMVHVZ_2019_MVA_mc16ade_0L_v03_AllVars_STXS_postprocessed.140ifb-0L-ade-STXS-baseline-MVA_fullRes_VHbb_140ifb-0L-ade-STXS-baseline-MVA_0_mc16ade_Systs_mBB_STXS_FitScheme_1 140ifb-0L-ade-STXS-baseline-MVA-PostFit-mBB
+mv SMVHVZ_2019_MVA_mc16ade_0L_v03_AllVars_STXS_postprocessed.140ifb-0L-ade-STXS-baseline-MVA_fullRes_VHbb_140ifb-0L-ade-STXS-baseline-MVA_0_mc16ade_Systs_HT_STXS_FitScheme_1 140ifb-0L-ade-STXS-baseline-MVA-PostFit-HT
+~~~
+Want to now make the zero lepton postfit plots by comparing them to an existing workspace. We want to do this twice. Once when compared against the zero lepton standalone fit, and once when compared against the combined 012L fit.
+~~~
+mkdir 140ifb-012L-ade-STXS-baseline-MVA
+cd /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/FullRunII2019/statArea/outputs/2020-02-05/comb/vh-mva/
+cp -r fccs /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Feb2020/output/140ifb-012L-ade-STXS-baseline-MVA
+
+python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 3 -f 140ifb-012L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-baseline-MVA-PostFit-binMV2c10B1
+python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 3 -f 140ifb-012L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-baseline-MVA-PostFit-binMV2c10B1B2
+python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 3 -f 140ifb-012L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-baseline-MVA-PostFit-binMV2c10B2
+python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 3 -f 140ifb-012L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-baseline-MVA-PostFit-dEtaBB
+python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 3 -f 140ifb-012L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-baseline-MVA-PostFit-dPhiBB
+python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 3 -f 140ifb-012L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-baseline-MVA-PostFit-dPhiVBB
+python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 3 -f 140ifb-012L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-baseline-MVA-PostFit-dRBB
+python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 3 -f 140ifb-012L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-baseline-MVA-PostFit-HT
+python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 3 -f 140ifb-012L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-baseline-MVA-PostFit-mBB
+python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 3 -f 140ifb-012L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-baseline-MVA-PostFit-mBBJ
+python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 3 -f 140ifb-012L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-baseline-MVA-PostFit-MET
+python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 3 -f 140ifb-012L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-baseline-MVA-PostFit-pTB1
+python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 3 -f 140ifb-012L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-baseline-MVA-PostFit-pTB2
+python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 3 -f 140ifb-012L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-baseline-MVA-PostFit-pTJ3
+python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 3 -f 140ifb-012L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-baseline-MVA-PostFit-softMET
+
+mkdir output/012L-0L-Postfit
+mv output/140ifb-0L-ade-STXS-baseline-MVA-PostFit-* 012L-0L-Postfit
+
+python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 3 -f 140ifb-0L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-baseline-MVA-PostFit-binMV2c10B1
+python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 3 -f 140ifb-0L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-baseline-MVA-PostFit-binMV2c10B1B2
+python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 3 -f 140ifb-0L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-baseline-MVA-PostFit-binMV2c10B2
+python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 3 -f 140ifb-0L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-baseline-MVA-PostFit-dEtaBB
+python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 3 -f 140ifb-0L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-baseline-MVA-PostFit-dPhiBB
+python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 3 -f 140ifb-0L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-baseline-MVA-PostFit-dPhiVBB
+python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 3 -f 140ifb-0L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-baseline-MVA-PostFit-dRBB
+python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 3 -f 140ifb-0L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-baseline-MVA-PostFit-HT
+python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 3 -f 140ifb-0L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-baseline-MVA-PostFit-mBB
+python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 3 -f 140ifb-0L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-baseline-MVA-PostFit-mBBJ
+python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 3 -f 140ifb-0L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-baseline-MVA-PostFit-MET
+python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 3 -f 140ifb-0L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-baseline-MVA-PostFit-pTB1
+python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 3 -f 140ifb-0L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-baseline-MVA-PostFit-pTB2
+python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 3 -f 140ifb-0L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-baseline-MVA-PostFit-pTJ3
+python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 3 -f 140ifb-0L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-baseline-MVA-PostFit-softMET
+
+mkdir output/0L-0L-Postfit
+mv output/140ifb-0L-ade-STXS-baseline-MVA-PostFit-* 0L-0L-Postfit
+~~~
+Finally we need to put these plots somewhere where people can easily access them.
+~~~
+cd /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/FullRunII2019/statArea/output/2020-02-05/l0/vh-mva/
+mkdir 012L-0L-Postfit 0L-0L-Postfit 
+
+cp -r /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Feb2020/output/012L-0L-Postfit/140ifb-0L-ade-STXS-baseline-MVA-PostFit-binMV2c10B1/plots/postfit 012L-0L-Postfit/Postfit-binMV2c10B1 
+cp -r /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Feb2020/output/012L-0L-Postfit/140ifb-0L-ade-STXS-baseline-MVA-PostFit-binMV2c10B1B2/plots/postfit 012L-0L-Postfit/Postfit-binMV2c10B1B2 
+cp -r /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Feb2020/output/012L-0L-Postfit/140ifb-0L-ade-STXS-baseline-MVA-PostFit-binMV2c10B2/plots/postfit 012L-0L-Postfit/Postfit-binMV2c10B2 
+cp -r /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Feb2020/output/012L-0L-Postfit/140ifb-0L-ade-STXS-baseline-MVA-PostFit-dEtaBB/plots/postfit 012L-0L-Postfit/Postfit-dEtaBB
+cp -r /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Feb2020/output/012L-0L-Postfit/140ifb-0L-ade-STXS-baseline-MVA-PostFit-dPhiBB/plots/postfit 012L-0L-Postfit/Postfit-dPhiBB
+cp -r /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Feb2020/output/012L-0L-Postfit/140ifb-0L-ade-STXS-baseline-MVA-PostFit-dPhiVBB/plots/postfit 012L-0L-Postfit/Postfit-dPhiVBB
+cp -r /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Feb2020/output/012L-0L-Postfit/140ifb-0L-ade-STXS-baseline-MVA-PostFit-dRBB/plots/postfit 012L-0L-Postfit/Postfit-dRBB
+cp -r /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Feb2020/output/012L-0L-Postfit/140ifb-0L-ade-STXS-baseline-MVA-PostFit-HT/plots/postfit 012L-0L-Postfit/Postfit-HT
+cp -r /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Feb2020/output/012L-0L-Postfit/140ifb-0L-ade-STXS-baseline-MVA-PostFit-mBB/plots/postfit 012L-0L-Postfit/Postfit-mBB
+cp -r /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Feb2020/output/012L-0L-Postfit/140ifb-0L-ade-STXS-baseline-MVA-PostFit-mBBJ/plots/postfit 012L-0L-Postfit/Postfit-mBBJ
+cp -r /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Feb2020/output/012L-0L-Postfit/140ifb-0L-ade-STXS-baseline-MVA-PostFit-MET/plots/postfit 012L-0L-Postfit/Postfit-MET
+cp -r /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Feb2020/output/012L-0L-Postfit/140ifb-0L-ade-STXS-baseline-MVA-PostFit-pTB1/plots/postfit 012L-0L-Postfit/Postfit-pTB1
+cp -r /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Feb2020/output/012L-0L-Postfit/140ifb-0L-ade-STXS-baseline-MVA-PostFit-pTB2/plots/postfit 012L-0L-Postfit/Postfit-pTB2
+cp -r /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Feb2020/output/012L-0L-Postfit/140ifb-0L-ade-STXS-baseline-MVA-PostFit-pTJ3/plots/postfit 012L-0L-Postfit/Postfit-pTJ3
+cp -r /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Feb2020/output/012L-0L-Postfit/140ifb-0L-ade-STXS-baseline-MVA-PostFit-softMET/plots/postfit 012L-0L-Postfit/Postfit-softMET
+
+
+cp -r /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Feb2020/output/0L-0L-Postfit/140ifb-0L-ade-STXS-baseline-MVA-PostFit-binMV2c10B1/plots/postfit 0L-0L-Postfit/Postfit-binMV2c10B1 
+cp -r /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Feb2020/output/0L-0L-Postfit/140ifb-0L-ade-STXS-baseline-MVA-PostFit-binMV2c10B1B2/plots/postfit 0L-0L-Postfit/Postfit-binMV2c10B1B2 
+cp -r /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Feb2020/output/0L-0L-Postfit/140ifb-0L-ade-STXS-baseline-MVA-PostFit-binMV2c10B2/plots/postfit 0L-0L-Postfit/Postfit-binMV2c10B2 
+cp -r /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Feb2020/output/0L-0L-Postfit/140ifb-0L-ade-STXS-baseline-MVA-PostFit-dEtaBB/plots/postfit 0L-0L-Postfit/Postfit-dEtaBB
+cp -r /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Feb2020/output/0L-0L-Postfit/140ifb-0L-ade-STXS-baseline-MVA-PostFit-dPhiBB/plots/postfit 0L-0L-Postfit/Postfit-dPhiBB
+cp -r /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Feb2020/output/0L-0L-Postfit/140ifb-0L-ade-STXS-baseline-MVA-PostFit-dPhiVBB/plots/postfit 0L-0L-Postfit/Postfit-dPhiVBB
+cp -r /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Feb2020/output/0L-0L-Postfit/140ifb-0L-ade-STXS-baseline-MVA-PostFit-dRBB/plots/postfit 0L-0L-Postfit/Postfit-dRBB
+cp -r /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Feb2020/output/0L-0L-Postfit/140ifb-0L-ade-STXS-baseline-MVA-PostFit-HT/plots/postfit 0L-0L-Postfit/Postfit-HT
+cp -r /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Feb2020/output/0L-0L-Postfit/140ifb-0L-ade-STXS-baseline-MVA-PostFit-mBB/plots/postfit 0L-0L-Postfit/Postfit-mBB
+cp -r /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Feb2020/output/0L-0L-Postfit/140ifb-0L-ade-STXS-baseline-MVA-PostFit-mBBJ/plots/postfit 0L-0L-Postfit/Postfit-mBBJ
+cp -r /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Feb2020/output/0L-0L-Postfit/140ifb-0L-ade-STXS-baseline-MVA-PostFit-MET/plots/postfit 0L-0L-Postfit/Postfit-MET
+cp -r /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Feb2020/output/0L-0L-Postfit/140ifb-0L-ade-STXS-baseline-MVA-PostFit-pTB1/plots/postfit 0L-0L-Postfit/Postfit-pTB1
+cp -r /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Feb2020/output/0L-0L-Postfit/140ifb-0L-ade-STXS-baseline-MVA-PostFit-pTB2/plots/postfit 0L-0L-Postfit/Postfit-pTB2
+cp -r /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Feb2020/output/0L-0L-Postfit/140ifb-0L-ade-STXS-baseline-MVA-PostFit-pTJ3/plots/postfit 0L-0L-Postfit/Postfit-pTJ3
+cp -r /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Feb2020/output/0L-0L-Postfit/140ifb-0L-ade-STXS-baseline-MVA-PostFit-softMET/plots/postfit 0L-0L-Postfit/Postfit-softMET
+~~~
 
 ## Changing the binning on the softMET postfit plots.
 ~~~
