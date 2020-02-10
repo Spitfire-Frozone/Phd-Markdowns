@@ -1642,3 +1642,20 @@ python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 3 -f 140ifb-012L-ade-STXS-b
 
 python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 3 -f 140ifb-0L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-baseline-MVA-postfitsoftMET
 ~~~
+Ensure that all the plots are up to scratch.
+~~~
+imgcat 140ifb-0L-ade-STXS-baseline-MVA-postfitsoftMET/plots/postfit/*.png
+imgcat 140ifb-0L-ade-STXS-baseline-MVA-postfitsoftMET-012/plots/postfit/*.png
+~~~
+Once you are happy with the plots and they do not need to be re-done.
+~~~
+cd output/012L-0L-Postfit/140ifb-0L-ade-STXS-baseline-MVA-PostFit-softMET/plots/
+mv postfit postfitOLD
+mv ../../../140ifb-0L-ade-STXS-baseline-MVA-postfitsoftMET-012/plots/postfit .
+cp -r postfit/* /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/FullRunII2019/statArea/outputs/2020-02-05/comb/vh-mva/postfit_all/l0
+
+cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Feb2020/output/0L-0L-Postfit/140ifb-0L-ade-STXS-baseline-MVA-PostFit-softMET/plots/
+mv postfit postfitOLD
+mv ../../../140ifb-0L-ade-STXS-baseline-MVA-postfitsoftMET/plots/postfit .
+cp -r postfit/* /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/FullRunII2019/statArea/outputs/2020-02-05/l0/vh-mva/0L-0L-Postfit/Postfit-softMET/
+~~~
