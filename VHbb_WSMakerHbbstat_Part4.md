@@ -1633,6 +1633,12 @@ cmake ..
 make -j8
 cd ..
 
-python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 3 -f 140ifb-012L-ade-STXS-baseline-MVA 012L-0L-Postfit/140ifb-0L-ade-STXS-baseline-MVA-PostFit-softMET
-python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 3 -f 140ifb-012L-ade-STXS-baseline-MVA 0L-0L-Postfit/140ifb-0L-ade-STXS-baseline-MVA-PostFit-softMET
+python scripts/launch_default_jobs.py 140ifb-0L-ade-STXS-baseline-MVA-postfitsoftMET
+
+mv output/SMVHVZ_2019_MVA_mc16ade_0L_v03_AllVars_STXS_postprocessed.140ifb-0L-ade-STXS-baseline-MVA-postfitsoftMET_fullRes_VHbb_140ifb-0L-ade-STXS-baseline-MVA-postfitsoftMET_0_mc16ade_Systs_softMET_STXS_FitScheme_1 output/140ifb-0L-ade-STXS-baseline-MVA-postfitsoftMET
+cp -r 140ifb-0L-ade-STXS-baseline-MVA-postfitsoftMET 140ifb-0L-ade-STXS-baseline-MVA-postfitsoftMET-012
+
+python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 3 -f 140ifb-012L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-baseline-MVA-postfitsoftMET
+
+python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 3 -f 140ifb-0L-ade-STXS-baseline-MVA 140ifb-0L-ade-STXS-baseline-MVA-postfitsoftMET-012
 ~~~
