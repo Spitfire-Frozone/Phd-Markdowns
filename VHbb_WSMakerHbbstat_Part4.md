@@ -1473,7 +1473,7 @@ Then run the script to post-process the variables. WARNING. This takes some cons
 ~~~
 python scripts/RemoveNormImpact.py --indir inputs/SMVHVZ_2019_MVA_mc16ade_0L_v03_AllVars_STXS/ --outdir SMVHVZ_2019_MVA_mc16ade_0L_v03_AllVars_STXS_postprocessed/
 ~~~
-Now we will run a postfit MVA
+Now we will run a postfit MVA to generate the postfit workspaces.
 ~~~
 vim scripts/analysisPlottingConfig.py 
 ~~~
@@ -1489,6 +1489,9 @@ vim scripts/launch_default_jobs.py
 >    CHANGE alternative analysis to False (~L17)                                                                            
 >   >  doCutBase = False                                                                                                     
 >   >  doDiboson = False                                                                                                     
+
+>    CHANGE the default channel(s) to run on (~L51)                                                                          
+>   >  channels = ["0"]                                                                                                     
 
 >    CHANGE to construct Asimov dataset using central values from fit to data (~L62)                                         
 >   >  doExp=1 -> doExp=0                                                                                                    
@@ -1531,6 +1534,11 @@ mv SMVHVZ_2019_MVA_mc16ade_0L_v03_AllVars_STXS_postprocessed.140ifb-0L-ade-STXS-
 mv SMVHVZ_2019_MVA_mc16ade_0L_v03_AllVars_STXS_postprocessed.140ifb-0L-ade-STXS-baseline-MVA_fullRes_VHbb_140ifb-0L-ade-STXS-baseline-MVA_0_mc16ade_Systs_mBB_STXS_FitScheme_1 140ifb-0L-ade-STXS-baseline-MVA-PostFit-mBB
 mv SMVHVZ_2019_MVA_mc16ade_0L_v03_AllVars_STXS_postprocessed.140ifb-0L-ade-STXS-baseline-MVA_fullRes_VHbb_140ifb-0L-ade-STXS-baseline-MVA_0_mc16ade_Systs_HT_STXS_FitScheme_1 140ifb-0L-ade-STXS-baseline-MVA-PostFit-HT
 ~~~
+Now we have to do this again but for the combined fit. This is because the 0L analysis, as weaker than the other two standalone analyses. 
+
+
+
+
 Want to now make the zero lepton postfit plots by comparing them to an existing workspace. We want to do this twice. Once when compared against the zero lepton standalone fit, and once when compared against the combined 012L fit.
 ~~~
 mkdir 140ifb-012L-ade-STXS-baseline-MVA
