@@ -1473,7 +1473,7 @@ Then run the script to post-process the variables. WARNING. This takes some cons
 ~~~
 python scripts/RemoveNormImpact.py --indir inputs/SMVHVZ_2019_MVA_mc16ade_0L_v03_AllVars_STXS/ --outdir SMVHVZ_2019_MVA_mc16ade_0L_v03_AllVars_STXS_postprocessed/
 ~~~
-Now we will run a postfit MVA to generate the postfit workspaces.
+Now we will run a postfit MVA to generate the OL postfit plots using the 0L workspaces.
 ~~~
 vim scripts/analysisPlottingConfig.py 
 ~~~
@@ -1534,7 +1534,9 @@ mv SMVHVZ_2019_MVA_mc16ade_0L_v03_AllVars_STXS_postprocessed.140ifb-0L-ade-STXS-
 mv SMVHVZ_2019_MVA_mc16ade_0L_v03_AllVars_STXS_postprocessed.140ifb-0L-ade-STXS-baseline-MVA_fullRes_VHbb_140ifb-0L-ade-STXS-baseline-MVA_0_mc16ade_Systs_mBB_STXS_FitScheme_1 140ifb-0L-ade-STXS-baseline-MVA-PostFit-mBB
 mv SMVHVZ_2019_MVA_mc16ade_0L_v03_AllVars_STXS_postprocessed.140ifb-0L-ade-STXS-baseline-MVA_fullRes_VHbb_140ifb-0L-ade-STXS-baseline-MVA_0_mc16ade_Systs_HT_STXS_FitScheme_1 140ifb-0L-ade-STXS-baseline-MVA-PostFit-HT
 ~~~
-Want to now make the zero lepton postfit plots by comparing them to an existing workspace. We want to do this twice. Once when compared against the zero lepton standalone fit, and once when compared against the combined 012L fit.
+Want to now make the zero lepton postfit plots by comparing them to an existing workspace. We want to do this twice. Once when compared against the zero lepton standalone fit, and once when compared against the combined 012L fit. There should be a difference as 
+
+We can do this for the combined workspace while only generating the 0L-workspace 0L postfit plots as opposed to the 012L-workspace 0L postfit plots as, when you set doPostfit to true, DefaultFitConfig is automatically set to True. This means that the bool variables in systematicsbuilder_vhbb called hasZeroLep, hasOneLep and hasTwoLep are all also true. This allows you to have extrapolation uncertainties for the 0Lep channel like Zbbnorm_L0 that you wouldn't have in the standard 0L standalone fit.
 ~~~
 mkdir 140ifb-012L-ade-STXS-baseline-MVA
 cd /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/FullRunII2019/statArea/outputs/2020-02-05/comb/vh-mva/
