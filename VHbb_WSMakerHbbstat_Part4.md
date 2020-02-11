@@ -1644,8 +1644,14 @@ python WSMakerCore/scripts/doPlotFromWS.py -m 125 -p 3 -f 140ifb-0L-ade-STXS-bas
 ~~~
 Ensure that all the plots are up to scratch.
 ~~~
-imgcat 140ifb-0L-ade-STXS-baseline-MVA-postfitsoftMET/plots/postfit/*.png
-imgcat 140ifb-0L-ade-STXS-baseline-MVA-postfitsoftMET-012/plots/postfit/*.png
+imgcat output/140ifb-0L-ade-STXS-baseline-MVA-postfitsoftMET/plots/postfit/*.png
+imgcat output/140ifb-0L-ade-STXS-baseline-MVA-postfitsoftMET-012/plots/postfit/*.png
+~~~
+If you are not happy with the binning remove the softMET plot workspace and make them again by starting from this section again.
+~~~
+rm -rf output/140ifb-0L-ade-STXS-baseline-MVA-postfitsoftMET
+rm -rf output/140ifb-0L-ade-STXS-baseline-MVA-postfitsoftMET-012
+>   ## Changing the binning on the softMET postfit plots.
 ~~~
 Once you are happy with the plots and they do not need to be re-done.
 ~~~
