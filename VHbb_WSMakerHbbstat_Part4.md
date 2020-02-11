@@ -1534,9 +1534,11 @@ mv SMVHVZ_2019_MVA_mc16ade_0L_v03_AllVars_STXS_postprocessed.140ifb-0L-ade-STXS-
 mv SMVHVZ_2019_MVA_mc16ade_0L_v03_AllVars_STXS_postprocessed.140ifb-0L-ade-STXS-baseline-MVA_fullRes_VHbb_140ifb-0L-ade-STXS-baseline-MVA_0_mc16ade_Systs_mBB_STXS_FitScheme_1 140ifb-0L-ade-STXS-baseline-MVA-PostFit-mBB
 mv SMVHVZ_2019_MVA_mc16ade_0L_v03_AllVars_STXS_postprocessed.140ifb-0L-ade-STXS-baseline-MVA_fullRes_VHbb_140ifb-0L-ade-STXS-baseline-MVA_0_mc16ade_Systs_HT_STXS_FitScheme_1 140ifb-0L-ade-STXS-baseline-MVA-PostFit-HT
 ~~~
-Want to now make the zero lepton postfit plots by comparing them to an existing workspace. We want to do this twice. Once when compared against the zero lepton standalone fit, and once when compared against the combined 012L fit. There should be a difference as 
+Want to now make the zero lepton postfit plots by comparing them to an existing workspace. We want to do this twice. Once when compared against the zero lepton standalone fit, and once when compared against the combined 012L fit. There should be a difference especially for 0L as it is the weakest standalone fit, so it relies on the other fits to fix certain backgrounds, hence there are additional uncertainties in combined fit than standalone fit, so a bit more complicated.
 
-We can do this for the combined workspace while only generating the 0L-workspace 0L postfit plots as opposed to the 012L-workspace 0L postfit plots as, when you set doPostfit to true, DefaultFitConfig is automatically set to True. This means that the bool variables in systematicsbuilder_vhbb called hasZeroLep, hasOneLep and hasTwoLep are all also true. This allows you to have extrapolation uncertainties for the 0Lep channel like Zbbnorm_L0 that you wouldn't have in the standard 0L standalone fit.
+We can make postfit plots for the combined workspace while only generating the 0L-workspace 0L postfit plots as opposed to the 012L-workspace 0L postfit plots as, when you set doPostfit to true, DefaultFitConfig is automatically set to True. This means that the bool variables in systematicsbuilder_vhbb called hasZeroLep, hasOneLep and hasTwoLep are all also true. This allows you to have extrapolation uncertainties for the 0Lep channel like Zbbnorm_L0 that you wouldn't have in the standard 0L standalone fit.
+
+Bearing in mind that when you run doPlotFromWS.py, the first argument should be the fit results you want to apply, while the second argument should be the workspace on which you want apply the fit results.
 ~~~
 mkdir 140ifb-012L-ade-STXS-baseline-MVA
 cd /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/FullRunII2019/statArea/outputs/2020-02-05/comb/vh-mva/
