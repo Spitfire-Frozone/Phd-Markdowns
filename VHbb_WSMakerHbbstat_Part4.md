@@ -1534,11 +1534,6 @@ mv SMVHVZ_2019_MVA_mc16ade_0L_v03_AllVars_STXS_postprocessed.140ifb-0L-ade-STXS-
 mv SMVHVZ_2019_MVA_mc16ade_0L_v03_AllVars_STXS_postprocessed.140ifb-0L-ade-STXS-baseline-MVA_fullRes_VHbb_140ifb-0L-ade-STXS-baseline-MVA_0_mc16ade_Systs_mBB_STXS_FitScheme_1 140ifb-0L-ade-STXS-baseline-MVA-PostFit-mBB
 mv SMVHVZ_2019_MVA_mc16ade_0L_v03_AllVars_STXS_postprocessed.140ifb-0L-ade-STXS-baseline-MVA_fullRes_VHbb_140ifb-0L-ade-STXS-baseline-MVA_0_mc16ade_Systs_HT_STXS_FitScheme_1 140ifb-0L-ade-STXS-baseline-MVA-PostFit-HT
 ~~~
-Now we have to do this again but for the combined fit. This is because the 0L analysis, as weaker than the other two standalone analyses. 
-
-
-
-
 Want to now make the zero lepton postfit plots by comparing them to an existing workspace. We want to do this twice. Once when compared against the zero lepton standalone fit, and once when compared against the combined 012L fit.
 ~~~
 mkdir 140ifb-012L-ade-STXS-baseline-MVA
@@ -1621,7 +1616,6 @@ cp -r /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Feb2020/output/0L-0L-Postfi
 cp -r /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Feb2020/output/0L-0L-Postfit/140ifb-0L-ade-STXS-baseline-MVA-PostFit-pTJ3/plots/postfit 0L-0L-Postfit/Postfit-pTJ3
 cp -r /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Feb2020/output/0L-0L-Postfit/140ifb-0L-ade-STXS-baseline-MVA-PostFit-softMET/plots/postfit 0L-0L-Postfit/Postfit-softMET
 ~~~
-
 ## Changing the binning on the softMET postfit plots.
 ~~~
 vim src/binning_vhbbrun2.cpp
