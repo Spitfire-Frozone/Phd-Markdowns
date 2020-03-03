@@ -216,13 +216,7 @@ Alternatively you can extract the final mus from the breakdown tables yourself c
 # Create a webpage of all of the nice plots. 
 ~~~
 cd output
-mkdir www/
-mv *.pdf www/
-mv pullComp* www/
-cd www
-mv VV-MVA_ade_vs_ad_vs_e.pdf pullComp_2L_VV_ade_vs_ad_vs_e
-mv Plot_mu_7_VH.pdf pullComp_2L_MVA_ade_vs_ad_vs_e
-python "../../WSMakerCore/macros/webpage/createHtmlOverview.py"
+python "../WSMakerCore/macros/webpage/createHtmlOverview.py"
 
 cd /afs/cern.ch/user/d/dspiteri/www/
 mkdir VHUnblinding && cd VHUnblinding
