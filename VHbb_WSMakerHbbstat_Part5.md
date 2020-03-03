@@ -20,6 +20,7 @@ cd build
 cmake ..
 make -j8
 cd ..
+~~~
 
 # Post-processing New MC split inputs
 ~~~
@@ -60,7 +61,7 @@ python scripts/launch_default_jobs.py 140ifb-2L-ad-STXS-baseline-MVA
 
 python scripts/launch_default_jobs.py 140ifb-2L-e-STXS-baseline-MVA
 ~~~
-To get the ade
+To get the ade, you only have to copy from what's already done. 
 ~~~
 cd /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/FullRunII2019/statArea/outputs/2020-02-28_VHunblinded/VZ-MVA/2lep
 cp -r SMVHVZ_2019_MVA_mc16ade_v06_STXS.2lep_1POI_VZ_fullRes_VHbb_2lep_1POI_VZ_2_mc16ade_Systs_mvadiboson_STXS_FitScheme_1 /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Mar2020/output
@@ -82,9 +83,9 @@ mv output/pullComparisons output/pullComp_2L_VV_ade_vs_ad_vs_e
 
 
 To get the fitted mu's for ade/ad/e you need to search for SigXsecOverSM in the three fccs/output_0.log
-
-Now for the MVA
-
+~~~~
+# Running MC16 year comparison for VH-MVA Analysis
+~~~
 work
 cd WSMaker_VHbb_Mar2020
 source setup.sh
@@ -96,8 +97,9 @@ python scripts/launch_default_jobs.py 140ifb-2L-e-STXS-baseline-MVA
 
 python scripts/launch_default_jobs.py 140ifb-2L-ad-STXS-baseline-MVA
 
-
+~~~
 To get the ade
+~~~
 cp -r /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/FullRunII2019/statArea/outputs/2020-02-28_VHunblinded/VH-MVA/L2 . /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Mar2020/output
 mv L2 140ifb-2L-ade-STXS-baseline-MVA
 
@@ -111,18 +113,34 @@ cd ..
 
 python WSMakerCore/scripts/comparePulls.py -w 140ifb-2L-ade-STXS-baseline-MVA 140ifb-2L-ad-STXS-baseline-MVA 140ifb-2L-e-STXS-baseline-MVA -n -a 5 -l ade ad e
 mv output/pullComparisons output/pullComp_2L_MVA_ade_vs_ad_vs_e
-
+~~~
+# Extraction of mu for MC16 year comparison for VH-MVA/VV-MVA Analyses
+~~~
 python WSMakerCore/scripts/mergeBreakdown.py 140ifb-2L-ad-STXS-baseline-MVA
 python WSMakerCore/scripts/mergeBreakdown.py 140ifb-2L-e-STXS-baseline-MVA
+python WSMakerCore/scripts/mergeBreakdown.py 140ifb-2L-ad-STXS-baseline-VV
+python WSMakerCore/scripts/mergeBreakdown.py 140ifb-2L-e-STXS-baseline-VV
+~~~
+vim scripts/NicePlot_SimpleMu.py
 
-scripts NicePlot_SimpleMu.py
+L177
+    if mode=="7":
+        value=[
+            ["Comb."         ,0, 1.0, 0.0, 0.0, 0.0, 0.0, "/afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Mar2020/output/140ifb-2L-ade-STXS-baseline-VV/plots/breakdown/muHatTable_mode15_Asimov0_SigXsecOverSM.txt",1],
+            ["2017  "        ,1, 1.0, 0.0, 0.0, 0.0, 0.0, "/afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Mar2020/output/140ifb-2L-e-STXS-baseline-VV/plots/breakdown/muHatTable_mode15_Asimov0_SigXsecOverSM.txt",1],
+            ["2015-2016  "   ,2, 1.0, 0.0, 0.0, 0.0, 0.0, "/afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Mar2020/output/140ifb-2L-ad-STXS-baseline-VV/plots/breakdown/muHatTable_mode15_Asimov0_SigXsecOverSM.txt",1],
+        ] 
+
+
 change path to breakdown folders for mc6ade vs mc16ad vs mc16e plot (mode 7) L316
 > "/afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Mar2020/output/140ifb-2L-ade-STXS-baseline-MVA/breakdown/muHatTable_mode15_Asimov0_SigXsecOverSM.txt"
 > /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Mar2020/output/140ifb-2L-e-STXS-baseline-MVA/plots/breakdown/muHatTable_mode15_Asimov0_SigXsecOverSM.txt
 > /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Mar2020/output/140ifb-2L-ad-STXS-baseline-MVA/plots/breakdown/muHatTable_mode15_Asimov0_SigXsecOverSM.txt
-
+~~~
 python scripts/NicePlot_SimpleMu.py 7 1
-
-
+~~~
+Create a webpage of all of the nice plots. 
+~~~
 cd output
 python "../WSMakerCore/macros/webpage/createHtmlOverview.py"
+~~~
