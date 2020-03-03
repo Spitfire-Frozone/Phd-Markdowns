@@ -1,6 +1,6 @@
 # This will be aimed at giving the reader the basic skills to work and manage their work within the git architecture.
 =================================================
-## Last Edited: 10-06-2019
+## Last Edited: 03-03-2020
 -------------------------------------------------
 
 ### KEYWORDS/JARGON
@@ -86,6 +86,7 @@ git clone -b <branch> <remote_repository>
 
 ### This will cover option B
 --------------------------
+This will automatically use your forked version, so before you do this it is important that you have your own personal fork of athena
 ~~~
 git atlas init-workdir https://:@gitlab.cern.ch:8443/atlas/athena.git
 cd athena
@@ -135,6 +136,19 @@ If you want to pull a branch that already exists and store your changes on that 
 ~~~
 git checkout master
 git checkout --track -b [target branch]
+~~~
+
+Some of the time you will want to work not from the master, but the latest stable version or a particular past version. These versions of the code are called tags. If you are required to work from them, you can get the list of tags *once you have cloned the repository in the normal fashion* via the command.
+~~~
+git fetch --all --tags
+~~~
+To start work on the tag all you simply do is
+~~~
+git checkout tags/<tag> 
+~~~
+But this command will put you on a branch name which is the same as the tag. If you want to develop code this is not ideal and you can create your own topic branch at the same time. 
+~~~
+git checkout tags/<tag> -b <branch>
 ~~~
 _____________________________________ 
 # 5) Setting up to compile and test code
