@@ -32,14 +32,26 @@ The first port of call then is to create some inputConfigs for these and split s
 cd inputConfigs
 vim SMVHVZ_2019_MVA_mc16ade_2L_v03_STXS.txt
 ~~~
+> ADD Location of MC16ade inputs and list of present variables
+>   >  CoreRegions                                                                                                             
+>   >  TwoLepton TwoLep/r32-15_postMS2_20191124/v9.Y/FitVariables/LimitHistograms.VHbb.2Lep.13TeV.mc16ade.Kyoto.r32-15.CSFix.v9.X.imcomplete_ttbar.hacked.root mva,pTV,mBB,mvadiboson                                                             
+
+It is important to note that since this is the default, post-processed split inputs are very likely to already exist. 
 ~~~
 vim SMVHVZ_2019_MVA_mc16ad_2L_v03_STXS.txt
 ~~~
+> ADD Location of MC16ad inputs and list of present variables
+>   >  CoreRegions                                                                                                             
+>   >  TwoLepton TwoLep/r32-15_postMS2_20191124/v9.Y/FitVariables/LimitHistograms.VHbb.2Lep.13TeV.mc16ad.Kyoto.r32-15.CSFix.v9.X.imcomplete_ttbar.hacked.root mva,pTV,mBB,mvadiboson                                                             
 ~~~
 vim SMVHVZ_2019_MVA_mc16e_2L_v03_STXS.txt
 ~~~
-~~~
+> ADD Location of MC16e inputs and list of present variables
+>   >  CoreRegions                                                                                                             
+>   >  TwoLepton TwoLep/r32-15_postMS2_20191124/v9.Y/FitVariables/LimitHistograms.VHbb.2Lep.13TeV.mc16e.Kyoto.r32-15.CSFix.v9.X.imcomplete_ttbar.hacked.root mva,pTV,mBB,mvadiboson                                                             
 
+To set up the post-processing, a new version of ROOT is required. 
+~~~
 lsetup "root 6.18.04-x86_64-centos7-gcc8-opt"
 
 SplitInputs -r Run2 -v SMVHVZ_2019_MVA_mc16ade_2L_v03_STXS
@@ -58,16 +70,18 @@ cp SMVHVZ_2019_MVA_mc16ad_2L_v03_STXS_postprocessed/* /eos/atlas/atlascerngroupd
 
 cp SMVHVZ_2019_MVA_mc16e_2L_v03_STXS_postprocessed/* /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/FullRunII2019/statArea/inputs/AfterWSMakerSplit/2020Feb28_VHunblinding_SplitByYear/e/
 ~~~
+Once you have the inputs, you are ready to start running jobs.
 
 # Running MC16 year comparison for Diboson Analysis
 ~~~
+cd /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Mar2020
+
 vim launch_default_[...].py
 commands.extend(["-u", doExp+",{MassPoint},15"])
 +breakdowns
 doExp=0
 
-work
-cd WSMaker_VHbb_Mar2020
+
 source setup.sh
 cd build
 cmake ..
@@ -171,4 +185,4 @@ cd /afs/cern.ch/user/d/dspiteri/www/
 mkdir VHUnblinding && cd VHUnblinding
 cp -r /afs/cern.ch/work/d/dspiteri/VHbb/WSMaker_VHbb_Mar2020/output/www/* .
 ~~~
-Link available at https://dspiteri.web.cern.ch/dspiteri/VHUnblinding/pullComp_2L_VV_ade_vs_ad_vs_e/
+Link available at https://dspiteri.web.cern.ch/dspiteri/VHUnblinding/
