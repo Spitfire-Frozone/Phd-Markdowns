@@ -17,8 +17,37 @@ git clone --recursive ssh://git@gitlab.cern.ch:7999/CxAODFramework/CxAODMakerCor
 
 mv CxAODMakerCore CxAODMakerCore_May2020
 cd CxAODMakerCore_May2020
-
 ~~~
 In this directory there are two folders. Core, which contains the CxAODMaker and CxAODTools packages, and VHbb, which contains the analysis specific packages: CxAODBootstrap_VHbb, CxAODMaker_VHbb, CxAODOperations_VHbb and CxAODTools_VHbb.
 
 # Samples
+The new samples based off of MC16e samples and are currently based here: 
+> /afs/cern.ch/work/g/gcallea/public/phys-higgs/HSG5/Run2/VH/CxAOD_r32-15/HIGG2D4_13TeV/CxAOD_32-15_e/
+
+The 32-15 samples to compare this against are currently based here:
+> /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/VH/CxAOD_r32-15/HIGG2D4_13TeV/CxAOD_32-15_e/
+
+# Running
+To perform this study there need to be four sets of runs done
+1) Old Samples - Current Trigger Regime (MET triggers)
+2) Old Samples - Previous Trigger Regime (Single Lepton triggers)
+3) New Samples - Current Trigger Regime (MET triggers)
+4) New Samples - Previous Trigger Regime (Single Lepton triggers)
+
+## (1) Old Samples Current Trigger Regime.
+Currently the easiest one to do as it requires the least amount of changes to the code, if any at all
+~~~
+cd /afs/cern.ch/work/d/dspiteri/VHbb/CxAODMakerCore_May2020
+vim VHbb/CxAODOperations_VHbb/scripts_CxAODReader/submitReader.sh
+
+
+~~~
+
+## (3) New Samples Current Trigger Regime.
+The next easiest one to do, only requires a couple of line changes and those are to do with the location of the samples.
+~~~
+cd /afs/cern.ch/work/d/dspiteri/VHbb/CxAODMakerCore_May2020
+vim VHbb/CxAODOperations_VHbb/scripts_CxAODReader/submitReader.sh
+
+
+~~~
