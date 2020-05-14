@@ -13,19 +13,19 @@ The aims of exercise this time is to create perform the MET Trigger Study in bot
 ~~~
 cd /afs/cern.ch/work/d/dspiteri/VHbb
 setupATLAS && lsetup git
-git clone --recursive ssh://git@gitlab.cern.ch:7999/CxAODFramework/CxAODMakerCore.git
+git clone --recursive ssh://git@gitlab.cern.ch:7999/CxAODFramework/CxAODReaderCore.git
 
-mv CxAODMakerCore CxAODMakerCore_May2020
+mv CxAODReaderCore CxAODReaderCore_May2020
 ~~~
 In this directory there are two folders. Core, which contains the CxAODMaker and CxAODTools packages, and VHbb, which contains the analysis specific packages: CxAODBootstrap_VHbb, CxAODMaker_VHbb, CxAODOperations_VHbb and CxAODTools_VHbb.
 Now we need to check that this repository can build. Standard practise is to make a build directory outside your repository
 ~~~
-mkdir build && cd build
+mkdir build run && cd build
 setupATLAS
-asetup AnalysisBase,21.2.XXX,here
+asetup AnalysisBase,21.2.113,here
 cmake ../CxAODMakerCore_May2020
 cmake --build .
-source x*setup.sh
+source x86_64-centos7-gcc8-opt/setup.sh
 ~~~
 # Samples
 The new samples based off of MC16e samples and are currently based here: 
@@ -53,7 +53,7 @@ cd /afs/cern.ch/work/d/dspiteri/VHbb/CxAODMakerCore_May2020
 vim VHbb/CxAODOperations_VHbb/scripts_CxAODReader/submitReader.sh
 ~~~
 >  CHANGE Analysis Strategy (~L109)
->   >   ANASTRATEGY="Resolved" # Resolved, Merged, ...
+>   >   ANASTRATEGY="Merged" # Resolved, Merged, ...
 
 >  CHECK the right combinations of trigger option and analysis (~L302-L307)
 >   >   if [[ ${ANALYSIS} == "VHbb" ]] && [[ ${ANASTRATEGY} == "Merged" ]]; then #boosted VHbb
@@ -61,7 +61,23 @@ vim VHbb/CxAODOperations_VHbb/scripts_CxAODReader/submitReader.sh
 >   >   else #Allow this flag to be turned off for the Resolved VHbb and VHcc analyses.
 >   >       DO2LMETTRIGGER="false"
 >   >   fi
-
+~~~
+cd build
+setupATLAS
+asetup AnalysisBase,21.2.113,here
+cmake ../CxAODMakerCore_May2020
+cmake --build .
+source x86_64-centos7-gcc8-opt/setup.sh
+lsetup 'lcgenv -p LCG_91 x86_64-centos7-gcc62-opt numpy'
+cd ../run
+~~~
+For the Boosted (Merged) case:
+~~~
+../CxAODMakerCore_May2020/VHbb/CxAODOperations_VHbb/scripts_CxAODReader/submitReader.sh /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/VH/CxAOD_r32-15 SignalBoosted_METTrigger 2L e VHbb CUT D1 32-15 qqZllHbbJ_PwPy8MINLO none 1
+~~~
+For the Resolved case:
+~~~
+../CxAODMakerCore_May2020/VHbb/CxAODOperations_VHbb/scripts_CxAODReader/submitReader.sh /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/VH/CxAOD_r32-15 SignalResolved_METTrigger 2L e VHbb MVA D1 32-15 qqZllHbbJ_PwPy8MINLO none 1
 ~~~
 ## (3) New Samples Current Trigger Regime.
 The next easiest one to do, only requires a couple of line changes and those are to do with the location of the samples.
