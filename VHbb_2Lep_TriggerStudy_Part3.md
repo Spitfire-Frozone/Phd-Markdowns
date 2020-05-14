@@ -16,10 +16,9 @@ setupATLAS && lsetup git
 git clone --recursive ssh://git@gitlab.cern.ch:7999/CxAODFramework/CxAODMakerCore.git
 
 mv CxAODMakerCore CxAODMakerCore_May2020
-cd CxAODMakerCore_May2020
 ~~~
 In this directory there are two folders. Core, which contains the CxAODMaker and CxAODTools packages, and VHbb, which contains the analysis specific packages: CxAODBootstrap_VHbb, CxAODMaker_VHbb, CxAODOperations_VHbb and CxAODTools_VHbb.
-Now we need to check that this repository can build.
+Now we need to check that this repository can build. Standard practise is to make a build directory outside your repository
 ~~~
 mkdir build && cd build
 setupATLAS
