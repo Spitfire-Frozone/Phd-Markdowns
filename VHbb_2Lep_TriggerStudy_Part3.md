@@ -77,6 +77,15 @@ cd ../run
 ~~~
 For the Resolved case:
 ~~~
+setupATLAS && lsetup "root 6.18.04-x86_64-centos7-gcc8-opt"
+cd build
+release=`cat ../CxAODReaderCore_May2020/VHbb/CxAODBootstrap_VHbb/bootstrap/release.txt` && echo "release=$release"
+asetup $release,AnalysisBase
+cmake ../CxAODMakerCore_May2020
+cmake --build .
+source x86_64-centos7-gcc8-opt/setup.sh
+lsetup 'lcgenv -p LCG_96b x86_64-centos7-gcc8-opt numpy'
+cd ../run
 ../CxAODReaderCore_May2020/VHbb/CxAODOperations_VHbb/scripts_CxAODReader/submitReader.sh /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/VH/CxAOD_r32-15 SignalResolved_METTrigger 2L e VHbb MVA D1 32-15 qqZllHbbJ_PwPy8MINLO none 1
 ~~~
 _____
