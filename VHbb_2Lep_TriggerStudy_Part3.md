@@ -2,7 +2,7 @@
 
 ## VHbb 2 Lepton Trigger Study Part 3 ##
 
-Last Edited: 11-05-2020
+Last Edited: 15-05-2020
 -------------------------------------------------------------------------------
 
 # Aims
@@ -91,6 +91,8 @@ Next one should check that all the inputs were fine. Resubmitting failes ones as
 cd SignalBoosted_METTrigger
 python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODReaderCore_May2020/VHbb/CxAODOperations_VHbb/scripts/checkReaderFails.py Reader_2L_32-15_e_CUT_D1
 ~~~
+## (2) Old Samples Previous Trigger Regime.
+I implimented a switch, so it can always jus tbe turned off again!
 
 ## (3) New Samples Current Trigger Regime.
 The next easiest one to do, only requires a couple of line changes and those are to do with the location of the samples.
