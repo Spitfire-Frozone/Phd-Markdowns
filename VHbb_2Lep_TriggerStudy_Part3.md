@@ -16,6 +16,9 @@ setupATLAS && lsetup git
 git clone --recursive ssh://git@gitlab.cern.ch:7999/CxAODFramework/CxAODReaderCore.git
 
 mv CxAODReaderCore CxAODReaderCore_May2020
+cd CxAODReaderCore_May2020
+git submodule update --init --recursive
+cd ..
 ~~~
 In this directory there are two folders. Core, which contains the CxAODOperation, CxAODReader and CxAODTools packages, and VHbb, which contains the analysis specific packages: CorrsAndSysts, CxAODBootstrap_VHbb, CxAODOperations_VHbb, CxAODReader_VHbb, CxAODTools_VHbb and KinematicFit.
 Now we need to check that this repository can build. Standard practise is to make a build directory outside your repository
@@ -102,8 +105,10 @@ _____
 >   Then most likely GCC 6.2 has introduced a newer C++ ABI version than your system libstdc++ has, so you need to tell the library loader where the newer version of the library is by adding that path to LD_LIBRARY_PATH. In this case, check firstly that you have set up the wrong version of AnalysisBase or you have forgotten to source your current setup. The mostly cause is that the line "lsetup 'lcgenv -p LCG_96b x86_64-centos7-gcc8-opt numpy' " has depreciated. All of these types of commands should be run with their latest versions.
 
 >  If you are unsure whether your output files are correct the first thing you should note is that output files of the megabyte-gigabyte size are largely correct, but ones of the kilobyte size usually have failed in some large capacity. 
+
+>  If instead you get the error /afs/cern.ch/work/d/dspiteri/VHbb/build/x86_64-centos7-gcc8-opt/data/CxAODReader_VHbb/2017-21-13TeV-MC16-CDI-2019-07-30_v1_CustomMaps.root does not exist, as a first port of call find someone with these files, put them in the right place in the directory and try again.   
 ____
-Next one should check that all the inputs were fine. Resubmitting failes ones as necessary. From the run directory that you submitted the files in.
+Next one should check that all the inputs were fine. Resubmitting failed ones as necessary. From the run directory that you submitted the files in.
 ~~~
 cd SignalBoosted_METTrigger
 python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODReaderCore_May2020/VHbb/CxAODOperations_VHbb/scripts/checkReaderFails.py Reader_2L_32-15_e_CUT_D1
