@@ -167,11 +167,16 @@ python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODReaderCore_May2020/VHbb/CxAODOpera
 cd ../SignalResolved_METTrigger
 python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODReaderCore_May2020/VHbb/CxAODOperations_VHbb/scripts/checkReaderFails.py Reader_2L_32-15_e_MVA_H
 
-cd SignalBoosted_SLTrigger
+cd ../SignalBoosted_SLTrigger
 python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODReaderCore_May2020/VHbb/CxAODOperations_VHbb/scripts/checkReaderFails.py Reader_2L_32-15_e_CUT_D1
 
-cd SignalResolved_SLTrigger
+cd ../SignalResolved_SLTrigger
 python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODReaderCore_May2020/VHbb/CxAODOperations_VHbb/scripts/checkReaderFails.py Reader_2L_32-15_e_MVA_H
+~~~
+If there are filed jobs you can submit them by searching the failes jobs in the segments section and submitting the job according to the numerical job numer identified as failed
+~~~
+vim Reader_2L_32-15_e_CUT_D1/submit/segments
+./submit/run 24
 ~~~
 
 ## (3) New Samples MET Trigger Regime.
