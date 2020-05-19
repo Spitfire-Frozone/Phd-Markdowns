@@ -18,6 +18,7 @@ git clone --recursive ssh://git@gitlab.cern.ch:7999/CxAODFramework/CxAODReaderCo
 mv CxAODReaderCore CxAODReaderCore_May2020
 cd CxAODReaderCore_May2020
 git submodule update --init --recursive
+source ./copydatafromafs.sh
 cd ..
 ~~~
 In this directory there are two folders. Core, which contains the CxAODOperation, CxAODReader and CxAODTools packages, and VHbb, which contains the analysis specific packages: CorrsAndSysts, CxAODBootstrap_VHbb, CxAODOperations_VHbb, CxAODReader_VHbb, CxAODTools_VHbb and KinematicFit.
@@ -95,7 +96,7 @@ cmake --build .
 source x86_64-centos7-gcc8-opt/setup.sh
 lsetup 'lcgenv -p LCG_96b x86_64-centos7-gcc8-opt numpy'
 cd ../run
-../CxAODReaderCore_May2020/VHbb/CxAODOperations_VHbb/scripts_CxAODReader/submitReader.sh /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/VH/CxAOD_r32-15 SignalResolved_METTrigger 2L e VHbb MVA D1 32-15 qqZllHbbJ_PwPy8MINLO none 1
+../CxAODReaderCore_May2020/VHbb/CxAODOperations_VHbb/scripts_CxAODReader/submitReader.sh /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/VH/CxAOD_r32-15 SignalResolved_METTrigger 2L e VHbb MVA H 32-15 qqZllHbbJ_PwPy8MINLO none 1
 ~~~
 _____
 ### Troubleshooting
@@ -106,7 +107,7 @@ _____
 
 >  If you are unsure whether your output files are correct the first thing you should note is that output files of the megabyte-gigabyte size are largely correct, but ones of the kilobyte size usually have failed in some large capacity. 
 
->  If instead you get the error /afs/cern.ch/work/d/dspiteri/VHbb/build/x86_64-centos7-gcc8-opt/data/CxAODReader_VHbb/2017-21-13TeV-MC16-CDI-2019-07-30_v1_CustomMaps.root does not exist, as a first port of call find someone with these files, put them in the right place in the directory and try again.   
+>  If instead you get the error /afs/cern.ch/work/d/dspiteri/VHbb/build/x86_64-centos7-gcc8-opt/data/CxAODReader_VHbb/2017-21-13TeV-MC16-CDI-2019-07-30_v1_CustomMaps.root does not exist, as a first port of call find someone with these files, put them in the right place in the directory and try again. Most of this time this is because the command `source ./copydatafromafs.sh' was not run and the files that are stored on afs rather than the repo have not been incorporated into the framework.
 ____
 Next one should check that all the inputs were fine. Resubmitting failed ones as necessary. From the run directory that you submitted the files in.
 ~~~
@@ -158,9 +159,23 @@ lsetup 'lcgenv -p LCG_96b x86_64-centos7-gcc8-opt numpy'
 cd ../run
 ../CxAODReaderCore_May2020/VHbb/CxAODOperations_VHbb/scripts_CxAODReader/submitReader.sh /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/VH/CxAOD_r32-15 SignalResolved_SLTrigger 2L e VHbb MVA H 32-15 qqZllHbbJ_PwPy8MINLO none 1
 ~~~
+After running these four, its best to check that none of the jobs failed. This is done by using the script checkReaderFails.py 
+~~~
+cd SignalBoosted_METTrigger       
+python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODReaderCore_May2020/VHbb/CxAODOperations_VHbb/scripts/checkReaderFails.py Reader_2L_32-15_e_CUT_D1
+
+cd ../SignalResolved_METTrigger
+python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODReaderCore_May2020/VHbb/CxAODOperations_VHbb/scripts/checkReaderFails.py Reader_2L_32-15_e_MVA_H
+
+cd SignalBoosted_SLTrigger
+python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODReaderCore_May2020/VHbb/CxAODOperations_VHbb/scripts/checkReaderFails.py Reader_2L_32-15_e_CUT_D1
+
+cd SignalResolved_SLTrigger
+python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODReaderCore_May2020/VHbb/CxAODOperations_VHbb/scripts/checkReaderFails.py Reader_2L_32-15_e_MVA_H
+~~~
 
 ## (3) New Samples MET Trigger Regime.
-The next easiest one to do, only requires a couple of line changes and those are to do with the location of the samples.
+Also an easy one to do, as the commands will be exactly the same as for the previous two sections, but you point to a different location of the samples.
 ~~~
 cd /afs/cern.ch/work/d/dspiteri/VHbb/CxAODMakerCore_May2020
 vim VHbb/CxAODOperations_VHbb/scripts_CxAODReader/submitReader.sh
