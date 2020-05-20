@@ -100,14 +100,17 @@ cd ../run
 ~~~
 _____
 ### Troubleshooting
->   If running either command you get the error                                                                               
+>   - If running either command you get the error                                                                               
 >   >   hsg5frameworkReadCxAOD: /cvmfs/sft.cern.ch/lcg/releases/gcc/6.2.0-b9934/x86_64-centos7/lib64/libstdc++.so.6: version `CXXABI_1.3.11' not found (required by ... )                                                                                  
 
 >   Then most likely GCC 6.2 has introduced a newer C++ ABI version than your system libstdc++ has, so you need to tell the library loader where the newer version of the library is by adding that path to LD_LIBRARY_PATH. In this case, check firstly that you have set up the wrong version of AnalysisBase or you have forgotten to source your current setup. The mostly cause is that the line "lsetup 'lcgenv -p LCG_96b x86_64-centos7-gcc8-opt numpy' " has depreciated. All of these types of commands should be run with their latest versions.
 
->  If you are unsure whether your output files are correct the first thing you should note is that output files of the megabyte-gigabyte size are largely correct, but ones of the kilobyte size usually have failed in some large capacity. 
+>  - If you are unsure whether your output files are correct the first thing you should note is that output files of the megabyte-gigabyte size are largely correct, but ones of the kilobyte size usually have failed in some large capacity. 
 
->  If instead you get the error /afs/cern.ch/work/d/dspiteri/VHbb/build/x86_64-centos7-gcc8-opt/data/CxAODReader_VHbb/2017-21-13TeV-MC16-CDI-2019-07-30_v1_CustomMaps.root does not exist, as a first port of call find someone with these files, put them in the right place in the directory and try again. Most of this time this is because the command `source ./copydatafromafs.sh' was not run and the files that are stored on afs rather than the repo have not been incorporated into the framework.
+>  - If instead you get the error 
+>   >   /afs/cern.ch/work/d/dspiteri/VHbb/build/x86_64-centos7-gcc8-opt/data/CxAODReader_VHbb/2017-21-13TeV-MC16-CDI-2019-07-30_v1_CustomMaps.root does not exist, as a first port of call find someone with these files, put them in the right place in the directory and try again. Most of this time this is because the command `source ./copydatafromafs.sh' was not run and the files that are stored on afs rather than the repo have not been incorporated into the framework.
+
+>   - If the run is taking a long time, it may be that there are other samlpes being run alongside the one you want. In this case try setting both SAMPLESFINAL1 and SAMPLESFINAL2 to the same samples (for me this was the case for the resolved analysis and not the boosted one). 
 ____
 Next one should check that all the inputs were fine. Resubmitting failed ones as necessary. From the run directory that you submitted the files in.
 ~~~
@@ -173,17 +176,17 @@ python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODReaderCore_May2020/VHbb/CxAODOpera
 cd ../SignalResolved_SLTrigger
 python /afs/cern.ch/work/d/dspiteri/VHbb/CxAODReaderCore_May2020/VHbb/CxAODOperations_VHbb/scripts/checkReaderFails.py Reader_2L_32-15_e_MVA_H
 ~~~
-If there are failed jobs you can submit them by searching the failed jobs in the segments directory and submitting the job according to the numerical job numer identified as failed
+If there are failed jobs you can submit them by searching the failed jobs in the segments directory and submitting the job according to the numerical job number identified as failed
 ~~~
 vim Reader_2L_32-15_e_CUT_D1/submit/segments
 ./submit/run 24
 ~~~
 
-## (3) New Samples MET Trigger Regime.
+## (3) New Samples MET Trigger Regime and (4) New Samples SL Trigger Regime.
 Also an easy one to do, as the commands will be exactly the same as for the previous two sections, but you point to a different location of the samples.
 ~~~
 cd /afs/cern.ch/work/d/dspiteri/VHbb/CxAODMakerCore_May2020
 vim VHbb/CxAODOperations_VHbb/scripts_CxAODReader/submitReader.sh
 
-
+> /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/VH/CxAOD_r32-15/HIGG2D4_13TeV/CxAOD_32-15_e/qqZllHbbJ_PwPy8MINLO
 ~~~
