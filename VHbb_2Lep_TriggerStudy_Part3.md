@@ -2,7 +2,7 @@
 
 ## VHbb 2 Lepton Trigger Study Part 3 ##
 
-Last Edited: 15-05-2020
+Last Edited: 21-05-2020
 -------------------------------------------------------------------------------
 
 # Aims
@@ -53,8 +53,8 @@ The second set is the same as the above but for the Resolved Analysis. Since the
 ## (1) Old Samples MET Trigger Regime.
 Currently the easiest one to do as it requires the least amount of changes to the code, if any at all. For the current Boosted Analysis this is the default.
 ~~~
-cd /afs/cern.ch/work/d/dspiteri/VHbb/CxAODReaderCore_May2020
-vim VHbb/CxAODOperations_VHbb/scripts_CxAODReader/submitReader.sh
+cd /afs/cern.ch/work/d/dspiteri/VHbb/
+vim CxAODReaderCore_May2020/VHbb/CxAODOperations_VHbb/scripts_CxAODReader/submitReader.sh
 ~~~
 >  CHANGE Analysis Strategy (~L109)                                                                                           
 >   >   ANASTRATEGY="Merged" # Resolved, Merged, ...                                                                           
@@ -184,9 +184,24 @@ vim Reader_2L_32-15_e_CUT_D1/submit/segments
 
 ## (3) New Samples MET Trigger Regime and (4) New Samples SL Trigger Regime.
 Also an easy one to do, as the commands will be exactly the same as for the previous two sections, but you point to a different location of the samples.
-~~~
-cd /afs/cern.ch/work/d/dspiteri/VHbb/CxAODMakerCore_May2020
-vim VHbb/CxAODOperations_VHbb/scripts_CxAODReader/submitReader.sh
 
-> /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/VH/CxAOD_r32-15/HIGG2D4_13TeV/CxAOD_32-15_e/qqZllHbbJ_PwPy8MINLO
+>  /afs/cern.ch/work/g/gcallea/public/phys-higgs/HSG5/Run2/VH/CxAOD_r32-15/HIGG2D4_13TeV/CxAOD_32-15_e/qqZllHbbJ_PwPy8MINLO
+
+### Boosted MET Trigger
+Make sure that the submit reader is submitting the right analysis and that the trigger switch has been flipped. 
+~~~
+cd /afs/cern.ch/work/d/dspiteri/VHbb/
+vim CxAODMakerCore_May2020/VHbb/CxAODOperations_VHbb/scripts_CxAODReader/submitReader.sh
+~~~
+~~~
+setupATLAS && lsetup "root 6.18.04-x86_64-centos7-gcc8-opt"
+cd build
+release=`cat ../CxAODReaderCore_May2020/VHbb/CxAODBootstrap_VHbb/bootstrap/release.txt` && echo "release=$release"
+asetup $release,AnalysisBase
+cmake ../CxAODReaderCore_May2020
+cmake --build .
+source x86_64-centos7-gcc8-opt/setup.sh
+lsetup 'lcgenv -p LCG_96b x86_64-centos7-gcc8-opt numpy'
+cd ../run
+../CxAODReaderCore_May2020/VHbb/CxAODOperations_VHbb/scripts_CxAODReader/submitReader.sh /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/VH/CxAOD_r32-15 NewSignalBoosted_METTrigger 2L e VHbb CUT D1 32-15 /afs/cern.ch/work/g/gcallea/public/phys-higgs/HSG5/Run2/VH/CxAOD_r32-15/HIGG2D4_13TeV/CxAOD_32-15_e/qqZllHbbJ_PwPy8MINLO none 1
 ~~~
