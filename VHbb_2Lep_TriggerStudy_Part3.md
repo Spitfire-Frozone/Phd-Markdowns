@@ -72,6 +72,13 @@ vim CxAODReaderCore_May2020/VHbb/CxAODOperations_VHbb/scripts_CxAODReader/submit
 >   >       DO2LMETTRIGGER="false"                                                                                             
 >   >   fi                                                                                                                     
 
+>  COMMENT OUT samples from SAMPLES2 to ensure faster running (~L348-L351)                                                   
+>   >   #SAMPLESCOMMON2+=" WqqWlv_Sh221 " # WW (default)                                                                      
+>   >   #SAMPLESCOMMON2+=" ggWqqWlv_Sh222" ## ggWW                                                                            
+>   >   #SAMPLESCOMMON2+=" WenuC_Sh221 WenuL_Sh221 WmunuC_Sh221 WmunuL_Sh221 WtaunuC_Sh221 WtaunuL_Sh221" # W+jets             
+>   >   #SAMPLESCOMMON2+=" ZeeC_Sh221 ZeeL_Sh221 ZmumuC_Sh221 ZmumuL_Sh221 ZtautauC_Sh221 ZtautauL_Sh221" # Z+jets except Znunu+jets
+ 
+
 For the Boosted (Merged) case:
 ~~~
 setupATLAS && lsetup "root 6.18.04-x86_64-centos7-gcc8-opt"
