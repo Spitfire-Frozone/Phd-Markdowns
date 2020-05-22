@@ -110,7 +110,7 @@ _____
 >  - If instead you get the error 
 >   >   /afs/cern.ch/work/d/dspiteri/VHbb/build/x86_64-centos7-gcc8-opt/data/CxAODReader_VHbb/2017-21-13TeV-MC16-CDI-2019-07-30_v1_CustomMaps.root does not exist, as a first port of call find someone with these files, put them in the right place in the directory and try again. Most of this time this is because the command `source ./copydatafromafs.sh' was not run and the files that are stored on afs rather than the repo have not been incorporated into the framework.
 
->   - If the run is taking a long time, it may be that there are other samlpes being run alongside the one you want. In this case try setting both SAMPLESFINAL1 and SAMPLESFINAL2 to the same samples (for me this was the case for the resolved analysis and not the boosted one). 
+>   - If the run is taking a long time, it may be that there are other samlpes being run alongside the one you want. In this case try setting both SAMPLESFINAL2 to something such that it doesn't pick up samples we are not interested in (for me this was the case for the resolved analysis and not the boosted one). 
 ____
 Next one should check that all the inputs were fine. Resubmitting failed ones as necessary. From the run directory that you submitted the files in.
 ~~~
@@ -184,11 +184,18 @@ vim Reader_2L_32-15_e_CUT_D1/submit/segments
 
 ## (3) New Samples MET Trigger Regime and (4) New Samples SL Trigger Regime.
 Also an easy one to do, as the commands will be exactly the same as for the previous two sections, but you point to a different location of the samples.
+**Make sure that the submitReader is submitting the right analysis and that the trigger switch has been flipped**. 
 
 >  /afs/cern.ch/work/g/gcallea/public/phys-higgs/HSG5/Run2/VH/CxAOD_r32-15/HIGG2D4_13TeV/CxAOD_32-15_e/qqZllHbbJ_PwPy8MINLO
+Now create a new directory in the folder where the samples live and put the new samples there. Ensure that you make a unique name such that nobody else can run over it by accident.
+~~~
+cd /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/VH/CxAOD_r32-15/HIGG2D4_13TeV/CxAOD_32-15_e/
+mkdir qqZllHbbJ_PwPy8MINLOr3
+cp /afs/cern.ch/work/g/gcallea/public/phys-higgs/HSG5/Run2/VH/CxAOD_r32-15/HIGG2D4_13TeV/CxAOD_32-15_e/qqZllHbbJ_PwPy8MINLO/* qqZllHbbJ_PwPy8MINLOr3
+~~~
+If you cannot access this directory, or the files contained within, you might want to get Giuseppe to give you cernbox access, so you can download it and upload it to the server yourself, such you have the right permissions. This is only a temporary solution for small files. 
 
-### Boosted MET Trigger
-Make sure that the submit reader is submitting the right analysis and that the trigger switch has been flipped. 
+### New Samples Boosted MET Trigger
 ~~~
 cd /afs/cern.ch/work/d/dspiteri/VHbb/
 vim CxAODMakerCore_May2020/VHbb/CxAODOperations_VHbb/scripts_CxAODReader/submitReader.sh
@@ -203,5 +210,59 @@ cmake --build .
 source x86_64-centos7-gcc8-opt/setup.sh
 lsetup 'lcgenv -p LCG_96b x86_64-centos7-gcc8-opt numpy'
 cd ../run
-../CxAODReaderCore_May2020/VHbb/CxAODOperations_VHbb/scripts_CxAODReader/submitReader.sh /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/VH/CxAOD_r32-15 NewSignalBoosted_METTrigger 2L e VHbb CUT D1 32-15 /afs/cern.ch/work/g/gcallea/public/phys-higgs/HSG5/Run2/VH/CxAOD_r32-15/HIGG2D4_13TeV/CxAOD_32-15_e/qqZllHbbJ_PwPy8MINLO none 1
+../CxAODReaderCore_May2020/VHbb/CxAODOperations_VHbb/scripts_CxAODReader/submitReader.sh /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/VH/CxAOD_r32-15 NewSignalBoosted_METTrigger 2L e VHbb CUT D1 32-15 qqZllHbbJ_PwPy8MINLOr3 none 1
+~~~
+
+### New Samples Boosted SL Trigger
+~~~
+cd /afs/cern.ch/work/d/dspiteri/VHbb/
+vim CxAODMakerCore_May2020/VHbb/CxAODOperations_VHbb/scripts_CxAODReader/submitReader.sh
+~~~
+~~~
+setupATLAS && lsetup "root 6.18.04-x86_64-centos7-gcc8-opt"
+cd build
+release=`cat ../CxAODReaderCore_May2020/VHbb/CxAODBootstrap_VHbb/bootstrap/release.txt` && echo "release=$release"
+asetup $release,AnalysisBase
+cmake ../CxAODReaderCore_May2020
+cmake --build .
+source x86_64-centos7-gcc8-opt/setup.sh
+lsetup 'lcgenv -p LCG_96b x86_64-centos7-gcc8-opt numpy'
+cd ../run
+../CxAODReaderCore_May2020/VHbb/CxAODOperations_VHbb/scripts_CxAODReader/submitReader.sh /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/VH/CxAOD_r32-15 NewSignalBoosted_SLTrigger 2L e VHbb CUT D1 32-15 qqZllHbbJ_PwPy8MINLOr3 none 1
+~~~
+
+### New Samples Resolved MET Trigger
+~~~
+cd /afs/cern.ch/work/d/dspiteri/VHbb/
+vim CxAODMakerCore_May2020/VHbb/CxAODOperations_VHbb/scripts_CxAODReader/submitReader.sh
+~~~
+~~~
+setupATLAS && lsetup "root 6.18.04-x86_64-centos7-gcc8-opt"
+cd build
+release=`cat ../CxAODReaderCore_May2020/VHbb/CxAODBootstrap_VHbb/bootstrap/release.txt` && echo "release=$release"
+asetup $release,AnalysisBase
+cmake ../CxAODReaderCore_May2020
+cmake --build .
+source x86_64-centos7-gcc8-opt/setup.sh
+lsetup 'lcgenv -p LCG_96b x86_64-centos7-gcc8-opt numpy'
+cd ../run
+../CxAODReaderCore_May2020/VHbb/CxAODOperations_VHbb/scripts_CxAODReader/submitReader.sh /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/VH/CxAOD_r32-15 NewSignalResolved_METTrigger 2L e VHbb MVA H 32-15 qqZllHbbJ_PwPy8MINLOr3 none 1
+~~~
+
+### New Samples Resolved SL Trigger
+~~~
+cd /afs/cern.ch/work/d/dspiteri/VHbb/
+vim CxAODMakerCore_May2020/VHbb/CxAODOperations_VHbb/scripts_CxAODReader/submitReader.sh
+~~~
+~~~
+setupATLAS && lsetup "root 6.18.04-x86_64-centos7-gcc8-opt"
+cd build
+release=`cat ../CxAODReaderCore_May2020/VHbb/CxAODBootstrap_VHbb/bootstrap/release.txt` && echo "release=$release"
+asetup $release,AnalysisBase
+cmake ../CxAODReaderCore_May2020
+cmake --build .
+source x86_64-centos7-gcc8-opt/setup.sh
+lsetup 'lcgenv -p LCG_96b x86_64-centos7-gcc8-opt numpy'
+cd ../run
+../CxAODReaderCore_May2020/VHbb/CxAODOperations_VHbb/scripts_CxAODReader/submitReader.sh /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/VH/CxAOD_r32-15 NewSignalResolved_SLTrigger 2L e VHbb MVA H 32-15 qqZllHbbJ_PwPy8MINLOr3 none 1
 ~~~
