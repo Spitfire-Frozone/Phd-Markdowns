@@ -2,7 +2,7 @@
 
 ## VHbb 2 Lepton Trigger Study Part 3 ##
 
-Last Edited: 21-05-2020
+Last Edited: 22-05-2020
 -------------------------------------------------------------------------------
 
 # Aims
@@ -135,6 +135,12 @@ vim VHbb/CxAODOperations_VHbb/scripts_CxAODReader/submitReader.sh
 >   >   else #Allow this flag to be turned off for the Resolved VHbb and VHcc analyses.                                       
 >   >       DO2LMETTRIGGER="false"                                                                                             
 >   >   fi                                                                                                                     
+
+>  COMMENT OUT SAMPLES2 samples such that they are not run over (~L348-351)                                                   
+>   >   #SAMPLESCOMMON2+=" WqqWlv_Sh221 " # WW (default)
+>   >   #SAMPLESCOMMON2+=" ggWqqWlv_Sh222" ## ggWW
+>   >   #SAMPLESCOMMON2+=" WenuC_Sh221 WenuL_Sh221 WmunuC_Sh221 WmunuL_Sh221 WtaunuC_Sh221 WtaunuL_Sh221" # W+jets
+>   >   #SAMPLESCOMMON2+=" ZeeC_Sh221 ZeeL_Sh221 ZmumuC_Sh221 ZmumuL_Sh221 ZtautauC_Sh221 ZtautauL_Sh221" # Z+jets except Znunu+jets
 
 For the Boosted (Merged) case:
 ~~~
