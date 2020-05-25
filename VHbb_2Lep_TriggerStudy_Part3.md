@@ -287,7 +287,7 @@ The inputs to the file are as follows
 |:--------------------:|------------------------|
 | TString homeArea       = "/afs/cern.ch/work/d/dspiteri/VHbb/", |   Your home area                                         | 
 | TString sampletype     = "Signal",                             |   First part of the output folder. i.e 'NewSignalBoosted'|
-| TString triggertype1   = "old",                                |   Type of triggers (new, newer, newest, old, MET, SL)    |
+| TString triggertype1   = "old",                                |   Type of triggers (new, newer, newest, old)             |
 | TString triggertype2   = "new"                                 |                                                          |
 | TString inputFileName  = "SIGNAL.root",                        |   Input file name                                        | 
 | TString channel        = "2L",                                 |   Analysis Lepton Channel interested in                  |
@@ -302,10 +302,10 @@ The inputs to the file are as follows
 cd /afs/cern.ch/work/d/dspiteri/VHbb/
 vim TriggerStudyPlotting.cxx 
 ~~~
-> CHANGE vector of samples to the signal ones
->   >     std::vector samples = {"ggZllH125", "qqZllH125", "qqWlvH125"}; //Signal
+> CHANGE vector of samples to the signal ones (L111)
+>   >     std::vector samples = {"qqZllH125"}; //Giuseppe's Trial Samples
 ~~~
-root -b -l -q '../TriggerStudyPlots.cxx("/afs/cern.ch/work/d/dspiteri/VHbb/", "CxAODFramework_master_july2019/","SignalBoosted","old","newest","SIGNAL.root","2L","32-15","a","CUT","D1","SR","_TEST","_TEST")'
+root -b -l -q 'TriggerStudyPlots.cxx("/afs/cern.ch/work/d/dspiteri/VHbb/","SignalBoosted","old","newest","hist-qqZllHbbJ_PwPy8MINLO.root","2L","32-15","e","CUT","D1","SR")'
 cd run
 mv SignalBoosted-oldandnewest_TriggerPlots SignalBoosted-oldandnewest_a_TriggerPlots
 cd SignalBoosted-oldandnewest_a_TriggerPlots
