@@ -2,7 +2,7 @@
 
 ## VHbb 2 Lepton Trigger Study Part 3 ##
 
-Last Edited: 22-05-2020
+Last Edited: 25-05-2020
 -------------------------------------------------------------------------------
 
 # Aims
@@ -278,4 +278,38 @@ source x86_64-centos7-gcc8-opt/setup.sh
 lsetup 'lcgenv -p LCG_96b x86_64-centos7-gcc8-opt numpy'
 cd ../run
 ../CxAODReaderCore_May2020/VHbb/CxAODOperations_VHbb/scripts_CxAODReader/submitReader.sh /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/VH/CxAOD_r32-15 NewSignalResolved_SLTrigger 2L e VHbb MVA H 32-15 qqZllHbbJ_PwPy8MINLOr3 none 1
+~~~
+# Making Plots
+For the original study I made a macro called TriggerStudyPlots.cxx which I an make available upon request. However it really works under the old version of the analysis. I have made a newer version of this plotting script called TriggerStudyPlotting.cxx designed to exist in your home area in parallel to the analysis repo, the build and run directories.
+
+The inputs to the file are as follows                                                                                       
+| void TriggerStudyPlots(  |            |                                                                                     
+|:--------------------:|------------------------|
+| TString homeArea       = "/afs/cern.ch/work/d/dspiteri/VHbb/", |   Your home area                                         | 
+| TString sampletype     = "Signal",                             |   First part of the output folder. i.e 'NewSignalBoosted'|
+| TString triggertype1   = "old",                                |   Type of triggers (new, newer, newest, old, MET, SL)    |
+| TString triggertype2   = "new"                                 |                                                          |
+| TString inputFileName  = "SIGNAL.root",                        |   Input file name                                        | 
+| TString channel        = "2L",                                 |   Analysis Lepton Channel interested in                  |
+| TString CxAODSampVer   = "31-10",                              |   Sample Version                                         | 
+| TString mcVer          = "a",                                  |   MC Simulation Version                                  |
+| TString modelType      = "MVA"                                 |   MVA = Resolved, CBA = Boosted                          |
+| TString bTagType       = "D1",                                 |   B-tagging Type in output folder                        | 
+| TString region         = "SR",                                 |   Signal or Control Region                               |
+| TString suffix1        = "",                                   |   Suffixes you added to seperate samples                 |
+| TString suffix2        = "" )                                  |                                                          |
+~~~
+cd /afs/cern.ch/work/d/dspiteri/VHbb/
+vim TriggerStudyPlotting.cxx 
+~~~
+> CHANGE vector of samples to the signal ones
+>   >     std::vector samples = {"ggZllH125", "qqZllH125", "qqWlvH125"}; //Signal
+~~~
+root -b -l -q '../TriggerStudyPlots.cxx("/afs/cern.ch/work/d/dspiteri/VHbb/", "CxAODFramework_master_july2019/","SignalBoosted","old","newest","SIGNAL.root","2L","32-15","a","CUT","D1","SR","_TEST","_TEST")'
+cd run
+mv SignalBoosted-oldandnewest_TriggerPlots SignalBoosted-oldandnewest_a_TriggerPlots
+cd SignalBoosted-oldandnewest_a_TriggerPlots
+imgcat *.pdf
+~~~
+
 ~~~
