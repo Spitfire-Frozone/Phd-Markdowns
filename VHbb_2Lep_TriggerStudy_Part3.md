@@ -287,7 +287,7 @@ The inputs to the file are as follows
 |:--------------------:|------------------------|
 | TString homeArea       = "/afs/cern.ch/work/d/dspiteri/VHbb/", |   Your home area                                         | 
 | TString sampletype     = "Signal",                             |   First part of the output folder. i.e 'NewSignalBoosted'|
-| TString triggertype1   = "old",                                |   Type of triggers (new, newer, newest, old)             |
+| TString triggertype1   = "old",                                |   Type of triggers (new, newer, newest, old, SL, MET)    |
 | TString triggertype2   = "new"                                 |                                                          |
 | TString inputFileName  = "SIGNAL.root",                        |   Input file name                                        | 
 | TString channel        = "2L",                                 |   Analysis Lepton Channel interested in                  |
@@ -300,16 +300,31 @@ The inputs to the file are as follows
 | TString suffix2        = "" )                                  |                                                          |
 ~~~
 cd /afs/cern.ch/work/d/dspiteri/VHbb/
+setupATLAS && lsetup "root 6.18.04-x86_64-centos7-gcc8-opt"
 vim TriggerStudyPlotting.cxx 
 ~~~
 > CHANGE vector of samples to the signal ones (L111)
 >   >     std::vector samples = {"qqZllH125"}; //Giuseppe's Trial Samples
+
+> Ensure that the legend displays the right type of label (L528)
+>   >      legend.AddEntry(TProfileInputPlot2, Form("Signal (%) Gain = %f",improvement), "-"); 
+
 ~~~
-root -b -l -q 'TriggerStudyPlots.cxx("/afs/cern.ch/work/d/dspiteri/VHbb/","SignalBoosted","old","newest","hist-qqZllHbbJ_PwPy8MINLO.root","2L","32-15","e","CUT","D1","SR")'
 cd run
-mv SignalBoosted-oldandnewest_TriggerPlots SignalBoosted-oldandnewest_a_TriggerPlots
-cd SignalBoosted-oldandnewest_a_TriggerPlots
+root -b -l -q '../TriggerStudyPlotting.cxx("/afs/cern.ch/work/d/dspiteri/VHbb/","SignalBoosted","SL","MET","hist-qqZllHbbJ_PwPy8MINLO.root","2L","32-15","e","CUT","D1","SR")'
+mv SignalBoosted-SLandMET_TriggerPlots SignalBoosted-SLandMET_e_TriggerPlots
+cd SignalBoosted-SLandMET_e_TriggerPlots
 imgcat *.pdf
 ~~~
+Once this works, and everything looks ok, we can produce the other plots. 
+~~~
+cd ..
+root -b -l -q '../TriggerStudyPlotting.cxx("/afs/cern.ch/work/d/dspiteri/VHbb/","NewSignalBoosted","SL","MET","hist-qqZllHbbJ_PwPy8MINLOr3.root","2L","32-15","e","CUT","D1","SR")'
+mv NewSignalBoosted-SLandMET_TriggerPlots NewSignalBoosted-SLandMET_e_TriggerPlots
 
+root -b -l -q '../TriggerStudyPlotting.cxx("/afs/cern.ch/work/d/dspiteri/VHbb/","SignalResolved","SL","MET","hist-qqZllHbbJ_PwPy8MINLO.root","2L","32-15","e","MVA","H","SR")'
+mv SignalResolved-SLandMET_TriggerPlots SignalResolved-SLandMET_e_TriggerPlots
+
+root -b -l -q '../TriggerStudyPlotting.cxx("/afs/cern.ch/work/d/dspiteri/VHbb/","NewSignalResolved","SL","MET","hist-qqZllHbbJ_PwPy8MINLOr3.root","2L","32-15","e","MVA","H","SR")'
+mv NewSignalResolved-SLandMET_TriggerPlots NewSignalResolved-SLandMET_e_TriggerPlots
 ~~~
