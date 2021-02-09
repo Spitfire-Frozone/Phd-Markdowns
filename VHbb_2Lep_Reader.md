@@ -153,9 +153,9 @@ vim ../source/FrameworkExe/data/framework-read.cfg
 
 > CHANGE the directory you point to in search of a dataset.
 >   > string dataset_dir = /eos/atlas/atlascerngroupdisk/phys-exotics/CxAOD/CxAOD_30/HIGG5D1_13TeV/CxAOD_00-30-02_a -> string dataset_dir = /eos/atlas/atlascerngroupdisk/phys-higgs/HSG5/Run2/VH/180116_r30-02/HIGG2D4_13TeV/CxAOD_00-30-02_c
-~~~
+
 This directory is 416.556 GB in size so moving is rather expensive in terms of space. The directory structure inside, where each subdirectory is either 'data' or a specific MC sample  is what the code looks for to run over. For 2 lepton, HIGG2D4 is the input directory where CxAOD's are stored. The letter on the end indicates the period of MC run over.
-~~~
+
 > CHANGE the luminosity which is dependent on the MC type used
 >   > float luminosity = 33.26 (MC16c only)
 
